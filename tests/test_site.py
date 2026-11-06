@@ -40,6 +40,26 @@ class SiteTests(unittest.TestCase):
         expected=re.findall(r'^- \[[^\]]+\]\(https://github.com/([^/\s)]+/[^/\s)]+)\)',(ROOT / 'README.md').read_text(),re.M)
         self.assertCountEqual(repos,expected)
         self.assertEqual(len(repos),len(set(repos)))
+    def test_numbered_list_and_continuation_semantics(self):
+        rendered=build.markdown('1. First item.\n   Continued content.\n2. Second item.')
+        self.assertIn('<ol>',rendered)
+        self.assertNotIn('<ul>',rendered)
+        self.assertIn('First item. Continued content.</p></li>',rendered)
+        self.assertEqual(rendered.count('<li>'),2)
+    def test_choice_links_point_to_generated_sections(self):
+        data=json.loads((ROOT / '_site/catalog.json').read_text())
+        for entry in data['entries']:
+            if entry.get('choice'):
+                file, anchor=entry['choice'].split('#')
+                page=Links();page.feed((ROOT / '_site' / file).read_text())
+                self.assertIn(anchor,page.ids,entry['label'])
+    def test_guides_have_shared_theme_and_navigation(self):
+        for name in ('CHOICES','COMPARISONS','CURATION','RESEARCH'):
+            page=(ROOT / '_site' / (name+'.html')).read_text()
+            self.assertIn('src="theme.js"',page)
+            self.assertIn('data-theme-toggle',page)
+            self.assertIn('aria-label="On this page"',page)
+            self.assertIn('data-directory-return',page)
     def test_unsafe_text_is_escaped_and_local_notes_link_to_html(self):
         rendered=build.inline('<img src=x onerror=alert(1)> [Note](docs/CHOICES.md#ethereum)')
         self.assertNotIn('<img',rendered)

@@ -1,121 +1,167 @@
 import { filterEntries } from './catalog.mjs';
-'use strict';
 const data = JSON.parse(document.getElementById('catalog-data').textContent);
 const $ = id => document.getElementById(id);
 const categories = [...new Set(data.entries.map(e => e.category))];
 const owners = [...new Set(data.entries.map(e => e.owner))].sort((a,b) => a.localeCompare(b));
-const safeStorage = {
+const storage = {
   get(key) { try { return localStorage.getItem(key); } catch { return null; } },
-  set(key, value) { try { localStorage.setItem(key, value); return true; } catch { return false; } }
+  set(key,value) { try { localStorage.setItem(key,value); return true; } catch { return false; } }
 };
-let saved;
-try { const value = JSON.parse(safeStorage.get('goose-saved') || '[]'); saved = new Set(Array.isArray(value) ? value.filter(x => typeof x === 'string') : []); } catch { saved = new Set(); }
 const ids = new Set(data.entries.map(e => e.id));
-saved = new Set([...saved].filter(id => ids.has(id)));
+function readSaved() {
+  try { const value = JSON.parse(storage.get('goose-saved') || '[]'); return new Set(Array.isArray(value) ? value.filter(id => ids.has(id)) : []); }
+  catch { return new Set(); }
+}
+let saved = readSaved();
 let toastTimer;
-function toast(message) { $('toast').textContent = message; $('toast').hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { $('toast').hidden = true; }, 2600); }
+function toast(message) {
+  $('toast').textContent = message; $('toast').hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { $('toast').hidden = true; }, 5000);
+}
 function readState() {
   const p = new URLSearchParams(location.search);
-  return { q: p.get('q') || '', category: categories.includes(p.get('category')) ? p.get('category') : '', owner: owners.includes(p.get('owner')) ? p.get('owner') : '', saved: p.get('saved') === '1', sort: ['category','name','owner'].includes(p.get('sort')) ? p.get('sort') : 'category' };
+  return {q:p.get('q') || '', category:categories.includes(p.get('category')) ? p.get('category') : '', owner:owners.includes(p.get('owner')) ? p.get('owner') : '', saved:p.get('saved') === '1', sort:['category','name','owner'].includes(p.get('sort')) ? p.get('sort') : 'category'};
 }
 let state = readState();
-function syncUrl() {
+function viewUrl() {
   const p = new URLSearchParams();
-  if (state.q) p.set('q', state.q);
-  if (state.category) p.set('category', state.category);
-  if (state.owner) p.set('owner', state.owner);
-  if (state.saved) p.set('saved', '1');
-  if (state.sort !== 'category') p.set('sort', state.sort);
-  const query = p.toString();
-  history.replaceState(null, '', location.pathname + (query ? '?' + query : '') + location.hash);
+  if (state.q) p.set('q',state.q);
+  if (state.category) p.set('category',state.category);
+  if (state.owner) p.set('owner',state.owner);
+  if (state.saved) p.set('saved','1');
+  if (state.sort !== 'category') p.set('sort',state.sort);
+  return location.pathname + (p.size ? '?' + p : '') + location.hash;
 }
-
-function el(tag, className, text) { const node = document.createElement(tag); if (className) node.className = className; if (text !== undefined) node.textContent = text; return node; }
-function makeLink(label, href, className) { const node = el('a', className, label); node.href = href; return node; }
+function rememberView() { try { sessionStorage.setItem('goose-directory-query',location.search); } catch {} }
+function change(patch, {push=true, focus=null}={}) {
+  state = {...state,...patch};
+  const url=viewUrl();
+  if (url !== location.pathname + location.search + location.hash) history[push ? 'pushState' : 'replaceState'](null,'',url);
+  render(); if (focus) $(focus).focus();
+}
+function el(tag,className,text) { const node=document.createElement(tag); if(className) node.className=className; if(text!==undefined) node.textContent=text; return node; }
+function link(label,href,className) { const node=el('a',className,label); node.href=href; return node; }
 function card(entry) {
-  const article = el('article', 'card');
-  const top = el('div', 'card-top');
-  const heading = el('h4'); heading.style.margin = '0';
-  const link = makeLink(entry.name, entry.url, 'card-title'); link.append(el('span','out-arrow','↗')); heading.append(link); top.append(heading);
-  const button = el('button','save-button',saved.has(entry.id) ? '♥' : '♡');
-  button.type = 'button'; button.setAttribute('aria-label', `${saved.has(entry.id) ? 'Unsave' : 'Save'} ${entry.label}`); button.setAttribute('aria-pressed', String(saved.has(entry.id)));
-  button.addEventListener('click', () => {
-    saved.has(entry.id) ? saved.delete(entry.id) : saved.add(entry.id);
-    const persisted = safeStorage.set('goose-saved',JSON.stringify([...saved]));
-    if (state.saved) {
-      const previousIndex = [...$('results').querySelectorAll('.save-button')].indexOf(button);
-      render();
-      const remaining = $('results').querySelectorAll('.save-button');
-      (remaining[Math.min(previousIndex, remaining.length - 1)] || $('saved-resources')).focus();
+  const article=el('article','card');
+  const top=el('div','card-top');
+  const heading=el('h4'); const title=link(entry.name,entry.url,'card-title');
+  title.append(el('span','out-arrow','↗')); heading.append(title); top.append(heading);
+  const button=el('button','save-button',saved.has(entry.id)?'♥':'♡');
+  button.type='button'; button.dataset.entry=entry.id;
+  button.setAttribute('aria-label',`${saved.has(entry.id)?'Unsave':'Save'} ${entry.label}`);
+  button.setAttribute('aria-pressed',String(saved.has(entry.id)));
+  button.addEventListener('click',() => {
+    const index=[...$('results').querySelectorAll('.save-button')].indexOf(button);
+    saved.has(entry.id)?saved.delete(entry.id):saved.add(entry.id);
+    const persisted=storage.set('goose-saved',JSON.stringify([...saved]));
+    if(state.saved) {
+      render(); const remaining=$('results').querySelectorAll('.save-button');
+      (remaining[Math.min(index,remaining.length-1)] || $('saved-resources')).focus();
     } else {
-      button.textContent = saved.has(entry.id) ? '♥' : '♡';
+      button.textContent=saved.has(entry.id)?'♥':'♡';
       button.setAttribute('aria-pressed',String(saved.has(entry.id)));
-      button.setAttribute('aria-label',`${saved.has(entry.id) ? 'Unsave' : 'Save'} ${entry.label}`);
-      $('saved-count').textContent = saved.size;
+      button.setAttribute('aria-label',`${saved.has(entry.id)?'Unsave':'Save'} ${entry.label}`);
+      $('saved-count').textContent=saved.size;
     }
-    toast(persisted ? (saved.has(entry.id) ? 'Saved on this device.' : 'Removed from saved resources.') : 'Saved for this visit. Browser storage is unavailable.');
+    toast(persisted ? (saved.has(entry.id)?'Saved on this device.':'Removed from saved resources.') : 'Saved for this visit. Browser storage is unavailable.');
   });
   top.append(button); article.append(top,el('div','owner',entry.owner));
-  const description = el('p','card-description'); description.innerHTML = entry.descriptionHtml; article.append(description);
-  const foot = el('div','card-foot'); foot.append(el('span','license',entry.license || 'Community resource'));
-  const details = el('details'); const summary = el('summary','', 'Review notes'); details.append(summary);
-  foot.append(details); article.append(foot);
-  // Keep the disclosure content outside the horizontal footer using a separate panel.
-  const evidence = el('div','evidence'); evidence.hidden = true;
-  evidence.append(el('div','',`Reviewed ${entry.reviewed}`));
-  if (entry.source) evidence.append(makeLink(`Read source snapshot · ${entry.commit.slice(0,7)} ↗`,entry.source),el('br'));
-  evidence.append(makeLink('How and why we curate →','CHOICES.html'));
-  details.addEventListener('toggle', () => { evidence.hidden = !details.open; });
-  article.append(evidence); return article;
+  const description=el('p','card-description'); description.innerHTML=entry.descriptionHtml; article.append(description);
+  const foot=el('div','card-foot'); foot.append(el('span','license',entry.license || 'Community resource'));
+  if(entry.choice) foot.append(link('Choice notes →',entry.choice));
+  article.append(foot);
+  const details=el('details','review-details');
+  const summary=el('summary','', 'Source & review'); summary.setAttribute('aria-label',`Source and review for ${entry.label}`);
+  const evidence=el('div','evidence');
+  evidence.append(el('div','',`${entry.source ? 'Source reviewed' : 'Listed'} ${entry.reviewed}`));
+  if(entry.source) { evidence.append(link(`Source snapshot · ${entry.commit.slice(0,7)} ↗`,entry.source),el('br')); }
+  evidence.append(link('Curation policy →','CURATION.html'));
+  details.append(summary,evidence); article.append(details); return article;
+}
+function activeFilters() {
+  const container=$('filter-state'); container.replaceChildren();
+  const chips=[['q',state.q&&`Search: ${state.q}`],['category',state.category],['owner',state.owner&&`Maintainer: ${state.owner}`]];
+  for(const [key,label] of chips) {
+    if(!label) continue;
+    const button=el('button','filter-chip',label); button.type='button'; button.append(el('span','','×'));
+    button.setAttribute('aria-label',`Remove ${label} filter`);
+    button.addEventListener('click',() => change({[key]:''},{focus:'results-heading'})); container.append(button);
+  }
 }
 function render() {
-  $('search').value = state.q; $('owner').value = state.owner; $('sort').value = state.sort;
-  $('saved-count').textContent = saved.size;
-  $('all-resources').classList.toggle('active', !state.saved && !state.category);
+  $('search').value=state.q; $('owner').value=state.owner; $('sort').value=state.sort; $('category').value=state.category;
+  $('saved-count').textContent=saved.size;
+  $('all-resources').classList.toggle('active',!state.saved);
   $('saved-resources').classList.toggle('active',state.saved);
-  $('all-resources').setAttribute('aria-pressed',String(!state.saved && !state.category));
-  $('saved-resources').setAttribute('aria-pressed',String(state.saved));
-  for (const button of $('categories').children) { const active = button.dataset.category === state.category; button.classList.toggle('active',active); button.setAttribute('aria-pressed',String(active)); }
-  const entries = filterEntries(data.entries,state,saved);
-  entries.sort((a,b) => (state.sort === 'owner' ? a.owner.localeCompare(b.owner) : state.sort === 'category' ? categories.indexOf(a.category)-categories.indexOf(b.category) : 0) || a.label.localeCompare(b.label,undefined,{sensitivity:'base'}));
-  $('results-heading').firstChild.textContent = (state.saved ? 'Saved for later' : state.category || (state.q ? 'Search results' : 'All resources')) + ' ';
-  $('result-count').textContent = `(${entries.length})`;
-  $('status').textContent = `${entries.length} resources found${state.category ? ' in ' + state.category : ''}.`;
-  $('empty').hidden = entries.length !== 0;
-  const fragment = document.createDocumentFragment();
-  const groups = new Map();
-  for (const entry of entries) {
-    const group = state.sort === 'category' ? entry.category : state.sort === 'owner' ? entry.owner : 'Resources A–Z';
-    if (!groups.has(group)) groups.set(group,[]);
-    groups.get(group).push(entry);
+  $('all-resources').setAttribute('aria-pressed',String(!state.saved)); $('saved-resources').setAttribute('aria-pressed',String(state.saved));
+  for(const button of $('categories').children) { const active=button.dataset.category===state.category; button.classList.toggle('active',active); button.setAttribute('aria-pressed',String(active)); }
+  const entries=filterEntries(data.entries,state,saved);
+  entries.sort((a,b) => (state.sort==='owner'?a.owner.localeCompare(b.owner):state.sort==='category'?categories.indexOf(a.category)-categories.indexOf(b.category):0) || a.label.localeCompare(b.label,undefined,{sensitivity:'base'}));
+  $('results-heading').firstChild.textContent=(state.saved?'Saved resources':state.category || (state.q?'Search results':'All resources'))+' ';
+  $('result-count').textContent=state.saved?`(${entries.length} of ${saved.size})`:`(${entries.length})`;
+  $('jump-results').textContent=`${entries.length} results ↓`;
+  $('status').textContent=`${entries.length} ${state.saved?'matching saved ':''}resources found${state.category?' in '+state.category:''}.`;
+  $('empty').hidden=entries.length!==0;
+  const filtering=Boolean(state.q || state.category || state.owner);
+  $('reset').disabled=!filtering && state.sort==='category';
+  $('starter').hidden=filtering || state.saved;
+  $('saved-help').hidden=!state.saved;
+  $('filter-options-label').textContent = 'More filters' + (state.owner || state.sort!=='category' ? ' · active' : '');
+  if(state.saved && saved.size===0) {
+    $('empty-title').textContent='Nothing saved yet';
+    $('empty-copy').textContent='Use the heart on a resource to save it here. Your collection stays on this device.';
+    $('empty-reset').textContent='Browse all resources';
+  } else if(state.saved) {
+    $('empty-title').textContent='No saved resources match these filters';
+    $('empty-copy').textContent=`You have ${saved.size} saved ${saved.size===1?'resource':'resources'}. Clear the filters to see your collection.`;
+    $('empty-reset').textContent='Clear filters in saved';
+  } else {
+    $('empty-title').textContent='No resources match these filters';
+    $('empty-copy').textContent='Try another search or clear the filters to browse all resources.';
+    $('empty-reset').textContent='Clear filters';
   }
-  for (const [name, group] of groups) {
-    const section = el('section','resource-group'); const title = el('h3','group-title',name); title.append(el('span','group-count',String(group.length))); section.append(title);
-    const cards = el('div','cards'); for (const entry of group) cards.append(card(entry)); section.append(cards); fragment.append(section);
+  activeFilters();
+  const fragment=document.createDocumentFragment(), groups=new Map();
+  for(const entry of entries) { const group=state.sort==='category'?entry.category:state.sort==='owner'?entry.owner:'Resources A–Z'; if(!groups.has(group)) groups.set(group,[]); groups.get(group).push(entry); }
+  for(const [name,group] of groups) {
+    const section=el('section','resource-group'),title=el('h3','group-title',name);
+    title.append(el('span','group-count',String(group.length))); section.append(title);
+    const cards=el('div','cards'); for(const entry of group) cards.append(card(entry)); section.append(cards); fragment.append(section);
   }
-  $('results').replaceChildren(fragment); syncUrl();
+  $('results').replaceChildren(fragment); rememberView();
 }
-function reset() { state = {q:'',category:'',owner:'',saved:false,sort:'category'}; render(); }
-for (const category of categories) {
-  const button = el('button','nav-item'); button.type='button'; button.dataset.category=category;
-  button.append(el('span','',category),el('span','count',String(data.entries.filter(e => e.category===category).length)));
-  button.addEventListener('click',() => { state.category = state.category===category ? '' : category; state.saved=false; render(); }); $('categories').append(button);
+function clearFilters() { change({q:'',category:'',owner:'',sort:'category'}); }
+function browseAll() { change({q:'',category:'',owner:'',saved:false,sort:'category'}); }
+for(const category of categories) {
+  const button=el('button','nav-item'); button.type='button'; button.dataset.category=category;
+  button.append(el('span','',category),el('span','count',String(data.entries.filter(e=>e.category===category).length)));
+  button.addEventListener('click',() => change({category:state.category===category?'':category})); $('categories').append(button);
+  const option=el('option','',category); option.value=category; $('category').append(option);
 }
-for (const owner of owners) { const option = el('option','',owner); option.value=owner; $('owner').append(option); }
-$('all-count').textContent = data.entries.length;
-$('resource-total').textContent = `${data.entries.length} useful resources`;
-$('review-date').textContent = `Last curated ${data.reviewed}`;
-$('search').addEventListener('input',e => { state.q=e.target.value; render(); });
-$('owner').addEventListener('change',e => { state.owner=e.target.value; render(); });
-$('sort').addEventListener('change',e => { state.sort=e.target.value; render(); });
-$('all-resources').addEventListener('click',reset);
-$('saved-resources').addEventListener('click',() => { state.saved=!state.saved; state.category=''; render(); });
-for (const id of ['reset','empty-reset']) $(id).addEventListener('click',reset);
-for (const example of document.querySelectorAll('.search-example')) example.addEventListener('click',() => { reset(); state.q=example.dataset.query; render(); $('search').focus(); });
-$('share').addEventListener('click',async () => { try { await navigator.clipboard.writeText(location.href); toast('View link copied.'); } catch { toast('Copy the URL from your address bar to share this view.'); } });
-function setTheme(theme) { document.documentElement.dataset.theme=theme; $('theme').setAttribute('aria-label',`Switch to ${theme==='dark'?'light':'dark'} theme`); }
-setTheme(safeStorage.get('goose-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light'));
-$('theme').addEventListener('click',() => { const theme=document.documentElement.dataset.theme==='dark'?'light':'dark'; setTheme(theme); safeStorage.set('goose-theme',theme); });
-document.addEventListener('keydown',e => { const typing = /INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || e.target.isContentEditable; if ((e.key==='/' && !typing) || ((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k')) { e.preventDefault(); $('search').focus(); } if(e.key==='Escape' && document.activeElement===$('search')) { state.q=''; render(); $('search').blur(); } });
-window.addEventListener('popstate',() => { state=readState(); render(); });
+for(const owner of owners) { const option=el('option','',owner); option.value=owner; $('owner').append(option); }
+$('all-count').textContent=data.entries.length; $('resource-total').textContent=`${data.entries.length} resources`;
+$('review-date').textContent=`Last curated ${data.reviewed}`;
+$('search').addEventListener('input',e=>change({q:e.target.value},{push:false}));
+for(const key of ['owner','sort','category']) $(key).addEventListener('change',e=>change({[key]:e.target.value}));
+$('all-resources').addEventListener('click',browseAll);
+$('saved-resources').addEventListener('click',()=>change({saved:!state.saved}));
+$('reset').addEventListener('click',clearFilters);
+$('empty-reset').addEventListener('click',()=> { if(state.saved && !saved.size) browseAll(); else clearFilters(); $('results-heading').focus(); });
+for(const example of document.querySelectorAll('.search-example')) example.addEventListener('click',()=>change({q:example.dataset.query,category:'',owner:'',saved:false},{focus:'search'}));
+$('share').addEventListener('click',async()=> {
+  const url=new URL(location.href); url.searchParams.delete('saved'); url.hash='';
+  try { await navigator.clipboard.writeText(url.href); toast(state.saved?'Filters link copied. Your device-local saved collection is not included.':'Filters link copied.'); }
+  catch { toast('Copy the address-bar URL to share filters. Saved items stay on this device.'); }
+});
+document.addEventListener('keydown',e=> {
+  const typing=/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || e.target.isContentEditable;
+  if((e.key==='/'&&!typing)||((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k')) { e.preventDefault(); $('search').focus(); }
+  if(e.key==='Escape' && document.activeElement===$('search')) { e.preventDefault(); change({q:''},{push:false}); }
+});
+window.addEventListener('popstate',()=>{ state=readState(); render(); });
+window.addEventListener('storage',event=>{ if(event.key==='goose-saved') { saved=readSaved(); render(); } });
+const mobileLayout = matchMedia('(max-width: 760px)');
+function updateFilterLayout() { $('filter-options').open = !mobileLayout.matches; }
+mobileLayout.addEventListener('change', updateFilterLayout);
+updateFilterLayout();
 render();

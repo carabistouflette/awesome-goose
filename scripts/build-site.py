@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / '_site'
 REPO = 'https://github.com/carabistouflette/awesome-goose'
+GUIDES = ('CHOICES','COMPARISONS','CURATION','RESEARCH','DEVELOPMENT')
 
 
 def slug(text):
@@ -205,7 +206,7 @@ def main():
     template = (ROOT / 'site/index.html').read_text()
     (OUT / 'index.html').write_text(asset_links(template.replace('<!-- CATALOG_DATA -->', f'<script id="catalog-data" type="application/json">{payload}</script>')))
     (OUT / 'catalog.json').write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
-    for name in ('CHOICES', 'COMPARISONS', 'CURATION', 'RESEARCH'):
+    for name in GUIDES:
         content = markdown((ROOT / 'docs' / f'{name}.md').read_text())
         sections = re.findall(r'^(#{2,3}) (.+)$', (ROOT / 'docs' / f'{name}.md').read_text(), re.M)
         contents = ''.join(f'<a class="{"toc-subsection" if len(level)==3 else "toc-section"}" href="#{slug(title)}">{html.escape(title)}</a>' for level,title in sections)
@@ -215,7 +216,7 @@ def main():
         (OUT / f'{name}.html').write_text(asset_links(page))
     shutil.copyfile(ROOT / 'docs/sources.json', OUT / 'sources.json')
     (OUT / '.nojekyll').touch()
-    print(f'Built {len(data["entries"])} resources and 4 guides in {OUT}')
+    print(f'Built {len(data["entries"])} resources and {len(GUIDES)} guides in {OUT}')
 
 
 if __name__ == '__main__': main()

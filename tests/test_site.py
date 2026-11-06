@@ -92,7 +92,7 @@ class SiteTests(unittest.TestCase):
                 page=Links();page.feed((ROOT / '_site' / file).read_text())
                 self.assertIn(anchor,page.ids,entry['label'])
     def test_guides_have_shared_theme_and_navigation(self):
-        for name in ('CHOICES','COMPARISONS','CURATION','RESEARCH'):
+        for name in build.GUIDES:
             page=(ROOT / '_site' / (name+'.html')).read_text()
             self.assertRegex(page,r'src="theme\.[0-9a-f]{12}\.js"')
             self.assertIn('data-theme-toggle',page)

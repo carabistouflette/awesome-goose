@@ -15,8 +15,8 @@ is ignored by Git. Site source is under `site/`. Asset filenames include content
 module import targets, to keep browser caches consistent across deployments.
 
 The directory defaults to a compact list, with an optional Cards layout. Both
-layouts use the same resources and filters. Compiler, Docs and Stdlib shortcuts remain visible above the library groups.
-More expands all five language resources with full entries, save controls and review evidence.
+layouts use the same resources and filters. Compiler, Docs, Stdlib, Packages and Samples remain visible above the library groups.
+Details expands their full entries, save controls and review evidence.
 
 The directory provides case-insensitive multiword search, category and maintainer
 filters, category/name/maintainer sorting, local favorites, shareable filtered URLs,
@@ -29,6 +29,8 @@ moves directly to the matching entries. The search field also exposes the curren
 matching count as a jump-to-results link. All/Saved share one persistent collection
 bar; switching collections preserves the search, category and maintainer filters. The
 current matching total stays visible in that bar whenever filters or Saved are active.
+Expanded mobile filters summarize the active chips and expose a persistent Show
+action in the collection bar; closing the panel restores the individual chips.
 Favorites and theme settings stay in browser storage; no server account is required.
 If storage is blocked, the directory still works and favorites last for that visit.
 “Copy filters link” shares search/category/maintainer/sort settings, not a saved
@@ -37,7 +39,8 @@ clipboard is unavailable, a selectable field exposes the same normalized URL.
 Guides retain the selected theme, include section/subsection navigation with a current-section marker and a
 persistent mobile Directory/Contents bar, and link back to the
 current directory filters, including from the desktop contents rail and header brand.
-Where the comparison reviewed a different snapshot, the evidence disclosure links
+Choice notes focuses on package selection; its Ethereum development plan is linked
+separately in Development. Where the comparison reviewed a different snapshot, the evidence disclosure links
 that separate baseline explicitly. The Markdown list remains available without JavaScript.
 
 ## Checks

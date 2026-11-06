@@ -376,3 +376,26 @@ html { scroll-padding-top:168px; }
 .active-filter-row .filter-state { display:contents; }
 .active-filter-row>#reset { border:0; background:none; padding:8px 4px; text-decoration:underline; text-underline-offset:3px; }
 .active-filter-row>#reset:disabled { display:none; }
+
+/* Reading and attribution links stay comfortable at narrow sizes. */
+.license,.count,.sidebar-label,.search-hint,.resource-links,.review-details,.review-details summary,.resource-links>a,.evidence a { font-size:14px; }
+.directory[data-context=true] .results-title { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.toolbar-apply,.active-filter-summary { display:none; }
+.topbar nav a { white-space:nowrap; }
+@media(max-width:760px) {
+  .directory[data-filters-open=true][data-context=true] .toolbar-apply { display:inline-flex; align-items:center; justify-content:center; min-width:44px; min-height:44px; padding:4px; color:var(--green); text-decoration:underline; text-underline-offset:3px; font-size:14px; }
+  .directory[data-filters-open=true] .active-filter-row .filter-chip { display:none; }
+  .directory[data-filters-open=true] .active-filter-summary:not(:empty) { display:inline; font-size:14px; color:var(--muted); }
+  .directory[data-filters-open=true] .advanced-fields .apply-filters { border-color:var(--ink); }
+}
+@media(max-width:440px) {
+  .topbar { gap:8px; }
+  .topbar .brand-goose { display:none; }
+  .topbar .brand { font-size:18px; }
+  .topbar nav { gap:8px; font-size:13px; flex-shrink:0; }
+}
+.owner,.owner-prefix { font-size:14px; }
+@media(max-width:760px) {
+  .reference-shortcuts { column-gap:10px; }
+  .reference-shortcuts a,.reference-group .reference-details summary { font-size:14px; }
+}

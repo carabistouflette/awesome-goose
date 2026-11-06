@@ -276,3 +276,40 @@ converge; no reviewer or score is removed from this completed round.
 - Twenty automated checks pass (11 Python, 9 Node). Rendered checks at 320px and
   desktop covered the matching toolbar, direct reference links, selected layouts,
   focus after reset, contextual guide return and the current-section marker.
+
+## Eighth completed assessment
+
+Application: `0e87077`.
+
+| Reviewer | Visual | Discovery | Interaction | Responsive / access | Trust | Weighted overall |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Beech](assessment-beech.md) | 9.0 | 8.5 | 9.0 | 8.5 | 9.0 | 8.75 |
+| [Cypress](assessment-cypress.md) | 8.5 | 9.0 | 9.5 | 9.0 | 9.5 | 9.05 |
+
+One reviewer exceeded the overall threshold; the round did not satisfy the stopping
+condition because Beech remained below it. Neither found a blocking defect.
+
+## Following corrections
+
+- All five official resource links are visible: Compiler, Docs, Stdlib, Packages
+  and Samples. Details exposes descriptions/evidence/save controls. Accessible
+  labels preserve each visible control name, including abbreviations.
+- Expanded mobile filters replace the removable chips with a compact active-filter
+  count; closing restores the chips. A persistent Show action closes the panel and
+  focuses results, complementing the button at the end of the settings.
+- Results navigation measures the actual sticky controls when calculating its
+  position, so changing toolbar height does not hide focused results.
+- Attribution, choice/evidence links and helper text increased to 14px. Mobile
+  header spacing deliberately keeps Choice notes on one line through narrow widths.
+- The Ethereum development gap plan moved intact to a separate Development guide,
+  linked from the short package-selection advice. TOML now begins with a responsive
+  three-row decision table whose qualifications remain present on mobile.
+- Twenty checks pass. Native preview DOM checks and isolated Chromium screenshots
+  covered 320px default references, 375px expanded/closed filters, reset/show focus,
+  header composition, TOML's three decision records and its development link. No
+  JavaScript page errors occurred in the isolated checks. Native snapshot timeouts
+  were tooling failures; owned browsers were closed.
+
+Structured platform/native-dependency metadata remains an optional future enhancement.
+Current descriptions retain their evidence-backed requirements and limitations; no
+new compatibility or security promise was inferred to fill a field.

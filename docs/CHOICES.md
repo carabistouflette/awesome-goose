@@ -50,34 +50,17 @@ signing. Neither is a complete wallet or an Ethereum node client. Dynamic ABI va
 still need caller-computed head offsets. JSON-RPC result parsing collapses several
 failure cases into a boolean. Signing inherits the crypto backend's timing limits.
 
-Useful gaps to pursue in carabistouflette's ecosystem, in dependency order:
-
-1. **Keccak-256 and checked uint256 codecs/arithmetic.** Ethereum uses Keccak-256,
-   not SHA-256 or SHA3-256. Establish selector/hash vectors, overflow behavior, byte
-   order, and strict hex-quantity versus fixed-data rules before higher layers.
-2. **ABI and read-only JSON-RPC.** Build a separate Ethereum package over existing
-   HTTP and JSON capabilities. Define dynamic offsets, nesting bounds, RPC error
-   objects, request-id matching, and null results explicitly. Generic JSON, HTTP,
-   and URI libraries should keep their protocol-independent jobs.
-3. **secp256k1 and protocol signing.** Use a reviewed native backend for secret-key
-   operations, with recovery and canonical signature behavior. Add EIP-191/EIP-712
-   and transaction envelopes only with independent reference vectors, chain-id
-   coverage, and explicit ownership of key handling.
-4. **Application adapters only with a real consumer.** Hyperliquid and trading
-   integrations can then compose the stack, rather than driving all concerns into
-   a generic crypto library.
-
-The existing strict JSON-to-struct codec cannot represent every JSON-RPC envelope:
-null/optional values and dynamic result shapes need selective standard-library JSON
-reads or an opt-in richer codec. Evaluate reusable POST, additional HTTP verbs, and
-structured RPC errors before building a second transport. The detailed comparison
-records acceptance criteria for these cross-cutting gaps.
-
-This is a feature-gap plan, not an implementation or a decision to copy code. Reuse
-an existing package where its contracts fit. Any source adaptation needs its license
-and notices preserved and an independently tested compatibility contract.
+Carabistouflette's current crypto library does not cover Ethereum hashing, ABI/RPC
+or protocol signing. The [development gap plan](DEVELOPMENT.md#ethereum-support)
+records possible additions and their validation requirements separately.
 
 ## TOML
+
+| Need | Option | Qualification |
+| --- | --- | --- |
+| Own decoded data; edit or write TOML | [carabistouflette/goose-toml](https://github.com/carabistouflette/goose-toml) | Owned data; TOML 1.1 is opt-in. |
+| Preserve comments and untouched formatting | [carabistouflette/goose-toml-edit](https://github.com/carabistouflette/goose-toml-edit) | Targeted text edits rather than full document rewriting. |
+| Read TOML 1.0 using source-borrowing strings | [Macho0x/goose-toml](https://github.com/Macho0x/goose-toml) | Keep input and storage alive; no writer. |
 
 Prefer [carabistouflette/goose-toml](https://github.com/carabistouflette/goose-toml)
 when the document must own decoded data, be edited/written, or opt into TOML 1.1.

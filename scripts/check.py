@@ -54,7 +54,7 @@ def anchors(path):
 
 
 for path in ROOT.rglob('*.md'):
-    if any(part in ('node_modules','.git','_site') for part in path.relative_to(ROOT).parts):
+    if any(part in ('node_modules','.git','_site','.astro') for part in path.relative_to(ROOT).parts):
         continue
     for target in re.findall(r'\[[^\]]*\]\(([^\s)]+)\)', path.read_text()):
         url = urlsplit(target)

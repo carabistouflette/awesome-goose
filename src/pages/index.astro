@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Directory from '../components/Directory.astro';
+import { buildCatalog } from '../lib/content.mjs';
+
+const catalog = await buildCatalog();
+const payload = JSON.stringify(catalog).replaceAll('<', '\\u003c');
+---
+<BaseLayout
+  title="Awesome Goose — Libraries and tools"
+  description="Find your next Goose library. A curated, searchable directory of packages, tools, and resources with honest tradeoffs and source-backed choices."
+>
+  <Directory />
+  <script id="catalog-data" type="application/json" is:inline set:html={payload}></script>
+  <script>import '../scripts/app.js';</script>
+</BaseLayout>

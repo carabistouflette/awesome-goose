@@ -1,5 +1,3 @@
-import importlib.util
-import hashlib
 import json
 import re
 import unittest
@@ -8,9 +6,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location('build_site', ROOT / 'scripts/build-site.py')
-build = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(build)
+GUIDES = ('CHOICES','COMPARISONS','CURATION','RESEARCH','DEVELOPMENT','SOURCES')
 
 class Links(HTMLParser):
     def __init__(self):
@@ -29,7 +25,9 @@ class SiteTests(unittest.TestCase):
             for link in page.links:
                 url=urlsplit(link)
                 if url.scheme or url.netloc: continue
-                target=path.parent / unquote(url.path) if url.path else path
+                local=unquote(url.path)
+                if local.startswith('/awesome-goose/'): local=local.removeprefix('/awesome-goose/')
+                target=path.parent / local if local else path
                 if target.is_dir(): target=target / 'index.html'
                 self.assertTrue(target.is_file(),f'{path.name}: {link}')
                 if url.fragment and target.suffix=='.html':
@@ -41,10 +39,7 @@ class SiteTests(unittest.TestCase):
         expected=re.findall(r'^- \[[^\]]+\]\(https://github.com/([^/\s)]+/[^/\s)]+)\)',(ROOT / 'README.md').read_text(),re.M)
         self.assertCountEqual(repos,expected)
         self.assertEqual(len(repos),len(set(repos)))
-    def test_external_markdown_sources_keep_their_original_urls(self):
-        source='https://github.com/Macho0x/goose-crypto/blob/abc/README.md#modules'
-        self.assertIn('href="'+source+'"',build.inline('[Source]('+source+')'))
-        self.assertIn('href="CHOICES.html#ethereum"',build.inline('[Notes](docs/CHOICES.md#ethereum)'))
+
     def test_comparison_pins_reference_their_actual_reviewed_baseline(self):
         entries=json.loads((ROOT / '_site/catalog.json').read_text())['entries']
         report=(ROOT / 'docs/COMPARISONS.md').read_text()
@@ -59,7 +54,8 @@ class SiteTests(unittest.TestCase):
             self.assertIn(record['repository'],page)
             self.assertIn(record['readme'],page)
             self.assertIn(record['reviewed'],page)
-        for repo,commit in build.comparison_baselines().items():
+        baselines=dict(re.findall(r'https://github.com/([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)/blob/([a-f0-9]{40})/README\.md',(ROOT / 'docs/COMPARISONS.md').read_text()))
+        for repo,commit in baselines.items():
             if any(record['repository']==repo for record in records):
                 self.assertIn(f'https://github.com/{repo}/blob/{commit}/README.md',page)
         self.assertIn('Source inventory (JSON)',page)
@@ -73,34 +69,13 @@ class SiteTests(unittest.TestCase):
                 self.assertEqual(entry['searchAliases'],evidence.get('search_aliases',[]))
                 self.assertEqual(entry['searchCautions'],evidence.get('search_cautions',[]))
                 self.assertEqual(entry['requirements'],evidence.get('requirements'))
-    def test_asset_hashes_match_content_and_module_import_resolves(self):
-        output=ROOT / '_site'
-        for path in output.iterdir():
-            match=re.fullmatch(r'(app|catalog|theme|style)\.([a-f0-9]{12})\.(js|mjs|css)',path.name)
-            if match:
-                self.assertEqual(match[2],hashlib.sha256(path.read_bytes()).hexdigest()[:12])
-        app=next(output.glob('app.*.js')).read_text()
-        module=re.search(r"from '\./(catalog\.[a-f0-9]{12}\.mjs)'",app)[1]
-        self.assertTrue((output / module).is_file())
-    def test_table_preserves_headers_and_labels_qualifications(self):
-        rendered=build.markdown('| Need | Reason and limits |\n| --- | --- |\n| Parse | Bounded input |')
-        self.assertIn('<thead role="rowgroup">',rendered)
-        self.assertIn('data-label="Reason and limits"',rendered)
-        self.assertIn('<span class="cell-value">Bounded input</span>',rendered)
-        self.assertIn('scope="col"',rendered)
+
+
     def test_reading_table_regions_have_distinct_section_names(self):
-        rendered=build.markdown('## TOML\n\n| Need | Option |\n| --- | --- |\n| Read | Reader |\n\n## SQLite\n\n| Need | Option |\n| --- | --- |\n| System | Binding |')
-        self.assertIn('aria-label="TOML table"',rendered)
-        self.assertIn('aria-label="SQLite table"',rendered)
         for path in (ROOT / '_site').glob('*.html'):
             names=re.findall(r'class="table-wrap"[^>]*aria-label="([^"]+)"',path.read_text())
             self.assertEqual(len(names),len(set(names)),path.name)
-    def test_numbered_list_and_continuation_semantics(self):
-        rendered=build.markdown('1. First item.\n   Continued content.\n2. Second item.')
-        self.assertIn('<ol>',rendered)
-        self.assertNotIn('<ul>',rendered)
-        self.assertIn('First item. Continued content.</p></li>',rendered)
-        self.assertEqual(rendered.count('<li>'),2)
+
     def test_choice_links_are_contextual_and_not_duplicated(self):
         entries=json.loads((ROOT / '_site/catalog.json').read_text())['entries']
         for entry in entries:
@@ -120,16 +95,12 @@ class SiteTests(unittest.TestCase):
                 page=Links();page.feed((ROOT / '_site' / file).read_text())
                 self.assertIn(anchor,page.ids,entry['label'])
     def test_guides_have_shared_theme_and_navigation(self):
-        for name in build.GUIDES:
+        for name in GUIDES:
             page=(ROOT / '_site' / (name+'.html')).read_text()
-            self.assertRegex(page,r'src="theme\.[0-9a-f]{12}\.js"')
+            self.assertIn('goose-theme',page)
+            self.assertLess(page.index('goose-theme'),page.index('<body'))
             self.assertIn('data-theme-toggle',page)
             self.assertIn('aria-label="On this page"',page)
             self.assertIn('data-directory-return',page)
-    def test_unsafe_text_is_escaped_and_local_notes_link_to_html(self):
-        rendered=build.inline('<img src=x onerror=alert(1)> [Note](docs/CHOICES.md#ethereum)')
-        self.assertNotIn('<img',rendered)
-        self.assertIn('CHOICES.html#ethereum',rendered)
-        self.assertNotIn('href="javascript:',build.inline('[bad](javascript:alert)'))
 
 if __name__=='__main__': unittest.main()

@@ -1,0 +1,20 @@
+---
+import '../styles/global.css';
+import themeSource from '../scripts/theme.js?raw';
+
+const { title, description, rootClass, bodyClass } = Astro.props;
+---
+<!doctype html>
+<html lang="en" class={rootClass}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {description && <meta name="description" content={description} />}
+    <meta name="theme-color" content="#f7f6f2" />
+    <title>{title}</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='.9em' font-size='56'%3E🪿%3C/text%3E%3C/svg%3E" />
+    <!-- Apply the saved theme synchronously, before the first paint. -->
+    <script is:inline set:html={themeSource}></script>
+  </head>
+  <body class={bodyClass}><slot /></body>
+</html>

@@ -1,0 +1,10 @@
+---
+import GuideLayout from '../layouts/GuideLayout.astro';
+import { buildGuide, guideNames } from '../lib/content.mjs';
+
+export function getStaticPaths() {
+  return guideNames.map(name => ({ params: { guide: name }, props: { name } }));
+}
+const guide = await buildGuide(Astro.props.name);
+---
+<GuideLayout guide={guide} />

@@ -37,7 +37,7 @@ The principal viewports were **1440×1000**, **900×1100**, **360×800** and an 
 
 **Impact:** a developer trying to avoid native prerequisites cannot treat a natural dependency query as a complete or clean shortlist. They must know implementation-library names and inspect individual descriptions. This is a discovery limitation; the directory does not claim a dependency filter exists.
 
-**Source support:** [`site/catalog.mjs:17–30`](../../site/catalog.mjs) normalizes selected words and uses substring inclusion over prose, category and labels. `Alternative` contains `native`; there is no dependency metadata in this search predicate. [`site/index.html`](../../site/index.html) exposes category, maintainer and sort controls.
+**Source support:** [`site/catalog.mjs:17–30`](https://github.com/carabistouflette/awesome-goose/blob/f1fa6081da3e4da979664c46d89dc81f969717d9/site/catalog.mjs) normalizes selected words and uses substring inclusion over prose, category and labels. `Alternative` contains `native`; there is no dependency metadata in this search predicate. [`site/index.html`](https://github.com/carabistouflette/awesome-goose/blob/f1fa6081da3e4da979664c46d89dc81f969717d9/site/index.html) exposes category, maintainer and sort controls.
 
 **Recommendation:** add consistent searchable dependency/platform tags, for example pure Goose, native helper, libcurl and system library; optionally offer a dependency filter. Use token-aware matching or explain/highlight the matched field so incidental substrings are easier to interpret.
 
@@ -47,7 +47,7 @@ The principal viewports were **1440×1000**, **900×1100**, **360×800** and an 
 
 **Impact:** the repeated label makes the distinction between editing the whole filter context and opening maintainer/sort options less obvious. The sticky shortcut is useful when scrolled, but initially the same area has two nearly synonymous controls.
 
-**Source support:** [`site/app.js`](../../site/app.js) implements `closeAndShowResults`, the toolbar button and `updateFilterControls`; [`site/style.css:377–383`](../../site/style.css) reveals the toolbar control when mobile context is active.
+**Source support:** [`site/app.js`](https://github.com/carabistouflette/awesome-goose/blob/f1fa6081da3e4da979664c46d89dc81f969717d9/site/app.js) implements `closeAndShowResults`, the toolbar button and `updateFilterControls`; [`site/style.css:377–383`](https://github.com/carabistouflette/awesome-goose/blob/f1fa6081da3e4da979664c46d89dc81f969717d9/site/style.css) reveals the toolbar control when mobile context is active.
 
 **Recommendation:** retain the scrolled shortcut but clarify the inline disclosure label, for example “Maintainer & sort”, or hide the redundant inline trigger when its equivalent toolbar control is visibly adjacent. Preserve the successful Show-results action and focus placement.
 
@@ -57,7 +57,7 @@ The principal viewports were **1440×1000**, **900×1100**, **360×800** and an 
 
 **Impact:** mobile content remains readable and does not overflow, but comparing two alternatives requires remembering the previous record and scrolling. The longer source-evidence index compounds the vertical cost.
 
-**Source support:** [`site/style.css:270–278`](../../site/style.css) converts every table cell into a block and repeats its `data-label` above it below 1000 pixels.
+**Source support:** [`site/style.css:270–278`](https://github.com/carabistouflette/awesome-goose/blob/f1fa6081da3e4da979664c46d89dc81f969717d9/site/style.css) converts every table cell into a block and repeats its `data-label` above it below 1000 pixels.
 
 **Recommendation:** use a compact comparison-card treatment for short choice tables: lead with the package name, then combine need and qualification into a concise block. Keep explicit field labels in the evidence index where they materially help attribution, with tighter spacing. Preserve real table semantics or equivalent accessible relationships.
 
@@ -74,3 +74,6 @@ Rendered screenshots were inspected directly, including `/tmp/oakwood-desktop.pn
 Supporting source inspection covered `site/index.html`, `site/app.js`, `site/catalog.mjs`, `site/style.css`, `site/theme.js`, `scripts/build-site.py` and the relevant `docs/CHOICES.md` text. The report is based principally on rendered interaction, not source inspection alone. Only this report file was written in the repository.
 
 Limits: Chromium only; CSS viewport resizing rather than physical touch devices, mobile user agents or a software keyboard. No screen reader, Safari/Firefox, forced-colors mode, exhaustive contrast measurement, reduced-motion audit or storage-denial test. Not every external repository or source link was fetched, and upstream package correctness, benchmarks and security were not independently validated. The initial origin was fresh; saved/theme state subsequently belonged to this isolated review browser. Other guide pages and every resource-specific disclosure were not exhaustively reviewed.
+
+Owner archive note (Astro migration): source links above now resolve to the reviewed
+commit because the implementation moved to `src/`. Findings and scores are unchanged.

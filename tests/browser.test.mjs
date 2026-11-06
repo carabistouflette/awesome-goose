@@ -6,6 +6,7 @@ import { resolve, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
 
+const mount='/awesome-goose';
 const output=resolve(fileURLToPath(new URL('../_site',import.meta.url)));
 const inventory=JSON.parse(await readFile(new URL('../docs/sources.json',import.meta.url),'utf8'));
 const catalog=JSON.parse(await readFile(new URL('../_site/catalog.json',import.meta.url),'utf8'));
@@ -14,7 +15,9 @@ let server,browser,base;
 before(async()=>{
   server=createServer(async(request,response)=>{
     try {
-      const path=decodeURIComponent(new URL(request.url,'http://localhost').pathname);
+      const pathname=decodeURIComponent(new URL(request.url,'http://localhost').pathname);
+      if(!pathname.startsWith(mount+'/')) throw new Error('Outside Pages base');
+      const path=pathname.slice(mount.length);
       const file=resolve(output,'.'+(path==='/'?'/index.html':path));
       if(!file.startsWith(output+sep)) throw new Error('Outside build');
       const content=await readFile(file);
@@ -22,7 +25,7 @@ before(async()=>{
     } catch {response.writeHead(404);response.end('Not found');}
   });
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
-  base=`http://127.0.0.1:${server.address().port}`;
+  base=`http://127.0.0.1:${server.address().port}${mount}`;
   browser=await chromium.launch({headless:true,executablePath:process.env.AWESOME_GOOSE_BROWSER_PATH || undefined,args:['--no-sandbox']});
 });
 after(async()=>{await browser?.close();if(server) await new Promise(resolve=>server.close(resolve));});
@@ -108,5 +111,36 @@ test('selecting Saved repeatedly preserves the collection across reload',async()
     await page.reload();
     assert.equal(await page.locator('#saved-resources').getAttribute('aria-pressed'),'true');
     assert.equal(await page.locator('.card').count(),1);
+  } finally {await context.close();}
+});
+
+test('bundled assets, guide anchors, theme and directory return work below the Pages base',async()=>{
+  const context=await browser.newContext({viewport:{width:390,height:844},colorScheme:'light'});
+  try {
+    const page=await context.newPage();
+    const errors=[];
+    page.on('pageerror',error=>errors.push(error.message));
+    page.on('response',response=>{if(response.status()>=400) errors.push(`${response.status()} ${response.url()}`);});
+    await directory(page,'?q=sqlite&sort=name&view=cards');
+    await page.locator('[data-theme-toggle]').click();
+    assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
+    await page.locator('a[href="CHOICES.html#sqlite"]').first().click();
+    assert.equal(new URL(page.url()).pathname,mount+'/CHOICES.html');
+    await page.waitForFunction(()=>document.querySelector('#sqlite') && document.querySelector('[data-directory-return]').href.includes('q=sqlite'));
+    assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
+    assert.ok((await page.locator('#sqlite').boundingBox()).y>=0);
+    assert.ok(await page.locator('.table-wrap td[data-label="Qualification"]').count()>0);
+    for(const width of [320,834,1440]) {
+      await page.setViewportSize({width,height:900});
+      await withinViewport(page);
+    }
+    await page.setViewportSize({width:390,height:844});
+    await page.locator('.guide-mobile-nav [data-directory-return]').click();
+    assert.equal(new URL(page.url()).pathname,mount+'/');
+    assert.equal(await page.locator('#search').inputValue(),'sqlite');
+    assert.equal(await page.locator('#sort').inputValue(),'name');
+    assert.equal(await page.locator('#cards-view').getAttribute('aria-pressed'),'true');
+    await withinViewport(page);
+    assert.deepEqual(errors,[]);
   } finally {await context.close();}
 });

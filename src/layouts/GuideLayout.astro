@@ -1,0 +1,40 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import SourceSearch from '../components/SourceSearch.astro';
+import { repository } from '../lib/content.mjs';
+
+const { guide } = Astro.props;
+const searchAt = guide.name === 'SOURCES' ? guide.content.indexOf('<h2') : -1;
+---
+<BaseLayout title={`${guide.title} · Awesome Goose`} rootClass="guide-root" bodyClass={`guide-page guide-${guide.name.toLowerCase()}`}>
+  <a class="skip" href="#guide">Skip to content</a>
+  {guide.name === 'SOURCES' && <a class="skip" href="#source-search">Skip to repository search</a>}
+  <header class="guide-header">
+    <a class="brand" href="./" data-directory-return>🪿 Awesome Goose</a>
+    <nav aria-label="Guide navigation">
+      <a href="./" data-directory-return>← Back to directory</a>
+      <button class="icon-button" data-theme-toggle aria-label="Change theme">◐</button>
+    </nav>
+  </header>
+  <nav class="guide-mobile-nav" aria-label="Reading navigation">
+    <a href="./" data-directory-return>← Directory</a>
+    <a href="#guide-contents" data-contents-open>Contents ↑</a>
+  </nav>
+  <div class="guide-layout">
+    <nav id="guide-contents" tabindex="-1" class="guide-toc" aria-label="On this page">
+      <a href="./" class="toc-return" data-directory-return>← Directory</a>
+      <details open data-guide-contents>
+        <summary>On this page</summary>
+        {guide.sections.map(section => <a class={section.depth === 3 ? 'toc-subsection' : 'toc-section'} href={`#${section.slug}`}>{section.text}</a>)}
+      </details>
+    </nav>
+    <main id="guide" tabindex="-1" class="prose">
+      {searchAt < 0 ? <Fragment set:html={guide.content} /> : <>
+        <Fragment set:html={guide.content.slice(0, searchAt)} />
+        <SourceSearch />
+        <Fragment set:html={guide.content.slice(searchAt)} />
+      </>}
+    </main>
+  </div>
+  <footer class="guide-footer"><a href={`${repository}/blob/main/docs/${guide.name}.md`}>Edit this guide on GitHub ↗</a></footer>
+</BaseLayout>

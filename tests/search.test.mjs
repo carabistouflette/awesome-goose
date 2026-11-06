@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { filterEntries, shareUrl, categoryCounts, sortEntries, searchMatch } from '../site/catalog.mjs';
+import { filterEntries, shareUrl, categoryCounts, sortEntries, searchMatch } from '../src/scripts/catalog.mjs';
 const { entries } = JSON.parse(readFileSync(new URL('../_site/catalog.json',import.meta.url)));
 const base = { q:'', category:'', owner:'', saved:false };
 const search = (patch, saved=new Set()) => filterEntries(entries,{...base,...patch},saved);

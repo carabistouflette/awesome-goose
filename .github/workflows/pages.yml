@@ -14,16 +14,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install Astro and regression tooling
+        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Check curated list
         run: python3 scripts/check.py
-      - name: Build site from curated Markdown
-        run: python3 scripts/build-site.py
+      - name: Build Astro site from curated Markdown
+        run: npm run build
       - name: Check generated pages and search behavior
         run: |
           python3 -m unittest discover -s tests
-          node --test tests/search.test.mjs
-      - name: Install browser regression tooling
-        run: npm ci --ignore-scripts --no-audit --no-fund
+          npm test
       - name: Install Chromium
         run: npx --no-install playwright-core install --with-deps chromium
       - name: Check narrow layouts, context and evidence lookup

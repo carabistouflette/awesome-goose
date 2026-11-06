@@ -9,3 +9,9 @@ export function shareUrl(href) {
   url.hash = '';
   return url.href;
 }
+
+export function categoryCounts(entries, filters, favorites) {
+  const counts = new Map([...new Set(entries.map(e=>e.category))].map(category=>[category,0]));
+  for (const entry of filterEntries(entries,{...filters,category:''},favorites)) counts.set(entry.category,counts.get(entry.category)+1);
+  return counts;
+}

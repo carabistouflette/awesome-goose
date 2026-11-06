@@ -168,3 +168,43 @@ Both reviewed live desktop/mobile behavior and recorded verification limits. The
 findings and scores are preserved as separate observations, not a joint ranking.
 The user subsequently authorized up to three reviewers when useful; the following
 Awesome Goose round uses three fresh reviewers with distinct primary emphases.
+
+## Fifth completed assessment
+
+Application: `1e4ad6e`.
+
+| Reviewer | Visual | Discovery | Interaction | Responsive / access | Trust | Weighted overall |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Pine](assessment-pine.md) | 8.5 | 8.0 | 9.0 | 8.5 | 9.0 | 8.53 |
+| [Quartz](assessment-quartz.md) | 8.5 | 8.4 | 8.9 | 8.4 | 8.8 | 8.56 |
+| [Reed](assessment-reed.md) | 8.5 | 8.0 | 8.5 | 8.0 | 9.0 | 8.30 |
+
+This round did not meet the threshold. The principal remaining friction was mobile
+filter-to-results travel and navigation within long reading guides. Other findings
+included introductory cards, ambiguous category counts, clipped search guidance,
+unlinked recommendations, and one dangling sentence after choice-link extraction.
+
+## Following corrections
+
+- Expanded mobile filters include a current-count Show resources action. It closes
+  the controls, focuses the result group's heading, and scrolls directly to results.
+  A 320×568 check placed the first matching resource about 126px below the top.
+- Start here remains a compact disclosure in both layouts. Full reference entries
+  remain available through the explicit details action and selected category.
+- Category counts now account for search, maintainer and saved filters, excluding
+  only the current category selection. The sidebar identifies matching counts.
+- Search has a short placeholder and a visible, programmatically associated fields
+  hint. The clipped example/control row is replaced with the concise help/results row.
+- Mobile guides have a compact persistent Directory/Contents bar. Every return link
+  preserves filters, and the contents include third-level comparison topics.
+- The recommendation table links directly to its recommended repositories or the
+  inspected client source. Source evidence and existing qualifications are retained.
+- The extracted crypto warning remains a complete sentence. Structured automated
+  checks cover this, facet counts, guide navigation, and source-link preservation.
+- Built CSS/JS/modules use content fingerprints so deployments do not mix new entry
+  scripts with stale imported modules or styles. Generated asset hashes/imports are
+  validated automatically. No external runtime dependency was added.
+
+Structured platform/dependency facets remain a possible future enhancement; current
+entries and choice notes state their specific evidence-backed requirements in prose.
+They were not inferred or generalized into unsupported compatibility promises.

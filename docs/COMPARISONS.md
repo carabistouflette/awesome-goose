@@ -8,17 +8,17 @@ Research date: **2026-11-06**. Scope: Macho0x's public Goose-language libraries 
 
 | Need | Recommended discovery entry | Reason and qualification |
 | --- | --- | --- |
-| SHA-256 and detached Ed25519 verification for downloaded artifacts | carabistouflette/goose-crypto; link goose-artifact as a consumer | Explicit errors, bounded caller buffers, incremental hashing and libsodium verification. |
-| Broader algorithms in Goose, including Keccak and transaction signing | Macho0x/goose-crypto **and** goose-signature | Many additional primitives and signing formats; crypto explicitly warns that it is not constant-time. Do not present it as an audited secret-handling replacement. |
-| HTTP server, routing, SSE or server WebSocket | kaitk/goose-http upstream; identify Macho0x/goose-http as its inspected fork | Server functionality is complementary to carabistouflette's client. The fork's own quickstart imports kaitk. |
-| Bounded HTTPS GET/POST and pull streaming downloads | carabistouflette/goose-http | Separate body/header limits, streaming steps and explicit transfer/HTTP success distinction. |
-| Blocking HTTP client with PUT/PATCH/DELETE and reusable sessions | The inspected goose-http fork's optional `http.client` module, preferably evaluated through upstream | This module really exists despite the server-focused description. It uses goose-tls and a different timeout/reuse contract. |
-| Strict owned JSON-to-struct mapping | carabistouflette/goose-json | Rejects missing, duplicate and unknown fields. It is deliberately narrower than general JSON. |
-| Ethereum integers, ABI words and JSON-RPC bytes | Macho0x/goose-ethereum | A protocol codec, not a provider, wallet or transport. Pairing it with a bounded POST client is plausible future integration work. |
-| TOML read-only borrowed trees | Macho0x/goose-toml | TOML 1.0 parser with caller-retained source and node storage. |
-| Owned TOML editing/writing or TOML 1.1 | carabistouflette/goose-toml; goose-toml-edit for source-preserving edits | Different ownership and editing requirements justify both entries. |
-| Ready-made UTC process logs with heuristic secret redaction | Macho0x/goose-logger | Automatic clocks and source arguments, plus independent sanitization module. |
-| Bounded escaped logs with caller-owned output and errors | carabistouflette/goose-log | Explicit sink, status and masking; no automatic secret detection. |
+| SHA-256 and detached Ed25519 verification for downloaded artifacts | [carabistouflette/goose-crypto](https://github.com/carabistouflette/goose-crypto); link [goose-artifact](https://github.com/carabistouflette/goose-artifact) as a consumer | Explicit errors, bounded caller buffers, incremental hashing and libsodium verification. |
+| Broader algorithms in Goose, including Keccak and transaction signing | [Macho0x/goose-crypto](https://github.com/Macho0x/goose-crypto) **and** [goose-signature](https://github.com/Macho0x/goose-signature) | Many additional primitives and signing formats; crypto explicitly warns that it is not constant-time. Do not present it as an audited secret-handling replacement. |
+| HTTP server, routing, SSE or server WebSocket | [kaitk/goose-http](https://github.com/kaitk/goose-http) upstream; identify [Macho0x/goose-http](https://github.com/Macho0x/goose-http) as its inspected fork | Server functionality is complementary to carabistouflette's client. The fork's own quickstart imports kaitk. |
+| Bounded HTTPS GET/POST and pull streaming downloads | [carabistouflette/goose-http](https://github.com/carabistouflette/goose-http) | Separate body/header limits, streaming steps and explicit transfer/HTTP success distinction. |
+| Blocking HTTP client with PUT/PATCH/DELETE and reusable sessions | [The inspected fork’s optional `http.client` module](https://github.com/Macho0x/goose-http/blob/e0722c4607b2a1b9ad7edfaf3d8964a431e3714a/client.goose), preferably evaluated through upstream | This module really exists despite the server-focused description. It uses goose-tls and a different timeout/reuse contract. |
+| Strict owned JSON-to-struct mapping | [carabistouflette/goose-json](https://github.com/carabistouflette/goose-json) | Rejects missing, duplicate and unknown fields. It is deliberately narrower than general JSON. |
+| Ethereum integers, ABI words and JSON-RPC bytes | [Macho0x/goose-ethereum](https://github.com/Macho0x/goose-ethereum) | A protocol codec, not a provider, wallet or transport. Pairing it with a bounded POST client is plausible future integration work. |
+| TOML read-only borrowed trees | [Macho0x/goose-toml](https://github.com/Macho0x/goose-toml) | TOML 1.0 parser with caller-retained source and node storage. |
+| Owned TOML editing/writing or TOML 1.1 | [carabistouflette/goose-toml](https://github.com/carabistouflette/goose-toml); [goose-toml-edit](https://github.com/carabistouflette/goose-toml-edit) for source-preserving edits | Different ownership and editing requirements justify both entries. |
+| Ready-made UTC process logs with heuristic secret redaction | [Macho0x/goose-logger](https://github.com/Macho0x/goose-logger) | Automatic clocks and source arguments, plus independent sanitization module. |
+| Bounded escaped logs with caller-owned output and errors | [carabistouflette/goose-log](https://github.com/carabistouflette/goose-log) | Explicit sink, status and masking; no automatic secret detection. |
 
 Evidence for these recommendations is detailed below. These are discovery recommendations, not security certification or a performance ranking.
 

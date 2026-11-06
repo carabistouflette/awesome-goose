@@ -11,7 +11,8 @@ Do not edit generated data or maintain a second list by hand.
 `scripts/build-site.py` produces `_site/` with searchable resource data, the HTML
 shell, CSS/JavaScript, and rendered guides. The build uses Python's standard library,
 performs no network requests, and requires no package installation. Generated output
-is ignored by Git. Site source is under `site/`.
+is ignored by Git. Site source is under `site/`. Asset filenames include content hashes, including
+module import targets, to keep browser caches consistent across deployments.
 
 The directory defaults to a compact list, with an optional Cards layout. Both
 layouts use the same resources and filters. Foundational language references appear
@@ -23,13 +24,16 @@ filters, category/name/maintainer sorting, local favorites, shareable filtered U
 light/dark themes, keyboard search (`/` or Ctrl/Cmd+K), and source-review disclosures. Reading-guide tables show labelled, stacked values
 on mobile so their reasons and qualifications remain visible. Mobile uses a visible category selector and a
 collapsible maintainer/sort section. Active filters can be removed individually;
-category filters also work within the saved collection.
+category filters also work within the saved collection. Category counts reflect
+the other active filters. On mobile, Show resources closes expanded filters and
+moves directly to the matching entries.
 Favorites and theme settings stay in browser storage; no server account is required.
 If storage is blocked, the directory still works and favorites last for that visit.
 “Copy filters link” shares search/category/maintainer/sort settings, not a saved
 collection; the copied URL intentionally omits device-local saved mode. If the
 clipboard is unavailable, a selectable field exposes the same normalized URL.
-Guides retain the selected theme, include section navigation, and link back to the
+Guides retain the selected theme, include section/subsection navigation and a
+persistent mobile Directory/Contents bar, and link back to the
 current directory filters. The Markdown list remains available without JavaScript.
 
 ## Checks

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Build GitHub Pages from the curated README and evidence; no network or dependencies."""
 import html
+import hashlib
 import json
 import re
 import shutil
@@ -156,6 +157,7 @@ def catalog():
                 if link_target(note[2]) == choice:
                     choice_label = note[1]
                     description = re.sub(re.escape(note[0]) + r'\.?', '', description).strip()
+                    description = re.sub(r';\s*see\s+(?:the\s*)?$', '.', description)
         entries.append({
             'id': slug(label), 'name': label.split('/')[-1] if exact_repo else label,
             'label': label, 'url': url, 'category': category, 'section': section,
@@ -175,20 +177,33 @@ def main():
     data = catalog()
     if OUT.exists(): shutil.rmtree(OUT)
     OUT.mkdir()
-    for name in ('style.css', 'app.js', 'catalog.mjs', 'theme.js'):
-        shutil.copyfile(ROOT / 'site' / name, OUT / name)
+    assets = {}
+    def asset(name, content):
+        path=Path(name)
+        filename=f'{path.stem}.{hashlib.sha256(content).hexdigest()[:12]}{path.suffix}'
+        (OUT / filename).write_bytes(content)
+        return filename
+    for name in ('style.css','catalog.mjs','theme.js'):
+        assets[name]=asset(name,(ROOT / 'site' / name).read_bytes())
+    app=(ROOT / 'site/app.js').read_text().replace("'./catalog.mjs'", "'./"+assets['catalog.mjs']+"'")
+    assets['app.js']=asset('app.js',app.encode())
+    def asset_links(page):
+        for original,filename in assets.items():
+            for attribute in ('src','href'):
+                page=page.replace(f'{attribute}="{original}"',f'{attribute}="{filename}"')
+        return page
     payload = json.dumps(data, ensure_ascii=False).replace('<', '\\u003c')
     template = (ROOT / 'site/index.html').read_text()
-    (OUT / 'index.html').write_text(template.replace('<!-- CATALOG_DATA -->', f'<script id="catalog-data" type="application/json">{payload}</script>'))
+    (OUT / 'index.html').write_text(asset_links(template.replace('<!-- CATALOG_DATA -->', f'<script id="catalog-data" type="application/json">{payload}</script>')))
     (OUT / 'catalog.json').write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
     for name in ('CHOICES', 'COMPARISONS', 'CURATION', 'RESEARCH'):
         content = markdown((ROOT / 'docs' / f'{name}.md').read_text())
-        sections = re.findall(r'^## (.+)$', (ROOT / 'docs' / f'{name}.md').read_text(), re.M)
-        contents = ''.join(f'<a href="#{slug(title)}">{html.escape(title)}</a>' for title in sections)
-        toc = f'<nav class="guide-toc" aria-label="On this page"><details open data-guide-contents><summary>On this page</summary>{contents}</details></nav>'
+        sections = re.findall(r'^(#{2,3}) (.+)$', (ROOT / 'docs' / f'{name}.md').read_text(), re.M)
+        contents = ''.join(f'<a class="{"toc-subsection" if len(level)==3 else "toc-section"}" href="#{slug(title)}">{html.escape(title)}</a>' for level,title in sections)
+        toc = f'<nav id="guide-contents" tabindex="-1" class="guide-toc" aria-label="On this page"><details open data-guide-contents><summary>On this page</summary>{contents}</details></nav>'
         title = 'Choice notes' if name == 'CHOICES' else name.title()
-        page = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{title} · Awesome Goose</title><script src="theme.js"></script><link rel="stylesheet" href="style.css"></head><body class="guide-page"><a class="skip" href="#guide">Skip to content</a><header class="guide-header"><a class="brand" href="./">🪿 Awesome Goose</a><nav aria-label="Guide navigation"><a href="./" data-directory-return>← Back to directory</a><button class="icon-button" data-theme-toggle aria-label="Change theme">◐</button></nav></header><div class="guide-layout">{toc}<main id="guide" tabindex="-1" class="prose">{content}</main></div><footer class="guide-footer"><a href="{REPO}/blob/main/docs/{name}.md">Edit this guide on GitHub ↗</a></footer></body></html>'''
-        (OUT / f'{name}.html').write_text(page)
+        page = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{title} · Awesome Goose</title><script src="theme.js"></script><link rel="stylesheet" href="style.css"></head><body class="guide-page"><a class="skip" href="#guide">Skip to content</a><header class="guide-header"><a class="brand" href="./">🪿 Awesome Goose</a><nav aria-label="Guide navigation"><a href="./" data-directory-return>← Back to directory</a><button class="icon-button" data-theme-toggle aria-label="Change theme">◐</button></nav></header><nav class="guide-mobile-nav" aria-label="Reading navigation"><a href="./" data-directory-return>← Directory</a><a href="#guide-contents" data-contents-open>Contents ↑</a></nav><div class="guide-layout">{toc}<main id="guide" tabindex="-1" class="prose">{content}</main></div><footer class="guide-footer"><a href="{REPO}/blob/main/docs/{name}.md">Edit this guide on GitHub ↗</a></footer></body></html>'''
+        (OUT / f'{name}.html').write_text(asset_links(page))
     shutil.copyfile(ROOT / 'docs/sources.json', OUT / 'sources.json')
     (OUT / '.nojekyll').touch()
     print(f'Built {len(data["entries"])} resources and 4 guides in {OUT}')

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { filterEntries, shareUrl } from '../site/catalog.mjs';
+import { filterEntries, shareUrl, categoryCounts } from '../site/catalog.mjs';
 const { entries } = JSON.parse(readFileSync(new URL('../_site/catalog.json',import.meta.url)));
 const base = { q:'', category:'', owner:'', saved:false };
 const search = (patch, saved=new Set()) => filterEntries(entries,{...base,...patch},saved);
@@ -33,4 +33,13 @@ test('share links omit device-local saved mode and preserve public filters and l
   assert.equal(url.searchParams.get('q'),'sqlite');
   assert.equal(url.searchParams.get('category'),'Databases');
   assert.equal(url.searchParams.get('view'),'cards');
+});
+
+test('category counts reflect search, maintainer and saved state without applying the current category',()=>{
+  const filters={...base,q:'sqlite',owner:'kaitk',category:'Graphics'};
+  const counts=categoryCounts(entries,filters,new Set());
+  assert.equal(counts.get('Databases'),1);
+  assert.equal(counts.get('Graphics'),0);
+  const savedId=entries.find(e=>e.repository==='carabistouflette/goose-sqlite').id;
+  assert.equal(categoryCounts(entries,{...base,saved:true},new Set([savedId])).get('Databases'),1);
 });

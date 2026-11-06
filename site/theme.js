@@ -24,10 +24,13 @@
       const applyContents=()=>{contents.open=choices[mode()] ?? !viewport.matches;};
       contents.querySelector('summary').addEventListener('click',()=>{choices[mode()]=!contents.open;});
       viewport.addEventListener('change',applyContents);
+      document.querySelectorAll('[data-contents-open]').forEach(control=>control.addEventListener('click',()=>{
+        choices[mode()]=true; contents.open=true;
+        requestAnimationFrame(()=>contents.querySelector('summary').focus());
+      }));
       applyContents();
     }
-    const back = document.querySelector('[data-directory-return]');
-    if (back) { try { const query = sessionStorage.getItem('goose-directory-query'); if (query) back.href = './' + query; } catch {} }
+    try { const query=sessionStorage.getItem('goose-directory-query'); if(query) document.querySelectorAll('[data-directory-return]').forEach(back=>{back.href='./'+query;}); } catch {}
   });
   media.addEventListener('change', () => { if (!read()) apply(media.matches ? 'dark' : 'light'); });
   window.addEventListener('storage', event => { if (event.key === 'goose-theme') apply(['light','dark'].includes(event.newValue) ? event.newValue : media.matches ? 'dark' : 'light'); });

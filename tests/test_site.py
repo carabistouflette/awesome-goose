@@ -1,4 +1,5 @@
 import importlib.util
+import hashlib
 import json
 import re
 import unittest
@@ -44,6 +45,15 @@ class SiteTests(unittest.TestCase):
         source='https://github.com/Macho0x/goose-crypto/blob/abc/README.md#modules'
         self.assertIn('href="'+source+'"',build.inline('[Source]('+source+')'))
         self.assertIn('href="CHOICES.html#ethereum"',build.inline('[Notes](docs/CHOICES.md#ethereum)'))
+    def test_asset_hashes_match_content_and_module_import_resolves(self):
+        output=ROOT / '_site'
+        for path in output.iterdir():
+            match=re.fullmatch(r'(app|catalog|theme|style)\.([a-f0-9]{12})\.(js|mjs|css)',path.name)
+            if match:
+                self.assertEqual(match[2],hashlib.sha256(path.read_bytes()).hexdigest()[:12])
+        app=next(output.glob('app.*.js')).read_text()
+        module=re.search(r"from '\./(catalog\.[a-f0-9]{12}\.mjs)'",app)[1]
+        self.assertTrue((output / module).is_file())
     def test_table_preserves_headers_and_labels_qualifications(self):
         rendered=build.markdown('| Need | Reason and limits |\n| --- | --- |\n| Parse | Bounded input |')
         self.assertIn('<thead role="rowgroup">',rendered)
@@ -64,6 +74,9 @@ class SiteTests(unittest.TestCase):
         for repo in ('carabistouflette/goose-url','kaitk/goose-acme','kaitk/goose-tls'):
             self.assertIsNone(next(e['choice'] for e in entries if e['repository']==repo))
         self.assertEqual(next(e['owner'] for e in entries if e['name']=='Documentation'),'aardappel')
+        crypto=next(e['description'] for e in entries if e['repository']=='Macho0x/goose-crypto')
+        self.assertTrue(crypto.endswith('.'))
+        self.assertNotRegex(crypto,r'see the\s*$')
     def test_choice_links_point_to_generated_sections(self):
         data=json.loads((ROOT / '_site/catalog.json').read_text())
         for entry in data['entries']:
@@ -74,7 +87,7 @@ class SiteTests(unittest.TestCase):
     def test_guides_have_shared_theme_and_navigation(self):
         for name in ('CHOICES','COMPARISONS','CURATION','RESEARCH'):
             page=(ROOT / '_site' / (name+'.html')).read_text()
-            self.assertIn('src="theme.js"',page)
+            self.assertRegex(page,r'src="theme\.[0-9a-f]{12}\.js"')
             self.assertIn('data-theme-toggle',page)
             self.assertIn('aria-label="On this page"',page)
             self.assertIn('data-directory-return',page)

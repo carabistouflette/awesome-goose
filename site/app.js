@@ -1,4 +1,4 @@
-import { filterEntries, shareUrl } from './catalog.mjs';
+import { filterEntries, shareUrl, categoryCounts } from './catalog.mjs';
 const data = JSON.parse(document.getElementById('catalog-data').textContent);
 const $ = id => document.getElementById(id);
 const categories = [...new Set(data.entries.map(e => e.category))];
@@ -117,6 +117,11 @@ function render() {
   $('cards-view').setAttribute('aria-pressed',String(state.view==='cards'));
   $('status').textContent=`${entries.length} ${state.saved?'matching saved ':''}${entries.length===1?'resource':'resources'} found${state.category?' in '+state.category:''}.`;
   $('empty').hidden=entries.length!==0;
+  $('apply-filters').textContent=`Show ${entries.length} ${entries.length===1?'resource':'resources'}`;
+  const counts=categoryCounts(data.entries,state,saved);
+  $('category-label').textContent=(state.q || state.owner || state.saved)?'Categories · matches':'Categories';
+  for(const button of $('categories').children) button.querySelector('.count').textContent=counts.get(button.dataset.category);
+  for(const option of $('category').options) if(option.value) option.textContent=option.value+' ('+counts.get(option.value)+')';
   const filtering=Boolean(state.q || state.category || state.owner);
   $('reset').disabled=!filtering && state.sort==='category';
   $('saved-help').hidden=!state.saved;
@@ -140,7 +145,7 @@ function render() {
   for(const [name,group] of groups) {
     const section=el('section','resource-group'),title=el('h3','group-title',name);
     title.append(el('span','group-count',String(group.length))); section.append(title);
-    if(name==='Start here' && state.view==='list' && !filtering && !state.saved && state.sort==='category') {
+    if(name==='Start here' && !filtering && !state.saved && state.sort==='category') {
       const disclosure=el('details','reference-details');
       const mode=matchMedia('(max-width: 760px)').matches?'mobile':'desktop';
       disclosure.open=referencePreferences[mode] ?? mode==='desktop';
@@ -176,8 +181,10 @@ $('toggle-view').addEventListener('click',()=>change({view:state.view==='list'?'
 for(const view of ['list','cards']) $(view+'-view').addEventListener('click',()=>change({view}));
 $('saved-resources').addEventListener('click',()=>change({saved:!state.saved}));
 $('reset').addEventListener('click',clearFilters);
+function jumpToResults() { const target=$('results').querySelector('.group-title') || $('empty-title'); target.tabIndex=-1; target.focus(); target.scrollIntoView({block:'start'}); }
+$('jump-results').addEventListener('click',event=>{event.preventDefault();jumpToResults();});
+$('apply-filters').addEventListener('click',()=>{ $('filter-options').open=false; jumpToResults(); });
 $('empty-reset').addEventListener('click',()=> { if(state.saved && !saved.size) browseAll(); else clearFilters(); $('results-heading').focus(); });
-for(const example of document.querySelectorAll('.search-example')) example.addEventListener('click',()=>change({q:example.dataset.query,category:'',owner:'',saved:false},{focus:'search'}));
 $('share').addEventListener('click',async()=> {
   const url=shareUrl(location.href);
   try { await navigator.clipboard.writeText(url); $('share-fallback').hidden=true; toast(state.saved?'Filters link copied. Your device-local saved collection is not included.':'Filters link copied.'); }

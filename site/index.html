@@ -22,7 +22,7 @@
     <div class="sidebar-heading">Browse</div>
     <button class="nav-item active" id="all-resources"><span>All resources</span><span id="all-count" class="count"></span></button>
     <button class="nav-item" id="saved-resources"><span>♡ Saved for later</span><span id="saved-count" class="count">0</span></button>
-    <div class="sidebar-label">Categories</div>
+    <div class="sidebar-label" id="category-label">Categories</div>
     <nav id="categories" aria-label="Categories"></nav>
     <div class="sidebar-bottom"><strong>Know a good addition?</strong><p>Suggest a project or improve an existing entry.</p><a href="https://github.com/carabistouflette/awesome-goose/blob/main/CONTRIBUTING.md">Contribute →</a></div>
   </aside>
@@ -32,8 +32,8 @@
       <p class="hero-copy">For <a href="https://aardappel.github.io/goose/">aardappel’s Goose programming language</a>. <a href="CURATION.html" title="Check compiler revisions, platform support, native dependencies and source pins">Experimental ecosystem</a></p>
     </section>
     <section class="search-area" aria-label="Find resources">
-      <div class="search-box"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><label class="sr-only" for="search">Search resources</label><input id="search" type="search" placeholder="Search names, descriptions, or maintainers…" autocomplete="off"><kbd aria-hidden="true">/</kbd></div>
-      <div class="search-hint">Try <button class="search-example" data-query="ethereum">ethereum</button><button class="search-example" data-query="sqlite">sqlite</button><button class="search-example" data-query="editor">editor</button><a id="jump-results" href="#directory">Results ↓</a></div>
+      <div class="search-box"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><label class="sr-only" for="search">Search resources</label><input id="search" type="search" placeholder="Search resources…" aria-describedby="search-help" autocomplete="off"><kbd aria-hidden="true">/</kbd></div>
+      <div class="search-hint"><span id="search-help">Name, description, maintainer</span><a id="jump-results" href="#results">Results ↓</a></div>
     </section>
     <section class="directory" data-view="list" id="directory" tabindex="-1" aria-label="Curated resources">
       <div class="directory-top"><div><h2 id="results-heading" tabindex="-1">All resources <span id="result-count"></span></h2></div><div class="directory-actions"><div class="view-controls" role="group" aria-label="Resource layout"><button id="list-view" type="button" aria-pressed="true">List</button><button id="cards-view" type="button" aria-pressed="false">Cards</button></div><button id="toggle-view" class="mobile-view text-button" type="button">Cards</button><button id="share" class="text-button" aria-label="Copy filters link" title="Copy filters link">Share</button></div></div>
@@ -42,14 +42,14 @@
         <details class="filter-options" id="filter-options" open><summary id="filter-options-label">More filters</summary><div class="advanced-fields">
           <label>Maintainer<select id="owner"><option value="">Everyone</option></select></label>
           <label>Sort by<select id="sort"><option value="category">Category</option><option value="name">Name A–Z</option><option value="owner">Maintainer</option></select></label>
-        </div></details>
+        <button id="apply-filters" class="apply-filters text-button" type="button">Show results</button></div></details>
         <button id="reset" class="text-button">Clear filters</button>
       </div>
       <div id="share-fallback" class="share-fallback" hidden><label for="share-url">Copy this filters link. Saved items are not included.<input id="share-url" type="url" readonly></label><button id="share-close" class="text-button" type="button">Close</button></div>
       <div id="filter-state" class="filter-state" aria-label="Active filters"></div>
       <p id="saved-help" class="saved-help" hidden>Saved resources stay on this device. Shared links include filters, not your saved collection.</p>
       <p id="status" class="sr-only" role="status" aria-live="polite"></p>
-      <div id="results"></div>
+      <div id="results" tabindex="-1"></div>
       <div id="empty" class="empty" hidden><h3 id="empty-title">No resources found.</h3><p id="empty-copy">Try a broader search or clear your filters.</p><button id="empty-reset">Browse all resources</button></div>
     </section>
     <footer class="footer"><div><strong>About this directory</strong><p>Entries include scope, limitations, and reviewed sources.</p></div><div><a href="https://github.com/carabistouflette/awesome-goose">GitHub ↗</a><a href="CURATION.html">How we curate</a><a href="RESEARCH.html">Research trail</a><a href="COMPARISONS.html">Library comparisons</a><span id="review-date"></span></div></footer>

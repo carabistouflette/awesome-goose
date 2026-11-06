@@ -40,6 +40,10 @@ class SiteTests(unittest.TestCase):
         expected=re.findall(r'^- \[[^\]]+\]\(https://github.com/([^/\s)]+/[^/\s)]+)\)',(ROOT / 'README.md').read_text(),re.M)
         self.assertCountEqual(repos,expected)
         self.assertEqual(len(repos),len(set(repos)))
+    def test_external_markdown_sources_keep_their_original_urls(self):
+        source='https://github.com/Macho0x/goose-crypto/blob/abc/README.md#modules'
+        self.assertIn('href="'+source+'"',build.inline('[Source]('+source+')'))
+        self.assertIn('href="CHOICES.html#ethereum"',build.inline('[Notes](docs/CHOICES.md#ethereum)'))
     def test_numbered_list_and_continuation_semantics(self):
         rendered=build.markdown('1. First item.\n   Continued content.\n2. Second item.')
         self.assertIn('<ol>',rendered)

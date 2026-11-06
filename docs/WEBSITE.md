@@ -15,10 +15,15 @@ is ignored by Git. Site source is under `site/`.
 
 The directory provides case-insensitive multiword search, category and maintainer
 filters, category/name/maintainer sorting, local favorites, shareable filtered URLs,
-light/dark themes, keyboard search (`/` or Ctrl/Cmd+K), and source-review disclosures.
+light/dark themes, keyboard search (`/` or Ctrl/Cmd+K), and source-review disclosures. Mobile uses a visible category selector and a
+collapsible maintainer/sort section. Active filters can be removed individually;
+category filters also work within the saved collection.
 Favorites and theme settings stay in browser storage; no server account is required.
 If storage is blocked, the directory still works and favorites last for that visit.
-The Markdown list remains available without JavaScript.
+“Copy filters link” shares search/category/maintainer/sort settings, not a saved
+collection; the copied URL intentionally omits device-local saved mode.
+Guides retain the selected theme, include section navigation, and link back to the
+current directory filters. The Markdown list remains available without JavaScript.
 
 ## Checks
 
@@ -32,7 +37,7 @@ node --test tests/search.test.mjs
 ```
 
 Checks cover Markdown links, anchors and inventory consistency; generated page links,
-assets and anchors; safe HTML rendering; complete catalog coverage; combined search
+assets and anchors; safe HTML rendering; complete catalog coverage; guide navigation, ordered lists and continuation semantics; combined search
 filters and saved-only behavior. They do not run upstream projects or replace browser
 layout/accessibility review.
 

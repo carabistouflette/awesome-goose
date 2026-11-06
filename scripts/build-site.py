@@ -4,6 +4,7 @@ import html
 import json
 import re
 import shutil
+from urllib.parse import urlsplit
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,6 +17,8 @@ def slug(text):
 
 
 def link_target(target):
+    if urlsplit(target).scheme or target.startswith('//'):
+        return target
     if target.startswith('docs/'):
         target = target[5:]
     if '.md' in target:
@@ -146,7 +149,7 @@ def catalog():
         entries.append({
             'id': slug(label), 'name': label.split('/')[-1] if exact_repo else label,
             'label': label, 'url': url, 'category': category, 'section': section,
-            'owner': path[0] if repo else 'Community', 'description': description,
+            'owner': path[0] if repo else 'aardappel' if url.startswith('https://aardappel.github.io/goose') else 'Reddit community' if 'reddit.com/' in url else 'Community', 'description': description,
             'descriptionHtml': inline(description), 'license': source.get('license'),
             'reviewed': source.get('reviewed', manifest['review_date']),
             'source': source.get('readme') if exact_repo else (url.replace('/blob/master/', '/blob/' + source['commit'] + '/').replace('/blob/main/', '/blob/' + source['commit'] + '/') if source and '/blob/' in url else None), 'commit': source.get('commit'),

@@ -576,3 +576,47 @@ qualifications. Completed discovery, saved, share, guide and evidence flows work
   evidence lookup and Saved idempotence. Pages CI runs them before artifact upload;
   the pinned dependency is development-only and the site build remains standard-library
   Python with no package-install requirement. These checks do not certify accessibility.
+
+## Sixteenth completed assessment — stopping condition met
+
+Application: `6c3ec72`. Two fresh independent contexts received the frozen site and
+CRITERIA.md only, without the target, previous ratings/reports, conversation or
+optimization framing. Two reviewers were retained because recent findings had
+converged, as allowed by the user.
+
+| Reviewer | Visual | Discovery | Interaction | Responsive / access | Trust | Weighted overall |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Yew](assessment-yew.md) | 9.0 | 9.0 | 9.5 | 9.0 | 9.5 | 9.15 |
+| [Zinnia](assessment-zinnia.md) | 9.0 | 9.0 | 9.0 | 9.0 | 9.5 | 9.05 |
+
+Both exact weighted scores exceed 9/10, all criteria are at least 9/10, and neither
+reviewer found an unresolved major usability/accessibility issue. This satisfies
+the recorded stopping condition. Scores remain subjective, sampled Chromium
+assessments, not accessibility certification or a revalidation of upstream libraries.
+
+Remaining low-severity opportunities are explicitly retained: opening density on
+short phones, consistent category labels across views, clearer newcomer labeling
+for the official-resource disclosure, and more room in intermediate-width choice
+tables. No application changes followed these reviews.
+
+## Final validation and publication
+
+- Public repository and Pages site are configured, with automatic publishing from
+  main after checks. Application commit `6c3ec72` passed Catalog checks and
+  [Pages build/deployment](https://github.com/carabistouflette/awesome-goose/actions/runs/42279958032),
+  including all 14 Python, 16 Node and 4 Chromium regression tests.
+- Owner verification of the published site used the shared preview browser. The
+  public response and fingerprinted CSS/JS/module assets returned HTTP 200 and
+  matched the frozen local build. At an actual 320px viewport, the reported long
+  query/owner/sort state fit the document, and Options retained a visible 13px label.
+  Public source lookup restored a repository query and showed its one matching
+  record out of 52. No resource-loading failures were observed. The owned tab closed.
+- The final archive commit itself adds these reports and this log only. A concurrent
+  catalog-only commit, `c89efda`, added goose-glob after the frozen review: 57 resources,
+  49 admitted repositories and 53 evidence records. It changes README/inventory only;
+  the reviewed HTML/CSS/JavaScript implementation is unchanged. The reports retain
+  their actual 56-resource review baseline. The enriched catalog passes the same
+  34 checks, including rendered browser regressions. Browser and physical-device
+  limitations remain in each report.
+- FMHY assessments remain separately recorded in their original reports and are
+  not used to normalize or justify these scores.

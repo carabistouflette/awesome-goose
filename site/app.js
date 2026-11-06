@@ -104,7 +104,6 @@ function render() {
   $('empty').hidden=entries.length!==0;
   const filtering=Boolean(state.q || state.category || state.owner);
   $('reset').disabled=!filtering && state.sort==='category';
-  $('starter').hidden=filtering || state.saved;
   $('saved-help').hidden=!state.saved;
   $('filter-options-label').textContent = 'More filters' + (state.owner || state.sort!=='category' ? ' · active' : '');
   if(state.saved && saved.size===0) {

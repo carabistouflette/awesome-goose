@@ -13,15 +13,22 @@ shell, CSS/JavaScript, and rendered guides. The build uses Python's standard lib
 performs no network requests, and requires no package installation. Generated output
 is ignored by Git. Site source is under `site/`.
 
+The directory defaults to a compact list, with an optional Cards layout. Both
+layouts use the same resources and filters. Foundational language references appear
+first as plain links in the default list (collapsed under Start here on mobile);
+View reference details opens their full entries and save controls.
+
 The directory provides case-insensitive multiword search, category and maintainer
 filters, category/name/maintainer sorting, local favorites, shareable filtered URLs,
-light/dark themes, keyboard search (`/` or Ctrl/Cmd+K), and source-review disclosures. Mobile uses a visible category selector and a
+light/dark themes, keyboard search (`/` or Ctrl/Cmd+K), and source-review disclosures. Reading-guide tables show labelled, stacked values
+on mobile so their reasons and qualifications remain visible. Mobile uses a visible category selector and a
 collapsible maintainer/sort section. Active filters can be removed individually;
 category filters also work within the saved collection.
 Favorites and theme settings stay in browser storage; no server account is required.
 If storage is blocked, the directory still works and favorites last for that visit.
 “Copy filters link” shares search/category/maintainer/sort settings, not a saved
-collection; the copied URL intentionally omits device-local saved mode.
+collection; the copied URL intentionally omits device-local saved mode. If the
+clipboard is unavailable, a selectable field exposes the same normalized URL.
 Guides retain the selected theme, include section navigation, and link back to the
 current directory filters. The Markdown list remains available without JavaScript.
 
@@ -55,3 +62,10 @@ The repository is public and its About website points to the directory.
 Automatic updates mean approved Markdown changes automatically reach the website.
 They do not mean unattended scraping or automatic admission of new libraries:
 curation and explanations remain reviewed changes.
+
+## UI review process
+
+[Review history and scores](ui-reviews/LOG.md) records independent assessments and
+the corrections they prompted. Reviewers receive the current site and the neutral
+criteria only, without targets, prior scores, prior reports, or conversation history.
+Scores are subjective; the reports preserve verification limits.

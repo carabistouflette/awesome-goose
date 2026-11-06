@@ -125,3 +125,46 @@ One also identified choice links whose destination did not cover the linked entr
 Publication: `5f387aa` was pushed during the iteration at the user's request. Its
 catalog and Pages workflows succeeded. Further validated corrections are pushed
 periodically rather than withheld until the final ratings.
+
+## Fourth completed assessment
+
+Application: `4d505db`.
+
+| Reviewer | Visual | Discovery | Interaction | Responsive / access | Trust | Weighted overall |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Juniper](assessment-juniper.md) | 8.8 | 8.1 | 8.2 | 8.4 | 9.0 | 8.42 |
+| [Kestrel](assessment-kestrel.md) | 8.8 | 8.3 | 8.7 | 8.1 | 8.8 | 8.48 |
+
+This round did not meet the target. The remaining findings concerned explicit
+language/maturity context, layout switching at 320px, responsive guide contents,
+and horizontal comparison tables concealing qualifications on small screens.
+
+## Following corrections
+
+- The introduction names and links aardappel's Goose programming language and gives
+  a visible early-ecosystem compatibility link.
+- A visible layout toggle remains alongside Share even at 320px; presentation is
+  no longer hidden inside Filters.
+- Mobile reference links collapse behind their Start here disclosure. Desktop
+  references remain available directly, with per-layout user expansion preferences.
+- Guide contents responds to breakpoint changes while remembering deliberate user
+  expansion/collapse separately for mobile and desktop.
+- Comparison tables retain native headers and explicit roles, and show stacked
+  labelled cells on mobile. Reasons and limits are visible without horizontal
+  exploration. A regression test covers column-label and qualification preservation.
+
+## Independent FMHY assessments
+
+The user requested ratings of FMHY as an additional site. Two fresh contexts were
+given only `https://fmhy.net/`, the same five general directory criteria and weights,
+and independent report destinations. Neither brief mentioned Awesome Goose, prior
+scores, an improvement target, or a comparison request. These assessments are not
+part of the Awesome Goose stopping criterion and do not justify changing its scores.
+
+- [North](assessment-fmhy-north.md): raw weighted score **7.075**, reported as **7.1/10**.
+- [Oak](assessment-fmhy-oak.md): weighted score **7.0/10**.
+
+Both reviewed live desktop/mobile behavior and recorded verification limits. Their
+findings and scores are preserved as separate observations, not a joint ranking.
+The user subsequently authorized up to three reviewers when useful; the following
+Awesome Goose round uses three fresh reviewers with distinct primary emphases.

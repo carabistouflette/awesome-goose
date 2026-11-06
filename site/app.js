@@ -8,6 +8,7 @@ const storage = {
   get(key) { try { return localStorage.getItem(key); } catch { return null; } },
   set(key,value) { try { localStorage.setItem(key,value); return true; } catch { return false; } }
 };
+const referencePreferences = {};
 const ids = new Set(data.entries.map(e => e.id));
 function readSaved() {
   try { const value = JSON.parse(storage.get('goose-saved') || '[]'); return new Set(Array.isArray(value) ? value.filter(id => ids.has(id)) : []); }
@@ -97,7 +98,6 @@ function activeFilters() {
   }
 }
 function render() {
-  $('view').value=state.view;
   $('search').value=state.q; $('owner').value=state.owner; $('sort').value=state.sort; $('category').value=state.category;
   $('saved-count').textContent=saved.size;
   $('all-resources').classList.toggle('active',!state.saved);
@@ -110,6 +110,9 @@ function render() {
   $('result-count').textContent=state.saved?`(${entries.length} of ${saved.size})`:`(${entries.length})`;
   $('jump-results').textContent=`${entries.length} ${entries.length===1?'result':'results'} ↓`;
   $('directory').dataset.view=state.view;
+  $('toggle-view').textContent=state.view==='list'?'Cards':'List';
+  $('toggle-view').setAttribute('aria-label',`Switch to ${state.view==='list'?'card':'list'} layout`);
+  $('toggle-view').title=$('toggle-view').getAttribute('aria-label');
   $('list-view').setAttribute('aria-pressed',String(state.view==='list'));
   $('cards-view').setAttribute('aria-pressed',String(state.view==='cards'));
   $('status').textContent=`${entries.length} ${state.saved?'matching saved ':''}${entries.length===1?'resource':'resources'} found${state.category?' in '+state.category:''}.`;
@@ -138,11 +141,16 @@ function render() {
     const section=el('section','resource-group'),title=el('h3','group-title',name);
     title.append(el('span','group-count',String(group.length))); section.append(title);
     if(name==='Start here' && state.view==='list' && !filtering && !state.saved && state.sort==='category') {
+      const disclosure=el('details','reference-details');
+      const mode=matchMedia('(max-width: 760px)').matches?'mobile':'desktop';
+      disclosure.open=referencePreferences[mode] ?? mode==='desktop';
+      const summary=el('summary'); summary.append(title); disclosure.append(summary);
+      summary.addEventListener('click',()=>{referencePreferences[mode]=!disclosure.open;});
       const references=el('nav','reference-links'); references.setAttribute('aria-label','Language references');
       for(const entry of group) { const item=link(entry.name+' ↗',entry.url); item.title=entry.description; references.append(item); }
       const explore=el('button','text-button','View reference details'); explore.type='button';
       explore.addEventListener('click',()=>change({category:'Start here'},{focus:'results-heading'}));
-      references.append(explore); section.append(references);
+      references.append(explore); disclosure.append(references); section.append(disclosure);
     } else {
       const cards=el('div','cards'); for(const entry of group) cards.append(card(entry)); section.append(cards);
     }
@@ -162,8 +170,9 @@ for(const owner of owners) { const option=el('option','',owner); option.value=ow
 $('all-count').textContent=data.entries.length;
 $('review-date').textContent=`Last curated ${data.reviewed}`;
 $('search').addEventListener('input',e=>change({q:e.target.value},{push:false}));
-for(const key of ['owner','sort','category','view']) $(key).addEventListener('change',e=>change({[key]:e.target.value}));
+for(const key of ['owner','sort','category']) $(key).addEventListener('change',e=>change({[key]:e.target.value}));
 $('all-resources').addEventListener('click',browseAll);
+$('toggle-view').addEventListener('click',()=>change({view:state.view==='list'?'cards':'list'}));
 for(const view of ['list','cards']) $(view+'-view').addEventListener('click',()=>change({view}));
 $('saved-resources').addEventListener('click',()=>change({saved:!state.saved}));
 $('reset').addEventListener('click',clearFilters);
@@ -187,6 +196,6 @@ window.addEventListener('popstate',()=>{ state=readState(); render(); });
 window.addEventListener('storage',event=>{ if(event.key==='goose-saved') { saved=readSaved(); render(); } });
 const mobileLayout = matchMedia('(max-width: 760px)');
 function updateFilterLayout() { $('filter-options').open = !mobileLayout.matches; }
-mobileLayout.addEventListener('change', updateFilterLayout);
+mobileLayout.addEventListener('change',()=>{updateFilterLayout();render();});
 updateFilterLayout();
 render();

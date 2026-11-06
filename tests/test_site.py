@@ -44,6 +44,12 @@ class SiteTests(unittest.TestCase):
         source='https://github.com/Macho0x/goose-crypto/blob/abc/README.md#modules'
         self.assertIn('href="'+source+'"',build.inline('[Source]('+source+')'))
         self.assertIn('href="CHOICES.html#ethereum"',build.inline('[Notes](docs/CHOICES.md#ethereum)'))
+    def test_table_preserves_headers_and_labels_qualifications(self):
+        rendered=build.markdown('| Need | Reason and limits |\n| --- | --- |\n| Parse | Bounded input |')
+        self.assertIn('<thead role="rowgroup">',rendered)
+        self.assertIn('data-label="Reason and limits"',rendered)
+        self.assertIn('<span class="cell-value">Bounded input</span>',rendered)
+        self.assertIn('scope="col"',rendered)
     def test_numbered_list_and_continuation_semantics(self):
         rendered=build.markdown('1. First item.\n   Continued content.\n2. Second item.')
         self.assertIn('<ol>',rendered)

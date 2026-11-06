@@ -17,7 +17,15 @@
       apply(theme); try { localStorage.setItem('goose-theme', theme); } catch {}
     }));
     const contents = document.querySelector('[data-guide-contents]');
-    if (contents && matchMedia('(max-width: 760px)').matches) contents.open = false;
+    if (contents) {
+      const viewport=matchMedia('(max-width: 760px)');
+      const choices={};
+      const mode=()=>viewport.matches?'mobile':'desktop';
+      const applyContents=()=>{contents.open=choices[mode()] ?? !viewport.matches;};
+      contents.querySelector('summary').addEventListener('click',()=>{choices[mode()]=!contents.open;});
+      viewport.addEventListener('change',applyContents);
+      applyContents();
+    }
     const back = document.querySelector('[data-directory-return]');
     if (back) { try { const query = sessionStorage.getItem('goose-directory-query'); if (query) back.href = './' + query; } catch {} }
   });

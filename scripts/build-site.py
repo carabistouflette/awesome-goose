@@ -63,15 +63,18 @@ def markdown(text):
             i += 1
             continue
         if line.startswith('|'):
-            rows = []
+            rows, headers = [], []
             while i < len(lines) and lines[i].startswith('|'):
                 cells = re.split(r'(?<!\\)\|', lines[i].strip().strip('|'))
                 if not all(re.fullmatch(r'\s*:?-+:?\s*', c) for c in cells):
-                    tag = 'th' if not rows else 'td'
-                    scope = ' scope="col"' if tag == 'th' else ''
-                    rows.append('<tr>' + ''.join(f'<{tag}{scope}>{inline(c.strip())}</{tag}>' for c in cells) + '</tr>')
+                    if not rows:
+                        headers=[re.sub(r'[`*]', '', c.strip()) for c in cells]
+                        row=''.join(f'<th scope="col" role="columnheader">{inline(c.strip())}</th>' for c in cells)
+                    else:
+                        row=''.join(f'<td role="cell" data-label="{html.escape(headers[n] if n<len(headers) else "Value", quote=True)}"><span class="cell-value">{inline(c.strip())}</span></td>' for n,c in enumerate(cells))
+                    rows.append('<tr role="row">'+row+'</tr>')
                 i += 1
-            output.append('<div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable comparison table"><table>' + ''.join(rows) + '</table></div>')
+            output.append('<div class="table-wrap" tabindex="0" role="region" aria-label="Comparison table"><table role="table"><thead role="rowgroup">' + rows[0] + '</thead><tbody role="rowgroup">' + ''.join(rows[1:]) + '</tbody></table></div>')
             continue
         match = bullet.match(line)
         if match:

@@ -84,6 +84,36 @@
       "license": "Apache-2.0"
     },
     {
+      "repository": "carabistouflette/goose-glob",
+      "commit": "4e8d7830e81b8ffd1c4d8ae2716ea93edc7ea8e3",
+      "readme": "https://github.com/carabistouflette/goose-glob/blob/4e8d7830e81b8ffd1c4d8ae2716ea93edc7ea8e3/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "glob",
+        "wildcard",
+        "file discovery",
+        "directory traversal"
+      ],
+      "requirements": {
+        "implementation": {
+          "kind": "goose",
+          "note": "Matcher uses Goose std; the optional collector calls goose-fs."
+        },
+        "native": [
+          "optional collection: goose-fs native helpers"
+        ],
+        "platform": [
+          {
+            "tags": [
+              "linux"
+            ],
+            "note": "Collection requires 64-bit Linux; tested on Linux x86-64/glibc. Other platforms unvalidated."
+          }
+        ]
+      }
+    },
+    {
       "repository": "carabistouflette/goose-http",
       "commit": "0fa7d19413ff5b406e2519f3378ad212af07ba61",
       "readme": "https://github.com/carabistouflette/goose-http/blob/0fa7d19413ff5b406e2519f3378ad212af07ba61/README.md",

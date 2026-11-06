@@ -36,12 +36,13 @@ filters. Category counts reflect the other active filters. Mobile uses a categor
 selector and an Options disclosure for maintainer/sort. Requirement notes opens
 the optional implementation/platform facets. These select documentation evidence,
 including restrictions; absent notes remain unclassified. The persistent matching
-bar offers Show N while those controls are open; afterward its Edit action displays
-a short query preview and selected category/maintainer/order as unbroken tokens,
-with an additional-note count when more facets are active. Editing focuses
-the full search query when present, otherwise Category. Long query chips show a
-short preview while retaining the complete accessible name and inspection through
-Edit. Show closes the panel and focuses results. The search count also jumps to results.
+bar offers Show N while those controls are open. Otherwise a compact query/count
+summary opens the complete current context without moving the page. Its named
+panel provides Edit, Clear and Close; Escape closes it and restores summary focus,
+and leaving the panel closes it. Editing selects the full active query when
+present, otherwise Category. Long query chips retain full accessible names and
+inspection through this panel. Show closes Options and focuses results.
+The search count also jumps to results.
 
 Favorites and theme stay in browser storage; no server account is required. If
 storage is blocked, favorites last for that visit. Copy filters link preserves
@@ -51,7 +52,7 @@ clipboard is unavailable, a selectable field exposes the normalized URL.
 Guides retain theme and directory context, with section/subsection navigation,
 current-section emphasis and a persistent mobile Directory/Contents bar. Short
 choice tables fit tablet reading columns and become compact option-first records
-on phones. Longer evidence/comparison tables use labelled records at narrower
+with inline Use for/Note labels on phones. Longer evidence/comparison tables use labelled records at narrower
 widths, retaining qualifications and table semantics.
 
 Choice notes focuses on selection and links separately to Development for the

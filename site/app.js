@@ -229,7 +229,13 @@ function focusBelowToolbar(target,padding=12) {
 }
 $('jump-results').addEventListener('click',event=>{event.preventDefault();jumpToResults();});
 function closeAndShowResults() { $('filter-options').open=false; updateFilterControls(); jumpToResults(); }
-$('toolbar-apply').addEventListener('click',()=>{if($('filter-options').open) closeAndShowResults(); else { $('filter-options').open=true; updateFilterControls(); const target=state.q?$('search'):$('category'); focusBelowToolbar(target,state.q?12:40); if(state.q) $('search').select(); }});
+$('toolbar-apply').addEventListener('click',closeAndShowResults);
+function closeScope(returnFocus=false) { $('scope-context').open=false; if(returnFocus) $('scope-summary').focus(); }
+$('scope-edit').addEventListener('click',()=>{closeScope(); $('filter-options').open=true; updateFilterControls(); const target=state.q?$('search'):$('category'); focusBelowToolbar(target,state.q?12:40); if(state.q) $('search').select();});
+$('scope-clear').addEventListener('click',()=>{closeScope();clearFilters();jumpToResults();});
+$('scope-close').addEventListener('click',()=>closeScope(true));
+$('scope-context').addEventListener('focusout',event=>{if(event.relatedTarget && !$('scope-context').contains(event.relatedTarget)) closeScope();});
+document.addEventListener('pointerdown',event=>{if(!$('scope-context').contains(event.target)) closeScope();});
 $('filter-options').addEventListener('toggle',updateFilterControls);
 $('empty-reset').addEventListener('click',()=> { if(state.saved && !saved.size) browseAll(); else clearFilters(); jumpToResults(); });
 $('share').addEventListener('click',async()=> {
@@ -242,6 +248,7 @@ $('share').addEventListener('click',async()=> {
 });
 $('share-close').addEventListener('click',()=>{ $('share-fallback').hidden=true; $('share').focus(); });
 document.addEventListener('keydown',e=> {
+  if(e.key==='Escape' && $('scope-context').open && $('scope-context').contains(e.target)) {e.preventDefault();closeScope(true);return;}
   const typing=/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || e.target.isContentEditable;
   if((e.key==='/'&&!typing)||((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k')) { e.preventDefault(); $('search').focus(); }
   if(e.key==='Escape' && document.activeElement===$('search')) { e.preventDefault(); change({q:''},{push:false}); }
@@ -257,19 +264,24 @@ function updateFilterControls() {
   const matches=filterEntries(data.entries,state,saved).length;
   const summary=[state.q&&`Search: ${state.q}`,state.category,state.owner&&`Maintainer: ${state.owner}`,state.implementation&&`Implementation: ${implementationLabels[state.implementation]}`,state.platform&&`Platform: ${platformLabels[state.platform]}`,`Sort: ${$('sort').selectedOptions[0].textContent}`].filter(Boolean).join('; ');
   const order={category:'',name:'A–Z',owner:'by maintainer'}[state.sort];
-  const preview=[...state.q].slice(0,10).join('')+([...state.q].length>10?'…':'');
-  const parts=[state.q&&'“'+preview+'”',state.category && (selectLabels[state.category] || state.category),state.owner,order,state.implementation&&implementationLabels[state.implementation],state.platform&&platformLabels[state.platform]].filter(Boolean);
-  const visible=parts.length>4?[...parts.slice(0,4),'+'+(parts.length-4)+' notes']:parts;
-  const edit='Edit: '+(visible.length?visible.join(' · '):'filters');
-  const action=$('toolbar-apply'); action.replaceChildren();
-  if(open) action.textContent=`Show ${matches} ↓`;
-  else {
-    action.append(el('span','scope-token','Edit:'));
-    for(const [index,part] of (visible.length?visible:['filters']).entries()) action.append(document.createTextNode(' '),el('span','scope-token',(index?'· ':'')+part));
-  }
-  $('toolbar-apply').title=summary;
-  $('toolbar-apply').setAttribute('aria-label',open?`Show ${matches} matching resources and close filters`:`${edit}. Edit filters. ${summary}`);
-  $('toolbar-apply').setAttribute('aria-expanded',String(open));
+  const countLabel=count?`${count} ${count===1?'filter':'filters'}`:'Filter options';
+  const action=$('toolbar-apply'); action.textContent=`Show ${matches} ↓`; action.hidden=!open;
+  action.setAttribute('aria-label',`Show ${matches} matching resources and close filters`);
+  const disclosure=$('scope-context'); disclosure.hidden=open; if(open) disclosure.open=false;
+  const scope=$('scope-summary'); scope.replaceChildren();
+  if(state.q) scope.append(el('span','query-preview','“'+[...state.q].slice(0,24).join('')+([...state.q].length>24?'…':'')+'”'),document.createTextNode(' · '));
+  scope.append(el('span','scope-token',countLabel));
+  scope.title=summary; scope.setAttribute('aria-label',`${state.q?'Search: '+state.q+'. ':''}${countLabel}. Inspect current filters. ${summary}`);
+  const values=$('scope-values'); values.replaceChildren();
+  const add=(label,value)=>values.append(el('dt','',label),el('dd','',value));
+  add('Collection',state.saved?'Saved on this device':'All resources');
+  if(state.q) add('Search',state.q);
+  if(state.category) add('Category',state.category);
+  if(state.owner) add('Maintainer',state.owner);
+  if(state.implementation) add('Implementation',implementationLabels[state.implementation]);
+  if(state.platform) add('Platform note',platformLabels[state.platform]);
+  add('Sort',$('sort').selectedOptions[0].textContent);
+  $('scope-clear').disabled=!(count || state.sort!=='category');
 }
 function updateFilterLayout() { $('filter-options').open = !mobileLayout.matches; updateFilterControls(); }
 mobileLayout.addEventListener('change',()=>{updateFilterLayout();render();});

@@ -6,6 +6,8 @@ not a certification. The [neutral criteria](CRITERIA.md) keep weights fixed.
 
 ## Review independence
 
+Each reviewer is an AI subagent in a fresh, isolated context.
+
 Reviewer contexts contain only the current application, neutral criteria, local
 browser setup, and report destination. They do not receive the optimization target,
 previous ratings, previous reports, conversation history, or iteration framing.
@@ -501,3 +503,42 @@ route, while Spruce identified intermediate density and repeated table-region na
   unknown states, share parameters, source provenance and contextual table names.
   Rendered checks covered facet URL restoration, native/Linux notes, complete mobile
   scope tokens, 1 match, narrow facets, table-region names and no JavaScript errors.
+
+## Fourteenth completed assessment
+
+Application: `5a0c964`.
+
+| Reviewer | Visual | Discovery | Interaction | Responsive / access | Trust | Weighted overall |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Umber](assessment-umber.md) | 9.0 | 9.0 | 9.2 | 8.8 | 9.5 | 9.04 |
+| [Verdant](assessment-verdant.md) | 8.5 | 9.0 | 9.0 | 8.5 | 9.5 | 8.825 |
+
+The round did not meet the threshold. Both reviewers found only working core flows,
+but noted intermediate identity wrapping and narrow advanced-form/context density.
+Umber requested mobile decision-field labels; Verdant requested a shorter persistent
+context and a narrower guide measure.
+
+## Following corrections
+
+- Mobile uses a compact query/count summary with a native expandable context panel.
+  All selected values and sort are available without a page jump. The panel has
+  Edit/Clear/Close actions, Escape focus restoration and outside-focus/pointer
+  dismissal. The five-filter checked toolbar remains 102px high at 320px.
+- Toolbar DOM order follows its visual control order. Editing selects the full
+  query; clearing resets the active filters and focuses results. The panel scrolls
+  independently for long values and keeps its actions available.
+- At narrow widths, the inline Options trigger uses a labeled 44px ellipsis control
+  to give Category more room. Requirement selectors use concise values and share a
+  row, while the qualification copy remains explicit. The advanced form is shorter.
+- At 881–1100px, the maintainer occupies its own line so complete repository names
+  have the identity column's full width. Wider list alignment and narrow stacking
+  are preserved.
+- Mobile decision records show inline Use for and Note labels, retaining their
+  compact shape and table semantics. Paragraph/list width has an explicit 72ch cap.
+- Owner verification note: Verdant's reported 940px paragraph measure was not
+  reproduced. Before this correction, computed paragraphs were already 74ch, about
+  658px at 1440px. The existing paragraph constraint was tightened slightly and
+  extended explicitly to lists; no 940px paragraph defect is claimed as reproduced.
+- Thirty checks pass. Rendered checks covered complete context values, Escape/edit/
+  clear focus, 320px facets, 900px identity layout, mobile labels, absence of overflow
+  and no JavaScript page errors.

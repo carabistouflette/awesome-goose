@@ -2,6 +2,12 @@
 
 Research date: **2026-11-06**. Scope: Macho0x's public Goose-language libraries versus the 18 carabistouflette libraries listed below. This concerns [aardappel's Goose language](https://github.com/aardappel/goose), not the unrelated Goose AI agent or database migration tools.
 
+Directory source snapshots and detailed comparison baselines are separate reviews.
+They can cite different commits on the same date. Each comparison applies to its
+explicitly linked revision; a directory pin does not imply that all comparison
+claims were revalidated at that pin. Expanded Source & review shows both snapshots
+when they differ. [Source inventory](sources.json).
+
 ## Findings and listing recommendations
 
 **Include both authors where their use cases differ.** Repository names do not establish interchangeability. Macho0x adds substantial numeric, binary-format and blockchain coverage. Carabistouflette offers application infrastructure with explicit ownership, resource limits and native-backend contracts. The useful choices are workload-specific:

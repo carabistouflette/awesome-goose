@@ -136,6 +136,10 @@ def choice_link(repo, category):
 def catalog():
     manifest = json.loads((ROOT / 'docs/sources.json').read_text())
     sources = {s['repository']: s for s in manifest['repositories']}
+    baselines={}
+    comparison=(ROOT / 'docs/COMPARISONS.md').read_text()
+    for repo,commit in re.findall(r'https://github.com/([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)/blob/([a-f0-9]{40})/README\.md',comparison):
+        baselines.setdefault(repo,commit)
     entries, section, category = [], '', ''
     for line in (ROOT / 'README.md').read_text().splitlines():
         if line.startswith('## '):
@@ -166,6 +170,8 @@ def catalog():
             'reviewed': source.get('reviewed', manifest['review_date']),
             'source': source.get('readme') if exact_repo else (url.replace('/blob/master/', '/blob/' + source['commit'] + '/').replace('/blob/main/', '/blob/' + source['commit'] + '/') if source and '/blob/' in url else None), 'commit': source.get('commit'),
             'choice': choice, 'choiceLabel': choice_label,
+            'comparisonCommit': baselines.get(repo),
+            'comparisonSource': f'https://github.com/{repo}/blob/{baselines[repo]}/README.md' if repo in baselines else None,
             'repository': repo if exact_repo else None,
         })
     if not entries or len({e['id'] for e in entries}) != len(entries):
@@ -200,9 +206,9 @@ def main():
         content = markdown((ROOT / 'docs' / f'{name}.md').read_text())
         sections = re.findall(r'^(#{2,3}) (.+)$', (ROOT / 'docs' / f'{name}.md').read_text(), re.M)
         contents = ''.join(f'<a class="{"toc-subsection" if len(level)==3 else "toc-section"}" href="#{slug(title)}">{html.escape(title)}</a>' for level,title in sections)
-        toc = f'<nav id="guide-contents" tabindex="-1" class="guide-toc" aria-label="On this page"><details open data-guide-contents><summary>On this page</summary>{contents}</details></nav>'
+        toc = f'<nav id="guide-contents" tabindex="-1" class="guide-toc" aria-label="On this page"><a href="./" class="toc-return" data-directory-return>← Directory</a><details open data-guide-contents><summary>On this page</summary>{contents}</details></nav>'
         title = 'Choice notes' if name == 'CHOICES' else name.title()
-        page = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{title} · Awesome Goose</title><script src="theme.js"></script><link rel="stylesheet" href="style.css"></head><body class="guide-page"><a class="skip" href="#guide">Skip to content</a><header class="guide-header"><a class="brand" href="./">🪿 Awesome Goose</a><nav aria-label="Guide navigation"><a href="./" data-directory-return>← Back to directory</a><button class="icon-button" data-theme-toggle aria-label="Change theme">◐</button></nav></header><nav class="guide-mobile-nav" aria-label="Reading navigation"><a href="./" data-directory-return>← Directory</a><a href="#guide-contents" data-contents-open>Contents ↑</a></nav><div class="guide-layout">{toc}<main id="guide" tabindex="-1" class="prose">{content}</main></div><footer class="guide-footer"><a href="{REPO}/blob/main/docs/{name}.md">Edit this guide on GitHub ↗</a></footer></body></html>'''
+        page = f'''<!doctype html><html lang="en" class="guide-root"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{title} · Awesome Goose</title><script src="theme.js"></script><link rel="stylesheet" href="style.css"></head><body class="guide-page"><a class="skip" href="#guide">Skip to content</a><header class="guide-header"><a class="brand" href="./" data-directory-return>🪿 Awesome Goose</a><nav aria-label="Guide navigation"><a href="./" data-directory-return>← Back to directory</a><button class="icon-button" data-theme-toggle aria-label="Change theme">◐</button></nav></header><nav class="guide-mobile-nav" aria-label="Reading navigation"><a href="./" data-directory-return>← Directory</a><a href="#guide-contents" data-contents-open>Contents ↑</a></nav><div class="guide-layout">{toc}<main id="guide" tabindex="-1" class="prose">{content}</main></div><footer class="guide-footer"><a href="{REPO}/blob/main/docs/{name}.md">Edit this guide on GitHub ↗</a></footer></body></html>'''
         (OUT / f'{name}.html').write_text(asset_links(page))
     shutil.copyfile(ROOT / 'docs/sources.json', OUT / 'sources.json')
     (OUT / '.nojekyll').touch()

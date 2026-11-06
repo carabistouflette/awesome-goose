@@ -45,6 +45,13 @@ class SiteTests(unittest.TestCase):
         source='https://github.com/Macho0x/goose-crypto/blob/abc/README.md#modules'
         self.assertIn('href="'+source+'"',build.inline('[Source]('+source+')'))
         self.assertIn('href="CHOICES.html#ethereum"',build.inline('[Notes](docs/CHOICES.md#ethereum)'))
+    def test_comparison_pins_reference_their_actual_reviewed_baseline(self):
+        entries=json.loads((ROOT / '_site/catalog.json').read_text())['entries']
+        report=(ROOT / 'docs/COMPARISONS.md').read_text()
+        http=next(e for e in entries if e['repository']=='carabistouflette/goose-http')
+        self.assertRegex(http['comparisonCommit'],r'^[0-9a-f]{40}$')
+        self.assertIn(http['comparisonSource'],report)
+        self.assertIn('/'+http['comparisonCommit']+'/README.md',http['comparisonSource'])
     def test_asset_hashes_match_content_and_module_import_resolves(self):
         output=ROOT / '_site'
         for path in output.iterdir():

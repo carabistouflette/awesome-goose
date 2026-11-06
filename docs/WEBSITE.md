@@ -16,17 +16,19 @@ module import targets, to keep browser caches consistent across deployments.
 
 The directory defaults to a compact list, with an optional Cards layout. Both
 layouts use the same resources and filters. Foundational language references appear
-first as plain links in the default list (collapsed under Start here on mobile);
-View reference details opens their full entries and save controls.
+under a compact Start here disclosure. Expanding it shows the same full entries,
+save controls and review evidence as the rest of the directory.
 
 The directory provides case-insensitive multiword search, category and maintainer
 filters, category/name/maintainer sorting, local favorites, shareable filtered URLs,
-light/dark themes, keyboard search (`/` or Ctrl/Cmd+K), and source-review disclosures. Reading-guide tables show labelled, stacked values
+light/dark themes, keyboard search (`/` or Ctrl/Cmd+K), and source-review disclosures that remain open across layout changes. Reading-guide tables show labelled, stacked values
 on mobile so their reasons and qualifications remain visible. Mobile uses a visible category selector and a
 collapsible maintainer/sort section. Active filters can be removed individually;
 category filters also work within the saved collection. Category counts reflect
 the other active filters. On mobile, Show resources closes expanded filters and
-moves directly to the matching entries.
+moves directly to the matching entries. The search field also exposes the current
+matching count as a jump-to-results link. All/Saved share one persistent collection
+bar; switching collections preserves the search, category and maintainer filters.
 Favorites and theme settings stay in browser storage; no server account is required.
 If storage is blocked, the directory still works and favorites last for that visit.
 “Copy filters link” shares search/category/maintainer/sort settings, not a saved
@@ -34,7 +36,9 @@ collection; the copied URL intentionally omits device-local saved mode. If the
 clipboard is unavailable, a selectable field exposes the same normalized URL.
 Guides retain the selected theme, include section/subsection navigation and a
 persistent mobile Directory/Contents bar, and link back to the
-current directory filters. The Markdown list remains available without JavaScript.
+current directory filters, including from the desktop contents rail and header brand.
+Where the comparison reviewed a different snapshot, the evidence disclosure links
+that separate baseline explicitly. The Markdown list remains available without JavaScript.
 
 ## Checks
 

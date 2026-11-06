@@ -301,3 +301,40 @@ pre { padding:18px; overflow:auto; background:var(--soft); }
   .guide-mobile-nav~.guide-layout { position:relative; }
 }
 @media(max-width:760px) { .advanced-fields { flex-wrap:wrap; } }
+/* Collection controls share one bar; categories retain the desktop rail. */
+.results-title { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+.scope-switch { display:flex; gap:8px; align-items:center; }
+.scope-switch .nav-item { width:auto; margin:0; padding:8px; gap:6px; white-space:nowrap; }
+.directory-top { position:sticky; top:68px; z-index:4; background:var(--bg); min-height:52px; border-bottom:1px solid var(--line); padding:4px 0; }
+.sidebar .sidebar-label { margin-top:0; }
+.sidebar .nav-item { margin:0; }
+.license,.count { font-size:13px; }
+html { scroll-padding-top:132px; }
+.guide-root { scroll-padding-top:64px; }
+@media(max-width:760px) {
+  html { scroll-padding-top:64px; }
+  .sidebar { display:none; }
+  main { padding-top:16px; }
+  .hero h1 { font-size:20px; margin-bottom:4px; }
+  .hero-copy { font-size:13px; line-height:1.5; margin-bottom:6px; }
+  .directory-top { top:0; min-height:48px; gap:6px; }
+  .scope-switch { gap:4px; }
+  .scope-switch .nav-item { font-size:13px; padding:6px; }
+  .view-controls { display:none; }
+  .mobile-view { display:inline-flex; align-items:center; justify-content:center; min-width:44px; padding:8px; border:0; background:none; text-decoration:underline; text-underline-offset:3px; }
+  .directory-actions { gap:4px; }
+  .hero { padding-bottom:6px; }
+}
+@media(max-width:360px) {
+  .owner-prefix { display:block; font-size:13px; line-height:1.35; margin-bottom:2px; }
+  .repo-separator { display:none; }
+}
+.toc-return { position:sticky; top:0; z-index:2; background:var(--bg); border-bottom:1px solid var(--line); margin-bottom:8px; }
+@media(min-width:1001px) { .table-wrap th:first-child,.table-wrap td:first-child { min-width:130px; } }
+@media(max-width:760px) {
+  .guide-header [data-directory-return].brand { display:flex; }
+  .guide-toc>.toc-return { display:none; }
+}
+.guide-toc { scroll-padding-top:52px; }
+.search-box .search-count { display:inline-flex; min-width:44px; min-height:44px; align-items:center; justify-content:center; padding-left:8px; border-left:1px solid var(--line); font-size:13px; text-decoration:none; flex-shrink:0; }
+.search-hint { min-height:24px; }

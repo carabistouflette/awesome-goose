@@ -208,3 +208,36 @@ unlinked recommendations, and one dangling sentence after choice-link extraction
 Structured platform/dependency facets remain a possible future enhancement; current
 entries and choice notes state their specific evidence-backed requirements in prose.
 They were not inferred or generalized into unsupported compatibility promises.
+
+## Sixth completed assessment
+
+Application: `d7186d9`.
+
+| Reviewer | Visual | Discovery | Interaction | Responsive / access | Trust | Weighted overall |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Stone](assessment-stone.md) | 8.5 | 8.0 | 9.0 | 8.3 | 9.0 | 8.475 |
+| [Thyme](assessment-thyme.md) | 8.5 | 8.5 | 8.0 | 8.5 | 9.0 | 8.45 |
+| [Willow](assessment-willow.md) | 8.5 | 8.5 | 8.0 | 8.5 | 8.0 | 8.35 |
+
+This round did not meet the threshold. Stone initially reported the neighboring
+workspace revision; a clearly labelled owner annotation preserves the correction
+and the unchanged score. The served application stayed frozen throughout review.
+
+## Following corrections
+
+- All/Saved now share a persistent bar with layout and sharing controls. Switching
+  collections preserves filters; category navigation moves to the new results.
+  Saving a resource retains reading position.
+- The mobile heading, helper row and category labels are shorter, with full category
+  names retained in accessible labels. The live result count is a search-field
+  action. The 320px layout has no document overflow in the checked default state.
+- Start here exposes full cards in place when expanded, including saving and
+  evidence. It is collapsed initially in both layouts.
+- Expanded source disclosures persist across layout changes. Catalog and comparison
+  source pins are explicitly distinguished and linked when they differ.
+- Desktop guide contents includes a persistent contextual Directory return link;
+  the header brand also preserves directory filters. Priority table cells have a
+  minimum width, and directory metadata is at least 13px.
+- Nineteen automated checks pass (11 Python, 8 Node). Manual checks covered filter
+  retention, category focus/scroll position, evidence preservation, clipboard
+  fallback, contextual guide returns and 320px directory/guide overflow.

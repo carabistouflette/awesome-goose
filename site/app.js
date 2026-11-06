@@ -1,6 +1,7 @@
 import { filterEntries, shareUrl, categoryCounts } from './catalog.mjs';
 const data = JSON.parse(document.getElementById('catalog-data').textContent);
 const $ = id => document.getElementById(id);
+const categoryLabels={'Command line and configuration':'CLI & configuration','Data formats and text':'Data & text','Files, processes, and artifacts':'Files & processes','Networking and web':'Networking & web','Numbers and scientific computing':'Scientific & numeric','Time and identifiers':'Time & identifiers','Development tools':'Developer tools','Learning and community':'Learning & community'};
 const categories = [...new Set(data.entries.map(e => e.category))];
 const browseOrder = categories;
 const owners = [...new Set(data.entries.map(e => e.owner))].sort((a,b) => a.localeCompare(b));
@@ -9,6 +10,7 @@ const storage = {
   set(key,value) { try { localStorage.setItem(key,value); return true; } catch { return false; } }
 };
 const referencePreferences = {};
+const expandedEvidence = new Set();
 const ids = new Set(data.entries.map(e => e.id));
 function readSaved() {
   try { const value = JSON.parse(storage.get('goose-saved') || '[]'); return new Set(Array.isArray(value) ? value.filter(id => ids.has(id)) : []); }
@@ -49,11 +51,11 @@ function card(entry) {
   const identity=el('div','resource-identity');
   const heading=el('h4'); const title=link('',entry.url,'card-title');
   title.setAttribute('aria-label',entry.repository || entry.label);
-  if(entry.repository) title.append(el('span','owner-prefix',entry.owner+' / '));
+  if(entry.repository) { const owner=el('span','owner-prefix',entry.owner); owner.append(el('span','repo-separator',' / ')); title.append(owner); }
   title.append(document.createTextNode(entry.name));
   title.append(el('span','out-arrow','↗')); heading.append(title); identity.append(heading);
   if(!entry.repository) identity.append(el('div','owner',entry.owner));
-  identity.append(el('span','license',entry.license || 'Community resource'));
+  identity.append(el('span','license',entry.license || (entry.owner==='aardappel'?'Official language resource':'Community resource')));
   const button=el('button','save-button',saved.has(entry.id)?'♥':'♡');
   button.type='button'; button.dataset.entry=entry.id;
   button.setAttribute('aria-label',`${saved.has(entry.id)?'Unsave':'Save'} ${entry.label}`);
@@ -70,6 +72,7 @@ function card(entry) {
       button.setAttribute('aria-pressed',String(saved.has(entry.id)));
       button.setAttribute('aria-label',`${saved.has(entry.id)?'Unsave':'Save'} ${entry.label}`);
       $('saved-count').textContent=saved.size;
+      $('saved-resources').setAttribute('aria-label',`Saved resources (${saved.size})`);
     }
     toast(persisted ? (saved.has(entry.id)?'Saved on this device.':'Removed from saved resources.') : 'Saved for this visit. Browser storage is unavailable.');
   });
@@ -79,11 +82,12 @@ function card(entry) {
   const foot=el('div','resource-links');
   if(entry.choice) foot.append(link((entry.choiceLabel || 'Choice notes')+' →',entry.choice));
 
-  const details=el('details','review-details');
+  const details=el('details','review-details'); details.dataset.entry=entry.id; details.open=expandedEvidence.has(entry.id);
   const summary=el('summary','', 'Source & review'); summary.setAttribute('aria-label',`Source and review for ${entry.label}`);
   const evidence=el('div','evidence');
   evidence.append(el('div','',`${entry.source ? 'Source reviewed' : 'Listed'} ${entry.reviewed}`));
   if(entry.source) { evidence.append(link(`Source snapshot · ${entry.commit.slice(0,7)} ↗`,entry.source),el('br')); }
+  if(entry.comparisonSource && entry.comparisonCommit!==entry.commit) { evidence.append(el('div','','The detailed comparison uses a different source snapshot.'),link(`Comparison baseline · ${entry.comparisonCommit.slice(0,7)} ↗`,entry.comparisonSource),el('br')); }
   evidence.append(link('Curation policy →','CURATION.html'));
   details.append(summary,evidence); foot.append(details); overview.append(foot); article.append(overview,button); return article;
 }
@@ -94,12 +98,15 @@ function activeFilters() {
     if(!label) continue;
     const button=el('button','filter-chip',label); button.type='button'; button.append(el('span','','×'));
     button.setAttribute('aria-label',`Remove ${label} filter`);
-    button.addEventListener('click',() => change({[key]:''},{focus:'results-heading'})); container.append(button);
+    button.addEventListener('click',() => {change({[key]:''});jumpToResults();}); container.append(button);
   }
 }
 function render() {
+  for(const details of $('results').querySelectorAll('.review-details')) details.open?expandedEvidence.add(details.dataset.entry):expandedEvidence.delete(details.dataset.entry);
   $('search').value=state.q; $('owner').value=state.owner; $('sort').value=state.sort; $('category').value=state.category;
   $('saved-count').textContent=saved.size;
+  $('all-resources').setAttribute('aria-label',`All resources (${data.entries.length})`);
+  $('saved-resources').setAttribute('aria-label',`Saved resources (${saved.size})`);
   $('all-resources').classList.toggle('active',!state.saved);
   $('saved-resources').classList.toggle('active',state.saved);
   $('all-resources').setAttribute('aria-pressed',String(!state.saved)); $('saved-resources').setAttribute('aria-pressed',String(state.saved));
@@ -108,7 +115,9 @@ function render() {
   entries.sort((a,b) => (state.sort==='owner'?a.owner.localeCompare(b.owner):state.sort==='category'?browseOrder.indexOf(a.category)-browseOrder.indexOf(b.category):0) || a.label.localeCompare(b.label,undefined,{sensitivity:'base'}));
   $('results-heading').firstChild.textContent=(state.saved?'Saved resources':state.category || (state.q?'Search results':'All resources'))+' ';
   $('result-count').textContent=state.saved?`(${entries.length} of ${saved.size})`:`(${entries.length})`;
-  $('jump-results').textContent=`${entries.length} ${entries.length===1?'result':'results'} ↓`;
+  $('jump-results').textContent=`${entries.length} ↓`;
+  $('jump-results').setAttribute('aria-label',`Show ${entries.length} matching ${entries.length===1?'resource':'resources'}`);
+  $('jump-results').title=$('jump-results').getAttribute('aria-label');
   $('directory').dataset.view=state.view;
   $('toggle-view').textContent=state.view==='list'?'Cards':'List';
   $('toggle-view').setAttribute('aria-label',`Switch to ${state.view==='list'?'card':'list'} layout`);
@@ -120,7 +129,7 @@ function render() {
   $('apply-filters').textContent=`Show ${entries.length} ${entries.length===1?'resource':'resources'}`;
   const counts=categoryCounts(data.entries,state,saved);
   $('category-label').textContent=(state.q || state.owner || state.saved)?'Categories · matches':'Categories';
-  for(const button of $('categories').children) button.querySelector('.count').textContent=counts.get(button.dataset.category);
+  for(const button of $('categories').children) { const count=counts.get(button.dataset.category); button.querySelector('.count').textContent=count; button.setAttribute('aria-label',`${button.dataset.category}: ${count} matching ${count===1?'resource':'resources'}`); }
   for(const option of $('category').options) if(option.value) option.textContent=option.value+' ('+counts.get(option.value)+')';
   const filtering=Boolean(state.q || state.category || state.owner);
   $('reset').disabled=!filtering && state.sort==='category';
@@ -143,19 +152,18 @@ function render() {
   const fragment=document.createDocumentFragment(), groups=new Map();
   for(const entry of entries) { const group=state.sort==='category'?entry.category:state.sort==='owner'?entry.owner:'Resources A–Z'; if(!groups.has(group)) groups.set(group,[]); groups.get(group).push(entry); }
   for(const [name,group] of groups) {
-    const section=el('section','resource-group'),title=el('h3','group-title',name);
+    const section=el('section','resource-group'),title=el('h3','group-title',categoryLabels[name] || name);
+    title.setAttribute('aria-label',`${name}, ${group.length} ${group.length===1?'resource':'resources'}`);
     title.append(el('span','group-count',String(group.length))); section.append(title);
     if(name==='Start here' && !filtering && !state.saved && state.sort==='category') {
       const disclosure=el('details','reference-details');
       const mode=matchMedia('(max-width: 760px)').matches?'mobile':'desktop';
-      disclosure.open=referencePreferences[mode] ?? mode==='desktop';
+      disclosure.open=referencePreferences[mode] ?? false;
       const summary=el('summary'); summary.append(title); disclosure.append(summary);
       summary.addEventListener('click',()=>{referencePreferences[mode]=!disclosure.open;});
-      const references=el('nav','reference-links'); references.setAttribute('aria-label','Language references');
-      for(const entry of group) { const item=link(entry.name+' ↗',entry.url); item.title=entry.description; references.append(item); }
-      const explore=el('button','text-button','View reference details'); explore.type='button';
-      explore.addEventListener('click',()=>change({category:'Start here'},{focus:'results-heading'}));
-      references.append(explore); disclosure.append(references); section.append(disclosure);
+      const references=el('div','cards reference-resources');
+      for(const entry of group) references.append(card(entry));
+      disclosure.append(references); section.append(disclosure);
     } else {
       const cards=el('div','cards'); for(const entry of group) cards.append(card(entry)); section.append(cards);
     }
@@ -167,8 +175,9 @@ function clearFilters() { change({q:'',category:'',owner:'',sort:'category'}); }
 function browseAll() { change({q:'',category:'',owner:'',saved:false,sort:'category'}); }
 for(const category of categories) {
   const button=el('button','nav-item'); button.type='button'; button.dataset.category=category;
-  button.append(el('span','',category),el('span','count',String(data.entries.filter(e=>e.category===category).length)));
-  button.addEventListener('click',() => change({category:state.category===category?'':category})); $('categories').append(button);
+  button.title=category;
+  button.append(el('span','',categoryLabels[category] || category),el('span','count',String(data.entries.filter(e=>e.category===category).length)));
+  button.addEventListener('click',() => {change({category:state.category===category?'':category});jumpToResults();}); $('categories').append(button);
   const option=el('option','',category+' ('+data.entries.filter(e=>e.category===category).length+')'); option.value=category; $('category').append(option);
 }
 for(const owner of owners) { const option=el('option','',owner); option.value=owner; $('owner').append(option); }
@@ -176,15 +185,15 @@ $('all-count').textContent=data.entries.length;
 $('review-date').textContent=`Last curated ${data.reviewed}`;
 $('search').addEventListener('input',e=>change({q:e.target.value},{push:false}));
 for(const key of ['owner','sort','category']) $(key).addEventListener('change',e=>change({[key]:e.target.value}));
-$('all-resources').addEventListener('click',browseAll);
+$('all-resources').addEventListener('click',()=>{change({saved:false});jumpToResults();});
 $('toggle-view').addEventListener('click',()=>change({view:state.view==='list'?'cards':'list'}));
 for(const view of ['list','cards']) $(view+'-view').addEventListener('click',()=>change({view}));
-$('saved-resources').addEventListener('click',()=>change({saved:!state.saved}));
+$('saved-resources').addEventListener('click',()=>{change({saved:!state.saved});jumpToResults();});
 $('reset').addEventListener('click',clearFilters);
-function jumpToResults() { const target=$('results').querySelector('.group-title') || $('empty-title'); target.tabIndex=-1; target.focus(); target.scrollIntoView({block:'start'}); }
+function jumpToResults() { const heading=$('results').querySelector('.group-title') || $('empty-title'); const target=heading.closest('summary') || heading; target.tabIndex=-1; target.focus(); target.scrollIntoView({block:'start'}); }
 $('jump-results').addEventListener('click',event=>{event.preventDefault();jumpToResults();});
 $('apply-filters').addEventListener('click',()=>{ $('filter-options').open=false; jumpToResults(); });
-$('empty-reset').addEventListener('click',()=> { if(state.saved && !saved.size) browseAll(); else clearFilters(); $('results-heading').focus(); });
+$('empty-reset').addEventListener('click',()=> { if(state.saved && !saved.size) browseAll(); else clearFilters(); jumpToResults(); });
 $('share').addEventListener('click',async()=> {
   const url=shareUrl(location.href);
   try { await navigator.clipboard.writeText(url); $('share-fallback').hidden=true; toast(state.saved?'Filters link copied. Your device-local saved collection is not included.':'Filters link copied.'); }

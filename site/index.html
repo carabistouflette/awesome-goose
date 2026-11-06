@@ -19,9 +19,6 @@
 </header>
 <div class="shell">
   <aside class="sidebar" aria-label="Directory navigation">
-    <div class="sidebar-heading">Browse</div>
-    <button class="nav-item active" id="all-resources"><span>All resources</span><span id="all-count" class="count"></span></button>
-    <button class="nav-item" id="saved-resources"><span>♡ Saved for later</span><span id="saved-count" class="count">0</span></button>
     <div class="sidebar-label" id="category-label">Categories</div>
     <nav id="categories" aria-label="Categories"></nav>
     <div class="sidebar-bottom"><strong>Know a good addition?</strong><p>Suggest a project or improve an existing entry.</p><a href="https://github.com/carabistouflette/awesome-goose/blob/main/CONTRIBUTING.md">Contribute →</a></div>
@@ -32,11 +29,11 @@
       <p class="hero-copy">For <a href="https://aardappel.github.io/goose/">aardappel’s Goose programming language</a>. <a href="CURATION.html" title="Check compiler revisions, platform support, native dependencies and source pins">Experimental ecosystem</a></p>
     </section>
     <section class="search-area" aria-label="Find resources">
-      <div class="search-box"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><label class="sr-only" for="search">Search resources</label><input id="search" type="search" placeholder="Search resources…" aria-describedby="search-help" autocomplete="off"><kbd aria-hidden="true">/</kbd></div>
-      <div class="search-hint"><span id="search-help">Name, description, maintainer</span><a id="jump-results" href="#results">Results ↓</a></div>
+      <div class="search-box"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><label class="sr-only" for="search">Search resources</label><input id="search" type="search" placeholder="Search resources…" aria-describedby="search-help" aria-keyshortcuts="/ Control+k Meta+k" autocomplete="off"><a id="jump-results" class="search-count" href="#results" aria-label="Show matching resources">0 ↓</a></div>
+      <div class="search-hint"><span id="search-help">Name, description, maintainer</span></div>
     </section>
     <section class="directory" data-view="list" id="directory" tabindex="-1" aria-label="Curated resources">
-      <div class="directory-top"><div><h2 id="results-heading" tabindex="-1">All resources <span id="result-count"></span></h2></div><div class="directory-actions"><div class="view-controls" role="group" aria-label="Resource layout"><button id="list-view" type="button" aria-pressed="true">List</button><button id="cards-view" type="button" aria-pressed="false">Cards</button></div><button id="toggle-view" class="mobile-view text-button" type="button">Cards</button><button id="share" class="text-button" aria-label="Copy filters link" title="Copy filters link">Share</button></div></div>
+      <div class="directory-top"><div class="results-title"><h2 id="results-heading" tabindex="-1">All resources <span id="result-count"></span></h2></div><div class="scope-switch" role="group" aria-label="Resource collection"><button class="nav-item active" id="all-resources" type="button"><span>All</span><span id="all-count" class="count"></span></button><button class="nav-item" id="saved-resources" type="button"><span>Saved</span><span id="saved-count" class="count">0</span></button></div><div class="directory-actions"><div class="view-controls" role="group" aria-label="Resource layout"><button id="list-view" type="button" aria-pressed="true">List</button><button id="cards-view" type="button" aria-pressed="false">Cards</button></div><button id="toggle-view" class="mobile-view text-button" type="button">Cards</button><button id="share" class="text-button" aria-label="Copy filters link" title="Copy filters link">Share</button></div></div>
       <div class="filters">
         <label class="mobile-category" for="category">Category<select id="category"><option value="">All categories</option></select></label>
         <details class="filter-options" id="filter-options" open><summary id="filter-options-label">More filters</summary><div class="advanced-fields">

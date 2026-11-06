@@ -5,6 +5,12 @@ and selected source inspection. They are not independent security audits or repr
 performance comparisons. [The source inventory](sources.json) records immutable README
 links. [Detailed Macho0x comparisons](COMPARISONS.md) provide the supporting inspection.
 
+Directory source snapshots and detailed comparison baselines are separate reviews.
+They can cite different commits on the same date. Each comparison applies to its
+explicitly linked revision; a directory pin does not imply that all comparison
+claims were revalidated at that pin. Expanded Source & review shows both snapshots
+when they differ. [Source inventory](sources.json).
+
 ## HTTP and web
 
 Choose [carabistouflette/goose-http](https://github.com/carabistouflette/goose-http)

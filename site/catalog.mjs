@@ -1,6 +1,33 @@
+const categoryTopics={
+  'Start here':'getting started learn language docs documentation compiler examples samples standard library stdlib',
+  'Command line and configuration':'CLI command line config configuration',
+  'Data formats and text':'data formats text',
+  'Files, processes, and artifacts':'files filesystem processes artifacts',
+  'Networking and web':'network networking web internet',
+  'Databases':'database databases DB',
+  'Cryptography':'crypto cryptographic cryptography',
+  'Ethereum and signing':'Ethereum ETH signing',
+  'Numbers and scientific computing':'math mathematics numeric numerical numbers science scientific computing',
+  'Graphics':'graphics graphical',
+  'Time and identifiers':'time identifiers',
+  'Applications':'applications apps programs',
+  'Development tools':'developer development dev tools tooling',
+  'Learning and community':'learn learning community education'
+};
+function searchText(text) {
+  return text.normalize('NFKC').toLocaleLowerCase()
+    .replace(/\butf[ -]?8\b/g,'utf8')
+    .replace(/\bcli\b/g,'command line')
+    .replace(/\bdb\b/g,'database')
+    .replace(/\b(?:logging|loggers?|logs)\b/g,'log')
+    .replace(/\b(?:compression|compressing|compressed)\b/g,'compress')
+    .replace(/\b(?:encoding|encoders?|encoded)\b/g,'encode')
+    .replace(/\b(?:decoding|decoders?|decoded)\b/g,'decode')
+    .replace(/\b(?:archives|archiving)\b/g,'archive');
+}
 export function filterEntries(entries, filters, favorites) {
-  const words = filters.q.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
-  return entries.filter(e => (!filters.category || e.category === filters.category) && (!filters.owner || e.owner === filters.owner) && (!filters.saved || favorites.has(e.id)) && words.every(w => `${e.label} ${e.owner} ${e.category} ${e.description}`.toLocaleLowerCase().includes(w)));
+  const words = searchText(filters.q).trim().split(/\s+/).filter(Boolean);
+  return entries.filter(e => (!filters.category || e.category === filters.category) && (!filters.owner || e.owner === filters.owner) && (!filters.saved || favorites.has(e.id)) && words.every(w => searchText(`${e.label} ${e.owner} ${e.category} ${categoryTopics[e.category] || ''} ${e.description} ${e.choice ? e.choiceLabel || '' : ''}`).includes(w)));
 }
 
 export function shareUrl(href) {

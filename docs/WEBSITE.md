@@ -16,13 +16,16 @@ module import targets, to keep browser caches consistent across deployments.
 
 The directory defaults to a compact list, with an optional Cards layout; intermediate desktop widths stack descriptions below
 identity rather than compressing the reading column. Both
-layouts use the same resources and filters. Compiler, Docs, Stdlib, Packages and Samples remain visible above the library groups.
-Details expands their full entries, save controls and review evidence.
+layouts use the same resources and filters. Desktop shows Compiler, Docs, Stdlib, Packages and Samples above the library groups.
+On mobile, a named Compiler, docs & examples disclosure opens their full entries,
+save controls and evidence; the built-ins-first link remains visible in the introduction.
 
-The directory provides case-insensitive multiword search, category and maintainer
+The directory provides case-insensitive multiword search over names, descriptions, comparison topics and
+curated category vocabulary. It normalizes common logging/compression word forms and
+UTF-8 spelling variants while retaining AND matching across query words. Category and maintainer
 filters, category/name/maintainer sorting, local favorites, shareable filtered URLs,
 light/dark themes, keyboard search (`/` or Ctrl/Cmd+K), a Skip to search link, and source-review disclosures that remain open across layout changes. Reading-guide tables show labelled, stacked values
-on mobile so their reasons and qualifications remain visible. Mobile uses a visible category selector and a
+on mobile and intermediate widths so their reasons and qualifications remain visible. Mobile uses a visible category selector and a
 collapsible maintainer/sort section. Active filters can be removed individually;
 category filters also work within the saved collection. Category counts reflect
 the other active filters. On mobile, Show resources closes expanded filters and
@@ -30,8 +33,10 @@ moves directly to the matching entries. The search field also exposes the curren
 matching count as a jump-to-results link. All/Saved share one persistent collection
 bar; switching collections preserves the search, category and maintainer filters. The
 current matching total stays visible in that bar whenever filters or Saved are active.
-Expanded mobile filters summarize the active chips and expose a persistent Show
-action in the collection bar; closing the panel restores the individual chips.
+Expanded mobile filters summarize the active chips and expose one persistent Show
+action in the collection bar; closing the panel restores the chips and changes
+that action into Filters with an active count and descriptive accessible summary.
+It returns focus to the category control for editing without a long scroll back.
 Favorites and theme settings stay in browser storage; no server account is required.
 If storage is blocked, the directory still works and favorites last for that visit.
 “Copy filters link” shares search/category/maintainer/sort settings, not a saved

@@ -56,3 +56,20 @@ test('name sorting follows package names across maintainers and groups identical
   assert.equal(byOwner[0].owner,'aardappel');
   assert.equal(byOwner.at(-1).owner,'ZHENGSY');
 });
+
+test('common topic vocabulary retrieves complete alternatives and retains AND filters',()=>{
+  const repos=query=>search({q:query}).map(e=>e.repository).sort();
+  const compression=['carabistouflette/goose-archive','kaitk/goose-compress','Macho0x/goose-deflate'].sort();
+  assert.deepEqual(repos('compression'),compression);
+  assert.deepEqual(repos('compress'),compression);
+  const logging=['carabistouflette/goose-log','Macho0x/goose-logger'].sort();
+  assert.deepEqual(repos('logging'),logging);
+  assert.deepEqual(repos('logger'),logging);
+  assert.deepEqual(repos('compression Macho0x'),['Macho0x/goose-deflate']);
+  assert.ok(search({q:'math'}).length>0);
+  assert.ok(search({q:'CLI'}).some(e=>e.repository==='carabistouflette/goose-argparse'));
+});
+test('UTF-8 punctuation variants find the same two documented entries',()=>{
+  const expected=['carabistouflette/goose-text','Macho0x/goose-msgpack'].sort();
+  for(const q of ['utf8','UTF-8','utf 8']) assert.deepEqual(search({q}).map(e=>e.repository).sort(),expected);
+});

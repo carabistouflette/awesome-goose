@@ -351,3 +351,41 @@ only two low-severity issues in its desktop/phone sample.
 - Twenty-one checks pass (12 Python, 9 Node), including complete snapshot coverage
   in the rendered evidence index. Rendered checks covered tablet row geometry,
   narrow guide/evidence layouts, source links and absence of JavaScript errors.
+
+## Tenth completed assessment
+
+Application: `9be8ae8`.
+
+| Reviewer | Visual | Discovery | Interaction | Responsive / access | Trust | Weighted overall |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Linden](assessment-linden.md) | 8.6 | 7.8 | 8.9 | 8.6 | 9.4 | 8.54 |
+| [Maple](assessment-maple.md) | 8.8 | 8.6 | 9.2 | 8.4 | 9.2 | 8.77 |
+
+This round did not meet the threshold. The reviews exposed an actual search
+vocabulary gap and the same intermediate table-width problem in both guides and
+the evidence index. Smaller findings concerned mobile density and editing filters
+after jumping down into the results.
+
+## Following corrections
+
+- Search indexes comparison topics and small curated category synonyms. Common
+  logging/compression/encoding word forms and UTF-8 punctuation variants normalize
+  consistently, while distinct query words still combine with AND and explicit
+  category/maintainer/saved filters. The compression query retrieves archive,
+  compress and deflate; logging retrieves both choices.
+- Mobile's persistent contextual action changes between Show N while filters are
+  expanded and Filters with an active count afterward. Its accessible name includes
+  the current scope. Editing opens the controls and focuses Category below the bar.
+- The duplicate bottom Show button and hidden legacy layout control are removed.
+  Introductory/control gaps are shorter without shrinking touch targets or body
+  text. At 375px the checked first library begins around y=482.
+- Desktop retains five direct official shortcuts. Mobile uses an explicitly named
+  Compiler, docs & examples disclosure; the built-ins-first introduction link stays
+  visible. This balances the prior requests for named starting resources and more
+  initial inventory, rather than returning to an ambiguous More label.
+- Labeled table records now apply through 1000px. At 820px the TOML region's client
+  and scroll widths both measure 520px and all three fields remain visible.
+- Twenty-three checks pass (12 Python, 11 Node). Added retrieval checks cover the
+  reported compression/logging/UTF-8 examples and multiword filtering. Isolated
+  rendered checks covered mobile density, sticky filter editing/show focus, tablet
+  table geometry, and no JavaScript errors.

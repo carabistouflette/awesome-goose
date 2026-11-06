@@ -57,6 +57,7 @@ important scope limits appear where they affect the choice.
 - [carabistouflette/goose-argparse](https://github.com/carabistouflette/goose-argparse) — Command-line argument parsing.
 - [carabistouflette/goose-config](https://github.com/carabistouflette/goose-config) — JSON/TOML settings with environment and CLI overrides, typed bindings generation, and reload.
 - [carabistouflette/goose-log](https://github.com/carabistouflette/goose-log) — Explicit logging with byte escaping; useful when the application owns output policy.
+- [carabistouflette/goose-terminal](https://github.com/carabistouflette/goose-terminal) — Bounded escaped styled lines, ASCII tables, progress bars, and spinner frames; applications own terminal detection and output. Experimental; Linux x86-64 validated.
 - [Macho0x/goose-logger](https://github.com/Macho0x/goose-logger) — UTC event lines, named fields, and pattern-based secret redaction. [Choosing a logger](docs/CHOICES.md#logging).
 
 ### Data formats and text

@@ -6,6 +6,12 @@ Inspired by [awesome-rust](https://github.com/rust-unofficial/awesome-rust).
 
 Start small, know the tradeoffs, and build something worth honking about.
 
+**[Explore the searchable directory →](https://carabistouflette.github.io/awesome-goose/)**
+
+Search, filter by category or maintainer, save favorites on your device, and read
+the choice notes. The website updates automatically from this list on every push
+to `main`. [Website development and CI](docs/WEBSITE.md).
+
 Goose and its ecosystem are young. Inclusion means a useful, documented project,
 not an API stability or production-readiness promise. Check each project's compiler
 revision, native dependencies, and supported platforms. Pin reviewed commits for

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Find your next Goose library. A curated, searchable directory of packages, tools, and resources with honest tradeoffs and source-backed choices.">
+  <meta name="theme-color" content="#f7f6f2">
+  <title>Awesome Goose — Find your flock.</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='.9em' font-size='56'%3E🪿%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to resources</a>
+<header class="topbar">
+  <a class="brand" href="./"><span class="brand-goose" aria-hidden="true">🪿</span><span>awesome<span class="brand-light">goose</span><span class="brand-dot">.</span></span></a>
+  <nav aria-label="Main"><a href="CHOICES.html">The field guide</a><a href="https://github.com/carabistouflette/awesome-goose" class="github-link">GitHub ↗</a><button id="theme" class="icon-button" aria-label="Switch to dark theme" title="Change theme">◐</button></nav>
+</header>
+<div class="shell">
+  <aside class="sidebar" aria-label="Directory navigation">
+    <div class="sidebar-heading">YOUR FIELD NOTES <span>01 / DIRECTORY</span></div>
+    <button class="nav-item active" id="all-resources"><span>All resources</span><span id="all-count" class="count"></span></button>
+    <button class="nav-item" id="saved-resources"><span>♡ Saved for later</span><span id="saved-count" class="count">0</span></button>
+    <div class="sidebar-label">EXPLORE BY CATEGORY</div>
+    <nav id="categories" aria-label="Categories"></nav>
+    <div class="sidebar-bottom"><span class="small-goose" aria-hidden="true">↗</span><strong>Know a good addition?</strong><p>A small ecosystem grows with good company.</p><a href="https://github.com/carabistouflette/awesome-goose/blob/main/CONTRIBUTING.md">Help curate the flock →</a></div>
+  </aside>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="eyebrow"><span class="live-dot"></span> A COMMUNITY-CURATED GOOSE DIRECTORY</div>
+      <div class="hero-line"><h1 id="hero-title">Find your <em>flock.</em></h1><span class="hero-stamp" aria-hidden="true">GOOD LIBS.<br>GREAT COMPANY.<br><span>↘</span></span></div>
+      <p class="hero-copy">The libraries, tools, and little discoveries that make<br class="desktop-break"> building with Goose a little more awesome.</p>
+      <div class="hero-meta"><span id="resource-total"></span><span class="separator">/</span><span>Handpicked, with reasons</span><span class="separator">/</span><a href="CURATION.html">How we curate ↗</a></div>
+    </section>
+    <section class="search-area" aria-label="Find resources">
+      <div class="search-box"><span aria-hidden="true">⌕</span><label class="sr-only" for="search">Search resources</label><input id="search" type="search" placeholder="Search libraries, tools, ideas…" autocomplete="off"><kbd aria-hidden="true">/</kbd></div>
+      <div class="search-hint">Try <button class="search-example" data-query="ethereum">ethereum</button>, <button class="search-example" data-query="sqlite">sqlite</button>, or <button class="search-example" data-query="editor">editor</button><span>Search names, descriptions & maintainers</span></div>
+    </section>
+    <section class="start-panel" aria-label="New to Goose?">
+      <div><span class="panel-kicker">NEW AROUND HERE?</span><h2>Every good flock starts somewhere.</h2><p>Meet the language. Try the standard library. Then explore.</p></div>
+      <a href="https://aardappel.github.io/goose/">Start with Goose <span>↗</span></a>
+    </section>
+    <section class="directory" aria-label="Curated resources">
+      <div class="directory-top"><div><span class="eyebrow">THE DIRECTORY</span><h2 id="results-heading">All resources <span id="result-count"></span></h2></div><button id="share" class="text-button">Copy view link ↗</button></div>
+      <div class="filters"><label>Maintainer <select id="owner"><option value="">Everyone</option></select></label><label>Sort by <select id="sort"><option value="category">Category</option><option value="name">Name A–Z</option><option value="owner">Maintainer</option></select></label><button id="reset" class="text-button">Reset filters</button></div>
+      <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+      <div id="results"></div>
+      <div id="empty" class="empty" hidden><span aria-hidden="true">⌕</span><h3>No geese in this corner.</h3><p>Try a broader search or clear your filters.</p><button id="empty-reset">Show all resources</button></div>
+    </section>
+    <footer class="footer"><div><strong>Curated, not collected.</strong><p>Young language. Honest tradeoffs. No rankings by star count.</p></div><div><a href="RESEARCH.html">Research trail</a><a href="COMPARISONS.html">Library comparisons</a><span id="review-date"></span></div></footer>
+  </main>
+</div>
+<noscript><div class="noscript">The interactive directory needs JavaScript. <a href="https://github.com/carabistouflette/awesome-goose">Read the complete Markdown list on GitHub.</a></div></noscript>
+<div id="toast" class="toast" role="status" hidden></div>
+<!-- CATALOG_DATA -->
+</body>
+</html>

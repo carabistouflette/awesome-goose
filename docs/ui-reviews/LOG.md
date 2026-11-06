@@ -424,3 +424,42 @@ clarity, repeated mobile controls, incidental search substrings and table densit
 - Twenty-four checks pass (12 Python, 12 Node). A regression covers native/Alternative
   word matching. Rendered checks covered repeated Saved activation, reference labels,
   tablet/phone comparisons, column headers, category width and no JavaScript errors.
+
+## Twelfth completed assessment
+
+Application: `f330c08`.
+
+| Reviewer | Visual | Discovery | Interaction | Responsive / access | Trust | Weighted overall |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Quill](assessment-quill.md) | 9.0 | 8.6 | 9.0 | 8.8 | 9.2 | 8.87 |
+| [Rowan](assessment-rowan.md) | 9.0 | 8.0 | 9.0 | 9.0 | 9.5 | 8.80 |
+
+This round did not meet the threshold. Rowan found a decompression vocabulary gap
+and poor ordering of negative capability mentions. The smaller shared refinements
+concerned mobile filter context, long queries, official-resource labeling and the
+remaining prose-heavy selection/development sections.
+
+## Following corrections
+
+- Per-repository search aliases and explicit caution notes live beside the pinned
+  source records. DEFLATE decompression finds the documented decoder. The encoder-only
+  entry stays discoverable with a visible limitation-match cue; default grouped
+  search puts caution matches after other matches. The original descriptions and
+  qualifications remain intact. Explicit name/maintainer ordering remains available.
+- Recorded cautions also identify selected writer, UTF-8 validation, partial decoder,
+  TLS, JSON-model, cryptographic-random and platform limitations from the existing
+  descriptions. Keywords for explicitly declared system/native dependencies improve
+  retrieval without creating a broad compatibility promise. Metadata shape and
+  source-pin propagation are checked.
+- Collapsed mobile result context shows selected category, maintainer and order in
+  its Edit action, or a query preview. Editing an active query selects its complete
+  value in Search. Query chips stop at 24 visible characters, retaining full accessible
+  labels and titles. An 80-character-query recovery remains visible at 320×800.
+- Mobile language resources use the complete-count label 5 official Goose resources.
+  HTTP, cryptography, logging, compression and SQLite now have concise decision
+  tables before their detailed prose, using the same tablet/phone treatments as TOML.
+  Logging/archive development proposals moved to Development with optional links.
+- Twenty-seven checks pass (13 Python, 14 Node). Added checks cover decompression
+  retrieval/order, visible-caution data, positive UTF-8 ordering and source provenance.
+  Rendered checks covered the decoder-first results, caution cue, compact long-query
+  recovery, full-query editing, six decision tables and no JavaScript errors.

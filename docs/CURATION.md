@@ -37,3 +37,9 @@ recommendations with a short reason in the change description.
 Use Reddit for leads and community context. Confirm library features against the
 project's own documentation/source before admitting it. If a search yields only
 language discussion, record that limitation instead of inventing recommendations.
+
+Search aliases capture equivalent task vocabulary. Recorded search cautions refer
+to explicit limitations at the same reviewed pin. Matching those cautions stays
+possible and is labeled in the directory; default grouped search puts these matches
+after other results. Name/maintainer sorting retains the requested order. These
+editorial search notes help discovery and do not certify compatibility or code.

@@ -21,9 +21,13 @@ function searchText(text) {
     .replace(/\bdb\b/g,'database')
     .replace(/\b(?:logging|loggers?|logs)\b/g,'log')
     .replace(/\b(?:compression|compressing|compressed)\b/g,'compress')
+    .replace(/\b(?:decompression|decompressing|decompressed)\b/g,'decompress')
     .replace(/\b(?:encoding|encoders?|encoded)\b/g,'encode')
     .replace(/\b(?:decoding|decoders?|decoded)\b/g,'decode')
-    .replace(/\b(?:archives|archiving)\b/g,'archive');
+    .replace(/\b(?:archives|archiving)\b/g,'archive')
+    .replace(/\b(?:writing|writers?|written)\b/g,'write')
+    .replace(/\b(?:parsing|parsers?|parsed)\b/g,'parse')
+    .replace(/\bmaps\b/g,'map');
 }
 function matchesWord(text, word) {
   if(!/^\p{L}/u.test(word)) return text.includes(word);
@@ -34,14 +38,17 @@ function matchesWord(text, word) {
   }
   return false;
 }
+export function searchMatch(entry, query) {
+  const words=searchText(query).trim().split(/\s+/).filter(Boolean);
+  if(!words.length) return {matches:true,limitation:''};
+  const cautions=entry.searchCautions || [];
+  const text=searchText(`${entry.label} ${entry.owner} ${entry.category} ${categoryTopics[entry.category] || ''} ${entry.description} ${entry.choice ? entry.choiceLabel || '' : ''} ${(entry.searchAliases || []).join(' ')} ${cautions.flatMap(caution=>caution.terms).join(' ')}`);
+  if(!words.every(word=>matchesWord(text,word))) return {matches:false,limitation:''};
+  const notes=cautions.filter(caution=>words.some(word=>matchesWord(searchText(caution.terms.join(' ')),word))).map(caution=>caution.note);
+  return {matches:true,limitation:[...new Set(notes)].join(' ')};
+}
 export function filterEntries(entries, filters, favorites) {
-  const words = searchText(filters.q).trim().split(/\s+/).filter(Boolean);
-  return entries.filter(e => {
-    if((filters.category && e.category!==filters.category) || (filters.owner && e.owner!==filters.owner) || (filters.saved && !favorites.has(e.id))) return false;
-    if(!words.length) return true;
-    const text=searchText(`${e.label} ${e.owner} ${e.category} ${categoryTopics[e.category] || ''} ${e.description} ${e.choice ? e.choiceLabel || '' : ''}`);
-    return words.every(word=>matchesWord(text,word));
-  });
+  return entries.filter(entry => (!filters.category || entry.category===filters.category) && (!filters.owner || entry.owner===filters.owner) && (!filters.saved || favorites.has(entry.id)) && searchMatch(entry,filters.q).matches);
 }
 
 export function shareUrl(href) {
@@ -57,8 +64,10 @@ export function categoryCounts(entries, filters, favorites) {
   return counts;
 }
 
-export function sortEntries(entries, sort, categories) {
+export function sortEntries(entries, sort, categories, query='') {
+  const limited=new Map(query && sort==='category'?entries.map(entry=>[entry.id,Boolean(searchMatch(entry,query).limitation)]):[]);
   return [...entries].sort((a,b) =>
+    (limited.size ? Number(limited.get(a.id))-Number(limited.get(b.id)) : 0) ||
     (sort==='category' ? categories.indexOf(a.category)-categories.indexOf(b.category) :
       sort==='owner' ? a.owner.localeCompare(b.owner,undefined,{sensitivity:'base'}) : 0) ||
     a.name.localeCompare(b.name,undefined,{sensitivity:'base'}) ||

@@ -63,6 +63,15 @@ class SiteTests(unittest.TestCase):
             if any(record['repository']==repo for record in records):
                 self.assertIn(f'https://github.com/{repo}/blob/{commit}/README.md',page)
         self.assertIn('Source inventory (JSON)',page)
+    def test_search_notes_keep_the_reviewed_source_provenance(self):
+        entries=json.loads((ROOT / '_site/catalog.json').read_text())['entries']
+        manifest={record['repository']:record for record in json.loads((ROOT / 'docs/sources.json').read_text())['repositories']}
+        for entry in entries:
+            if entry.get('searchAliases') or entry.get('searchCautions'):
+                evidence=manifest[entry['repository']]
+                self.assertEqual(entry['source'],evidence['readme'])
+                self.assertEqual(entry['searchAliases'],evidence.get('search_aliases',[]))
+                self.assertEqual(entry['searchCautions'],evidence.get('search_cautions',[]))
     def test_asset_hashes_match_content_and_module_import_resolves(self):
         output=ROOT / '_site'
         for path in output.iterdir():

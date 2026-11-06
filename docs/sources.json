@@ -1,6 +1,6 @@
 {
   "review_date": "2026-11-06",
-  "scope": "Public README/source review; upstream test claims were not independently rerun. Null license marks a research/watchlist candidate, not an admitted package.",
+  "scope": "Public README/source review; upstream test claims were not independently rerun. Null license marks a research/watchlist candidate, not an admitted package. Search aliases and caution notes are editorial discovery metadata tied to these reviewed snapshots.",
   "repositories": [
     {
       "repository": "aardappel/goose",
@@ -49,7 +49,10 @@
       "commit": "729cd08e8df2bf7d2c9c12000d6fc94e62fcb55e",
       "readme": "https://github.com/carabistouflette/goose-crypto/blob/729cd08e8df2bf7d2c9c12000d6fc94e62fcb55e/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "native dependency"
+      ]
     },
     {
       "repository": "carabistouflette/goose-csv",
@@ -70,14 +73,31 @@
       "commit": "0fa7d19413ff5b406e2519f3378ad212af07ba61",
       "readme": "https://github.com/carabistouflette/goose-http/blob/0fa7d19413ff5b406e2519f3378ad212af07ba61/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "native dependency"
+      ]
     },
     {
       "repository": "carabistouflette/goose-json",
       "commit": "0061ec83bf7f88763402751d50e3c27f3dd13f68",
       "readme": "https://github.com/carabistouflette/goose-json/blob/0061ec83bf7f88763402751d50e3c27f3dd13f68/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "JSON parsing",
+        "native dependency"
+      ],
+      "search_cautions": [
+        {
+          "terms": [
+            "null",
+            "optional",
+            "maps"
+          ],
+          "note": "Null/optional values and maps are outside its documented JSON model."
+        }
+      ]
     },
     {
       "repository": "carabistouflette/goose-log",
@@ -105,7 +125,10 @@
       "commit": "d45a15160d09fea0af44fdea7eb5ce7e6c663a81",
       "readme": "https://github.com/carabistouflette/goose-sqlite/blob/d45a15160d09fea0af44fdea7eb5ce7e6c663a81/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "native dependency"
+      ]
     },
     {
       "repository": "carabistouflette/goose-text",
@@ -175,7 +198,16 @@
       "commit": "76ec1aa894fe38aee3601005b26258a04db25b66",
       "readme": "https://github.com/guillochon/goose-random/blob/76ec1aa894fe38aee3601005b26258a04db25b66/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "search_cautions": [
+        {
+          "terms": [
+            "cryptographic",
+            "crypto"
+          ],
+          "note": "Not a cryptographic random source."
+        }
+      ]
     },
     {
       "repository": "kaitk/goose-acme",
@@ -189,7 +221,18 @@
       "commit": "ebf372eac4638a692ee89eba3204c666c101d7d9",
       "readme": "https://github.com/kaitk/goose-compress/blob/ebf372eac4638a692ee89eba3204c666c101d7d9/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "search_cautions": [
+        {
+          "terms": [
+            "decoder",
+            "decode",
+            "decompression",
+            "decompress"
+          ],
+          "note": "Encoder only; no decoder is documented."
+        }
+      ]
     },
     {
       "repository": "kaitk/goose-hash",
@@ -210,28 +253,57 @@
       "commit": "fc7c60df9e181d23441892862c3a5d7ad3f78364",
       "readme": "https://github.com/kaitk/goose-ngfx/blob/fc7c60df9e181d23441892862c3a5d7ad3f78364/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "search_cautions": [
+        {
+          "terms": [
+            "Linux"
+          ],
+          "note": "Linux presentation is unavailable in the documented snapshot."
+        }
+      ]
     },
     {
       "repository": "kaitk/goose-postgres",
       "commit": "c89f8b421b0aad75e7dda1a34197ca910ce7137d",
       "readme": "https://github.com/kaitk/goose-postgres/blob/c89f8b421b0aad75e7dda1a34197ca910ce7137d/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "search_cautions": [
+        {
+          "terms": [
+            "decoder",
+            "decode"
+          ],
+          "note": "Several data decoders remain unimplemented."
+        },
+        {
+          "terms": [
+            "TLS"
+          ],
+          "note": "TLS transport remains unimplemented."
+        }
+      ]
     },
     {
       "repository": "kaitk/goose-sqlite",
       "commit": "2c315b48fe0f479e4eb172b99403d35ae7d1cdcf",
       "readme": "https://github.com/kaitk/goose-sqlite/blob/2c315b48fe0f479e4eb172b99403d35ae7d1cdcf/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "native dependency"
+      ]
     },
     {
       "repository": "kaitk/goose-tls",
       "commit": "7660d5fa30bf6d22adcc8da46cdc067a73486e38",
       "readme": "https://github.com/kaitk/goose-tls/blob/7660d5fa30bf6d22adcc8da46cdc067a73486e38/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "native dependency"
+      ]
     },
     {
       "repository": "kaitk/plod",
@@ -259,7 +331,16 @@
       "commit": "0fa24f53fd6918c0cfeff6012b7352f60d480801",
       "readme": "https://github.com/Macho0x/goose-crypto/blob/0fa24f53fd6918c0cfeff6012b7352f60d480801/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "search_cautions": [
+        {
+          "terms": [
+            "constant-time",
+            "constant time"
+          ],
+          "note": "The author documents that it is not constant-time."
+        }
+      ]
     },
     {
       "repository": "Macho0x/goose-decimal",
@@ -273,7 +354,11 @@
       "commit": "3b1d0d38be908dbb9bc2e26411bfd7449c570147",
       "readme": "https://github.com/Macho0x/goose-deflate/blob/3b1d0d38be908dbb9bc2e26411bfd7449c570147/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "decompression",
+        "decompress"
+      ]
     },
     {
       "repository": "Macho0x/goose-ethereum",
@@ -308,7 +393,17 @@
       "commit": "a3d08d25f0260a964f795008ac79468f728a1388",
       "readme": "https://github.com/Macho0x/goose-msgpack/blob/a3d08d25f0260a964f795008ac79468f728a1388/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "search_cautions": [
+        {
+          "terms": [
+            "UTF-8",
+            "utf8",
+            "validation"
+          ],
+          "note": "Strings are raw bytes without UTF-8 validation."
+        }
+      ]
     },
     {
       "repository": "Macho0x/goose-signature",
@@ -322,7 +417,17 @@
       "commit": "589f168e70a2c83cb1e84cbf31ebee8d27c085c6",
       "readme": "https://github.com/Macho0x/goose-toml/blob/589f168e70a2c83cb1e84cbf31ebee8d27c085c6/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "search_cautions": [
+        {
+          "terms": [
+            "write",
+            "writer",
+            "writing"
+          ],
+          "note": "Reader only; no writer is documented."
+        }
+      ]
     },
     {
       "repository": "Macho0x/goose-uuid",
@@ -357,7 +462,10 @@
       "commit": "a5805f4f4e4346a70c4e57fa63c31da445fce192",
       "readme": "https://github.com/voidssx1/gosh/blob/a5805f4f4e4346a70c4e57fa63c31da445fce192/README.md",
       "reviewed": "2026-11-06",
-      "license": "MIT"
+      "license": "MIT",
+      "search_aliases": [
+        "native dependency"
+      ]
     },
     {
       "repository": "ZHENGSY/goose-zed",

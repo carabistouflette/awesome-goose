@@ -1,4 +1,4 @@
-import { filterEntries, shareUrl, categoryCounts, sortEntries } from './catalog.mjs';
+import { filterEntries, shareUrl, categoryCounts, sortEntries, searchMatch } from './catalog.mjs';
 const data = JSON.parse(document.getElementById('catalog-data').textContent);
 const $ = id => document.getElementById(id);
 const categoryLabels={'Command line and configuration':'CLI & configuration','Data formats and text':'Data & text','Files, processes, and artifacts':'Files & processes','Networking and web':'Networking & web','Numbers and scientific computing':'Scientific & numeric','Time and identifiers':'Time & identifiers','Development tools':'Developer tools','Learning and community':'Learning & community'};
@@ -80,6 +80,8 @@ function card(entry) {
   article.append(identity);
   const overview=el('div','resource-overview');
   const description=el('p','card-description'); description.innerHTML=entry.descriptionHtml; overview.append(description);
+  const match=searchMatch(entry,state.q);
+  if(match.limitation) { const note=el('p','match-note'); note.append(el('strong','','Limitation match: '),document.createTextNode(match.limitation)); overview.append(note); }
   const foot=el('div','resource-links');
   if(entry.choice) foot.append(link((entry.choiceLabel || 'Choice notes')+' →',entry.choice));
 
@@ -97,7 +99,9 @@ function activeFilters() {
   const chips=[['q',state.q&&`Search: ${state.q}`],['category',state.category],['owner',state.owner&&`Maintainer: ${state.owner}`]];
   for(const [key,label] of chips) {
     if(!label) continue;
-    const button=el('button','filter-chip',label); button.type='button'; button.append(el('span','','×'));
+    const preview=key==='q' && [...state.q].length>24?'Search: '+[...state.q].slice(0,24).join('')+'…':label;
+    const button=el('button','filter-chip',preview);
+    button.title=label; button.type='button'; button.append(el('span','','×'));
     button.setAttribute('aria-label',`Remove ${label} filter`);
     button.addEventListener('click',() => {change({[key]:''});jumpToResults();}); container.append(button);
   }
@@ -112,11 +116,12 @@ function render() {
   $('saved-resources').classList.toggle('active',state.saved);
   $('all-resources').setAttribute('aria-pressed',String(!state.saved)); $('saved-resources').setAttribute('aria-pressed',String(state.saved));
   for(const button of $('categories').children) { const active=button.dataset.category===state.category; button.classList.toggle('active',active); button.setAttribute('aria-pressed',String(active)); }
-  const entries=sortEntries(filterEntries(data.entries,state,saved),state.sort,browseOrder);
+  const entries=sortEntries(filterEntries(data.entries,state,saved),state.sort,browseOrder,state.q);
   const filtering=Boolean(state.q || state.category || state.owner);
   updateFilterControls();
-  $('results-heading').firstChild.textContent=(state.saved?(filtering?'Matching saved resources':'Saved resources'):(filtering?'Matching resources':'All resources'))+' ';
-  $('result-count').textContent=state.saved?`(${entries.length} of ${saved.size})`:`(${entries.length})`;
+  const compact=matchMedia('(max-width:760px)').matches;
+  $('results-heading').firstChild.textContent=compact?(state.saved?`${entries.length}/${saved.size} saved`:`${entries.length} ${filtering?'matches':'resources'}`):(state.saved?(filtering?'Matching saved resources':'Saved resources'):(filtering?'Matching resources':'All resources'))+' ';
+  $('result-count').textContent=compact?'':state.saved?`(${entries.length} of ${saved.size})`:`(${entries.length})`;
   $('jump-results').textContent=`${entries.length} ↓`;
   $('jump-results').setAttribute('aria-label',`Show ${entries.length} matching ${entries.length===1?'resource':'resources'}`);
   $('jump-results').title=$('jump-results').getAttribute('aria-label');
@@ -167,7 +172,7 @@ function render() {
       const disclosure=el('details','reference-details');
       const mode=matchMedia('(max-width: 760px)').matches?'mobile':'desktop';
       disclosure.open=referencePreferences[mode] ?? false;
-      const summary=el('summary','',mode==='mobile'?'Compiler, docs & examples':'Details & save'); summary.setAttribute('aria-label',mode==='mobile'?'Compiler, docs & examples: all five language resources, including the standard library and package guide':'Details & save for all '+group.length+' language resources, with descriptions and save controls'); disclosure.append(summary);
+      const summary=el('summary','',mode==='mobile'?'5 official Goose resources':'Details & save'); summary.setAttribute('aria-label',mode==='mobile'?'5 official Goose resources: compiler, documentation, standard library, package guide and examples':'Details & save for all '+group.length+' language resources, with descriptions and save controls'); disclosure.append(summary);
       summary.addEventListener('click',()=>{referencePreferences[mode]=!disclosure.open;});
       const references=el('div','cards reference-resources');
       for(const entry of group) references.append(card(entry));
@@ -211,7 +216,7 @@ function focusBelowToolbar(target,padding=12) {
 }
 $('jump-results').addEventListener('click',event=>{event.preventDefault();jumpToResults();});
 function closeAndShowResults() { $('filter-options').open=false; updateFilterControls(); jumpToResults(); }
-$('toolbar-apply').addEventListener('click',()=>{if($('filter-options').open) closeAndShowResults(); else { $('filter-options').open=true; updateFilterControls(); focusBelowToolbar($('category'),40); }});
+$('toolbar-apply').addEventListener('click',()=>{if($('filter-options').open) closeAndShowResults(); else { $('filter-options').open=true; updateFilterControls(); const target=state.q?$('search'):$('category'); focusBelowToolbar(target,state.q?12:40); if(state.q) $('search').select(); }});
 $('filter-options').addEventListener('toggle',updateFilterControls);
 $('empty-reset').addEventListener('click',()=> { if(state.saved && !saved.size) browseAll(); else clearFilters(); jumpToResults(); });
 $('share').addEventListener('click',async()=> {
@@ -238,8 +243,13 @@ function updateFilterControls() {
   const count=[state.q,state.category,state.owner].filter(Boolean).length;
   const matches=filterEntries(data.entries,state,saved).length;
   const summary=[state.q&&`Search: ${state.q}`,state.category,state.owner&&`Maintainer: ${state.owner}`,`Sort: ${$('sort').selectedOptions[0].textContent}`].filter(Boolean).join('; ');
-  $('toolbar-apply').textContent=open?`Show ${matches} ↓`:`Filters${count?' · '+count:''}`;
-  $('toolbar-apply').setAttribute('aria-label',open?`Show ${matches} matching resources and close filters`:`Filters: edit ${count} active filters. ${summary}`);
+  const order={category:'',name:'A–Z',owner:'by maintainer'}[state.sort];
+  const scope=[state.category && (selectLabels[state.category] || state.category),state.owner,order].filter(Boolean).join(' · ');
+  const preview=[...state.q].slice(0,18).join('')+([...state.q].length>18?'…':'');
+  const edit='Edit: '+(scope || (state.q?'“'+preview+'”':'filters'));
+  $('toolbar-apply').textContent=open?`Show ${matches} ↓`:edit;
+  $('toolbar-apply').title=summary;
+  $('toolbar-apply').setAttribute('aria-label',open?`Show ${matches} matching resources and close filters`:`${edit}. Edit filters. ${summary}`);
   $('toolbar-apply').setAttribute('aria-expanded',String(open));
 }
 function updateFilterLayout() { $('filter-options').open = !mobileLayout.matches; updateFilterControls(); }

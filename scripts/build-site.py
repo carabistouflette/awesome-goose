@@ -194,6 +194,8 @@ def catalog():
             'reviewed': source.get('reviewed', manifest['review_date']),
             'source': source.get('readme') if exact_repo else (url.replace('/blob/master/', '/blob/' + source['commit'] + '/').replace('/blob/main/', '/blob/' + source['commit'] + '/') if source and '/blob/' in url else None), 'commit': source.get('commit'),
             'choice': choice, 'choiceLabel': choice_label,
+            'searchAliases': source.get('search_aliases',[]),
+            'searchCautions': source.get('search_cautions',[]),
             'comparisonCommit': baselines.get(repo),
             'comparisonSource': f'https://github.com/{repo}/blob/{baselines[repo]}/README.md' if repo in baselines else None,
             'repository': repo if exact_repo else None,

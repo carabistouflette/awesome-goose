@@ -430,3 +430,9 @@ html { scroll-padding-top:168px; }
   .guide-choices .table-wrap td[data-label=Need] { grid-row:2; }
   .guide-choices .table-wrap td[data-label=Qualification] { grid-row:3; color:var(--muted); font-size:14px; }
 }
+
+.match-note { font-size:14px; line-height:1.5; margin:6px 0; color:var(--muted); }
+@media(max-width:760px) {
+  .directory[data-context=true] .results-title h2 { flex:0 0 auto; font-size:14px; }
+  .directory[data-context=true] .toolbar-apply { min-width:44px; max-width:72%; white-space:normal; line-height:1.4; text-align:right; justify-content:flex-end; overflow-wrap:anywhere; }
+}

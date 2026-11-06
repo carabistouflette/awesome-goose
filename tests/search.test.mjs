@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { filterEntries, shareUrl, categoryCounts, sortEntries } from '../site/catalog.mjs';
+import { filterEntries, shareUrl, categoryCounts, sortEntries, searchMatch } from '../site/catalog.mjs';
 const { entries } = JSON.parse(readFileSync(new URL('../_site/catalog.json',import.meta.url)));
 const base = { q:'', category:'', owner:'', saved:false };
 const search = (patch, saved=new Set()) => filterEntries(entries,{...base,...patch},saved);
@@ -78,4 +78,24 @@ test('word-prefix search avoids incidental native inside alternative',()=>{
   const fixture=[{id:'alternative',label:'Alternative runtime',name:'runtime',owner:'sample',category:'Example',description:'Another backend'}, {id:'native',label:'Bindings',name:'bindings',owner:'sample',category:'Example',description:'Native-backed helper'}];
   assert.deepEqual(filterEntries(fixture,{...base,q:'native'},new Set()).map(e=>e.id),['native']);
   assert.ok(search({q:'libcurl'}).some(e=>e.repository==='carabistouflette/goose-http'));
+});
+
+test('decompression aliases find the decoder before an explicit encoder-only limitation',()=>{
+  const categories=[...new Set(entries.map(entry=>entry.category))];
+  for(const q of ['decompression','decompress','decoder']) {
+    const results=sortEntries(search({q}),'category',categories,q);
+    const decoder=results.findIndex(entry=>entry.repository==='Macho0x/goose-deflate');
+    const encoder=results.findIndex(entry=>entry.repository==='kaitk/goose-compress');
+    assert.ok(decoder>=0 && encoder>decoder,q);
+    assert.equal(searchMatch(results[decoder],q).limitation,'');
+    assert.match(searchMatch(results[encoder],q).limitation,/no decoder/);
+  }
+});
+test('capability limitations remain discoverable behind positive matches',()=>{
+  const categories=[...new Set(entries.map(entry=>entry.category))];
+  const results=sortEntries(search({q:'utf8'}),'category',categories,'utf8');
+  assert.equal(results[0].repository,'carabistouflette/goose-text');
+  assert.equal(results[1].repository,'Macho0x/goose-msgpack');
+  assert.match(searchMatch(results[1],'utf8').limitation,/without UTF-8 validation/);
+  assert.ok(search({q:'native'}).some(entry=>entry.repository==='carabistouflette/goose-http'));
 });

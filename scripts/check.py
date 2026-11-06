@@ -23,6 +23,13 @@ for record in records:
     if record['reviewed'] != manifest['review_date']:
         errors.append(f'Inconsistent review date: {repo}')
 
+    aliases=record.get('search_aliases',[])
+    cautions=record.get('search_cautions',[])
+    if not isinstance(aliases,list) or not all(isinstance(term,str) and term.strip() for term in aliases):
+        errors.append(f'Invalid search aliases: {repo}')
+    if not isinstance(cautions,list) or not all(isinstance(caution,dict) and isinstance(caution.get('note'),str) and caution['note'].strip() and isinstance(caution.get('terms'),list) and caution['terms'] and all(isinstance(term,str) and term.strip() for term in caution['terms']) for caution in cautions):
+        errors.append(f'Invalid search cautions: {repo}')
+
 
 def anchors(path):
     counts, found = {}, set()

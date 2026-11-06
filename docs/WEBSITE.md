@@ -5,7 +5,7 @@ Public directory: https://carabistouflette.github.io/awesome-goose/
 ## Source of truth
 
 Edit README.md for admitted entries and categories, docs/sources.json for reviewed
-snapshots, and the curation/choice/comparison/research/development Markdown for the field guide.
+snapshots and their editorial search aliases/cautions, and the curation/choice/comparison/research/development Markdown for the field guide.
 Do not edit generated data or maintain a second list by hand.
 
 `scripts/build-site.py` produces `_site/` with searchable resource data, the HTML
@@ -17,13 +17,16 @@ module import targets, to keep browser caches consistent across deployments.
 The directory defaults to a compact list, with an optional Cards layout; intermediate desktop widths stack descriptions below
 identity rather than compressing the reading column. Both
 layouts use the same resources and filters. Desktop shows Compiler, Docs, Stdlib, Packages and Samples above the library groups.
-On mobile, a named Compiler, docs & examples disclosure opens their full entries,
+On mobile, a named 5 official Goose resources disclosure opens their full entries,
 save controls and evidence; the built-ins-first link remains visible in the introduction.
 
 Search covers names, descriptions, comparison topics and curated category vocabulary.
 It matches word prefixes, normalizes common logging/compression forms and UTF-8
 spelling variants, and keeps AND matching across distinct query words. This avoids
-incidental matches such as native inside Alternative. Other controls include
+incidental matches such as native inside Alternative. Recorded capability aliases
+cover task vocabulary such as decompression. Search preserves matches to documented
+limitations, labels them, and ranks them after other matches in the default grouped
+view. Explicit name/maintainer sorts retain their selected order. Other controls include
 category/maintainer filters, sorting, local favorites, shareable URLs, light/dark
 themes, keyboard search (`/` or Ctrl/Cmd+K), and Skip to search. Expanded evidence
 stays open when changing list/card layout.
@@ -31,9 +34,11 @@ stays open when changing list/card layout.
 All/Saved consistently selects the named collection and preserves the current
 filters. Category counts reflect the other active filters. Mobile uses a category
 selector and an Options disclosure for maintainer/sort. The persistent matching
-bar offers Show N while those controls are open; afterward it offers Filters with
-an active count and accessible scope summary. Editing focuses Category, and Show
-closes the panel and focuses results. The search count also jumps to results.
+bar offers Show N while those controls are open; afterward its Edit action displays
+the selected category/maintainer/order, or a short query preview. Editing focuses
+the full search query when present, otherwise Category. Long query chips show a
+short preview while retaining the complete accessible name and inspection through
+Edit. Show closes the panel and focuses results. The search count also jumps to results.
 
 Favorites and theme stay in browser storage; no server account is required. If
 storage is blocked, favorites last for that visit. Copy filters link preserves

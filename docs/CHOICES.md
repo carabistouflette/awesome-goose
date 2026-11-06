@@ -6,6 +6,12 @@ independent benchmarks or security audit. [Method and baselines](#evidence-and-r
 
 ## HTTP and web
 
+| Need | Option | Qualification |
+| --- | --- | --- |
+| Bounded HTTP client and streaming GET | [carabistouflette/goose-http](https://github.com/carabistouflette/goose-http) | libcurl-backed client. |
+| HTTP serving, routing and WebSockets | [kaitk/goose-http](https://github.com/kaitk/goose-http) | Event-loop server; optional protocols and TLS have platform limits. |
+| Framework-level request handling | [kaitk/plod](https://github.com/kaitk/plod) | Built on Kaitk's server; intended for prototypes today. |
+
 Choose [carabistouflette/goose-http](https://github.com/carabistouflette/goose-http)
 for a bounded libcurl-backed client. Choose
 [kaitk/goose-http](https://github.com/kaitk/goose-http) when serving HTTP with event-loop
@@ -18,6 +24,12 @@ upstream catalog link unless a fork demonstrates distinct maintained functionali
 a second copy of the same server is not a separate recommendation.
 
 ## Cryptography
+
+| Need | Option | Qualification |
+| --- | --- | --- |
+| SHA-256, hex and Ed25519 verification | [carabistouflette/goose-crypto](https://github.com/carabistouflette/goose-crypto) | System libsodium; verification-focused surface. |
+| HMAC, PBKDF2, hashes and OS entropy | [kaitk/goose-hash](https://github.com/kaitk/goose-hash) | Native helpers; inspect the precise primitive required. |
+| Study Goose algorithms and Ethereum primitives | [Macho0x/goose-crypto](https://github.com/Macho0x/goose-crypto) | Not constant-time; its documented timing restrictions apply. |
 
 Choose [carabistouflette/goose-crypto](https://github.com/carabistouflette/goose-crypto)
 for its small libsodium-backed SHA-256/hex/Ed25519-verification surface. It does not
@@ -67,6 +79,11 @@ and feature choice; no matched benchmark was run to rank speed.
 
 ## Logging
 
+| Need | Option | Qualification |
+| --- | --- | --- |
+| Application-controlled escaped logging | [carabistouflette/goose-log](https://github.com/carabistouflette/goose-log) | Control-byte escaping and explicit output policy. |
+| Timestamped events, fields and pattern redaction | [Macho0x/goose-logger](https://github.com/Macho0x/goose-logger) | Patterns cannot promise to catch every secret. |
+
 [carabistouflette/goose-log](https://github.com/carabistouflette/goose-log) emphasizes
 explicit logging and escaping. [Macho0x/goose-logger](https://github.com/Macho0x/goose-logger)
 offers timestamped process events, named fields, and secret-pattern sanitization.
@@ -74,11 +91,15 @@ Both belong because their output policies differ. Escaping prevents control-byte
 confusion; redaction addresses recognizable secret content. Neither replaces the
 other, and pattern matching cannot promise to catch every secret.
 
-A useful additive experiment is an independently usable
-content-pattern sanitizer for goose-log, with cases covering missed secrets and false positives.
-Keep application control over output and avoid a global policy change.
+Optional follow-up work is recorded in [Development](DEVELOPMENT.md#logging).
 
 ## Compression and archives
+
+| Need | Option | Qualification |
+| --- | --- | --- |
+| Bounded tar.gz inspection and extraction | [carabistouflette/goose-archive](https://github.com/carabistouflette/goose-archive) | Archive operations with path/output limits. |
+| DEFLATE decompression and gzip/zlib wrappers | [Macho0x/goose-deflate](https://github.com/Macho0x/goose-deflate) | Includes a decoder and a deliberately simpler encoder. |
+| Streaming encoding, including zstd | [kaitk/goose-compress](https://github.com/kaitk/goose-compress) | Native helpers; no decoder. |
 
 [goose-archive](https://github.com/carabistouflette/goose-archive) owns bounded tar.gz
 inspection/extraction. [Macho0x/goose-deflate](https://github.com/Macho0x/goose-deflate)
@@ -89,10 +110,14 @@ implementation.
 [kaitk/goose-compress](https://github.com/kaitk/goose-compress) earns a separate entry
 for streaming encoding and zstd. Its documented API does not decode. Choose based on
 format, direction, flush needs, and native dependencies. No cross-project speed
-ranking is supported by this review. A future pure-Goose archive backend would need
-an explicit decompressed-output budget and the existing archive path policies.
+ranking is supported by this review. Optional backend work is recorded in [Development](DEVELOPMENT.md#compression-and-archives).
 
 ## SQLite
+
+| Need | Option | Qualification |
+| --- | --- | --- |
+| Use installed system SQLite | [carabistouflette/goose-sqlite](https://github.com/carabistouflette/goose-sqlite) | Linux validated; review recovery/platform contracts. |
+| Bundle the SQLite dependency | [kaitk/goose-sqlite](https://github.com/kaitk/goose-sqlite) | Package pin owns the SQLite revision; review finalization and early-return rules. |
 
 [carabistouflette/goose-sqlite](https://github.com/carabistouflette/goose-sqlite)
 uses system SQLite and documents recovery and platform requirements.

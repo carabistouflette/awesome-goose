@@ -33,3 +33,13 @@ This is a feature-gap plan, not an implementation or a decision to copy code. Re
 an existing package where its contracts fit. Any source adaptation needs its license
 and notices preserved and an independently tested compatibility contract.
 
+## Logging
+
+A useful additive experiment is an independently usable
+content-pattern sanitizer for goose-log, with cases covering missed secrets and false positives.
+Keep application control over output and avoid a global policy change.
+
+## Compression and archives
+
+A future pure-Goose archive backend would need
+an explicit decompressed-output budget and the existing archive path policies.

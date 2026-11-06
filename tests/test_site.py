@@ -50,6 +50,14 @@ class SiteTests(unittest.TestCase):
         self.assertNotIn('<ul>',rendered)
         self.assertIn('First item. Continued content.</p></li>',rendered)
         self.assertEqual(rendered.count('<li>'),2)
+    def test_choice_links_are_contextual_and_not_duplicated(self):
+        entries=json.loads((ROOT / '_site/catalog.json').read_text())['entries']
+        for entry in entries:
+            if entry.get('choice'):
+                self.assertNotIn('href="'+entry['choice']+'"',entry['descriptionHtml'])
+        for repo in ('carabistouflette/goose-url','kaitk/goose-acme','kaitk/goose-tls'):
+            self.assertIsNone(next(e['choice'] for e in entries if e['repository']==repo))
+        self.assertEqual(next(e['owner'] for e in entries if e['name']=='Documentation'),'aardappel')
     def test_choice_links_point_to_generated_sections(self):
         data=json.loads((ROOT / '_site/catalog.json').read_text())
         for entry in data['entries']:

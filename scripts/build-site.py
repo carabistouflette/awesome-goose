@@ -119,7 +119,7 @@ def choice_link(repo, category):
         'Command line and configuration': 'logging' if repo.endswith(('goose-log', 'goose-logger')) else None,
         'Data formats and text': 'toml' if 'toml' in repo else 'compression-and-archives' if repo.endswith(('goose-deflate', 'goose-compress')) else None,
         'Files, processes, and artifacts': 'compression-and-archives' if repo.endswith('goose-archive') else None,
-        'Networking and web': 'http-and-web',
+        'Networking and web': 'http-and-web' if repo.endswith(('goose-http','plod')) else None,
         'Databases': 'sqlite' if repo.endswith('goose-sqlite') else None,
         'Cryptography': 'cryptography',
         'Ethereum and signing': 'ethereum',
@@ -146,6 +146,13 @@ def catalog():
         repo = '/'.join(path[:2]) if url.startswith('https://github.com/') else None
         source = sources.get(repo, {})
         exact_repo = bool(repo and len(path) == 2)
+        choice = choice_link(repo, category)
+        choice_label = 'Choice notes'
+        if choice:
+            for note in list(re.finditer(r'\[([^\]]+)\]\((docs/CHOICES\.md#[^\s)]+)\)', description)):
+                if link_target(note[2]) == choice:
+                    choice_label = note[1]
+                    description = re.sub(re.escape(note[0]) + r'\.?', '', description).strip()
         entries.append({
             'id': slug(label), 'name': label.split('/')[-1] if exact_repo else label,
             'label': label, 'url': url, 'category': category, 'section': section,
@@ -153,7 +160,7 @@ def catalog():
             'descriptionHtml': inline(description), 'license': source.get('license'),
             'reviewed': source.get('reviewed', manifest['review_date']),
             'source': source.get('readme') if exact_repo else (url.replace('/blob/master/', '/blob/' + source['commit'] + '/').replace('/blob/main/', '/blob/' + source['commit'] + '/') if source and '/blob/' in url else None), 'commit': source.get('commit'),
-            'choice': choice_link(repo, category),
+            'choice': choice, 'choiceLabel': choice_label,
             'repository': repo if exact_repo else None,
         })
     if not entries or len({e['id'] for e in entries}) != len(entries):

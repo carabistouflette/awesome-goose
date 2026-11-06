@@ -1,0 +1,46 @@
+# Cedar UI assessment
+
+Revision: `9049751`. Reviewed 2026-11-06 against `docs/ui-reviews/CRITERIA.md`. Scores are subjective judgments of the current directory as a developer discovery tool.
+
+## Coverage and evidence
+
+- Opened a separate background preview tab through `preview_status` and `preview_open`, using the environment-port target for port 8765. All interaction used that returned tab.
+- Desktop: 1280 × 800, light theme. Inspected the rendered landing page, accessibility tree, source, and computed styles. The initial resource cards begin below the first viewport; the screenshot shows the directory heading and filter row at its bottom.
+- Mobile directory: 390 × 844 CSS pixels. Observed the horizontal category rail, search, combined filtering, saved and empty states. Computed page width was 375 pixels with a desktop scrollbar, with no page-wide horizontal overflow observed. The first filtered card began around document y=934; the search field was around y=454.
+- Mobile guide: 320 × 568. Opened `CHOICES.html`; rendered text and computed layout confirmed the Choice notes heading, review date, evidence caveats, HTTP comparison, and a document width of 305 pixels without page-wide horizontal overflow. Source inspection covered the rest of the guide and its generated template.
+- Search for `sqlite`, maintainer `carabistouflette`, and category Databases produced one appropriate card and the URL `?q=sqlite&category=Databases&owner=carabistouflette`. Search and owner selection began at desktop size; category activation and the resulting combined state were verified at mobile size.
+- Saving that SQLite card produced a pressed heart, saved count 1, and “Saved on this device.” Saved view retained the query and maintainer and displayed that item. Expanding Review notes exposed the review date and immutable source snapshot `d45a151`. Unsaving the last result produced the empty state, removal toast, and focus on `saved-resources`.
+- Keyboard `/` focused search sufficiently for typing; Escape cleared the query and blurred focus to BODY. A nonsense query generated a zero-result state. Source confirms native buttons/selects, search and navigation labels, `aria-pressed`, polite result status, a skip link, focus-visible styles, and reduced-motion handling.
+- Read application source in `site/index.html`, `site/style.css`, `site/app.js`, `site/catalog.mjs`, the guide generator, and `docs/CHOICES.md`. Did not read other review reports or modify application code.
+
+Limits: the shared preview service disconnected once and several click operations timed out; successful states above were checked afterward. Reset activation, clipboard copying, complete keyboard tab order, visible focus through the whole page, desktop category activation, theme switching/persistence, actual mobile touch/virtual keyboard, screen-reader announcements, zoom, and external destination validity were not fully verified. Failed tool clicks are not treated as application defects. Mobile testing changed CSS viewport size, not browser user agent. Contrast calculations below use rendered CSS colors rather than a full automated accessibility audit. No claims here validate library implementation correctness or security.
+
+## Scores
+
+| Criterion | Weight | Score / 10 | Assessment |
+| --- | --- | --- | --- |
+| Visual clarity and typography | 20% | 6.5 | Strong heading hierarchy, restrained palette, and orderly cards; essential descriptions and metadata are unusually small, and light-theme muted text lacks sufficient contrast. |
+| Discovery and information architecture | 25% | 7.5 | Useful categories, maintainer filtering, search examples, explicit scope, and alternative-specific descriptions. The large introduction delays results, and mobile removes the prominent guide entrance. |
+| Interaction and feedback | 20% | 7.5 | Combined filters, URL state, saved feedback, disclosure, and last-item focus recovery work. Generic empty messaging leaves saved users without useful context; some controls remain unverified due to tool instability. |
+| Responsive layout and accessibility | 25% | 6.0 | Layout reflows without observed page overflow; semantic controls and labels are a good foundation. Tiny targets and text materially weaken mobile use; full keyboard and assistive-technology coverage remains outstanding. |
+| Content trust and consistency | 10% | 8.5 | Maintainer attribution, licensing, dated source snapshots, concrete limitations, and candid guide caveats inspire confidence. Guide discovery and theme affordances differ from the directory. |
+
+Weighted overall: `6.5×0.20 + 7.5×0.25 + 7.5×0.20 + 6.0×0.25 + 8.5×0.10 = 7.025`, **7.03 / 10**.
+
+## Ranked issues
+
+1. **High — small, low-contrast text carries important decision information.** The desktop card description is 11px, owner 9px, license footer 8px, and filters 10px; mobile descriptions rise only to 12px, with filter labels/reset at 9px. Rendered muted color `#737a72` against page `#f7f6f2` computes to approximately **4.08:1**, below 4.5:1 for normal text. That affects the 14px mobile introduction, search examples, filter labels, and guide paragraphs; card backgrounds differ and need separate checking. This makes limitations and attribution difficult to read, especially for low-vision users. Increase body/card copy toward 15–16px and metadata toward 12–14px, darken the muted token, and check every surface in both themes.
+
+2. **Medium — frequent controls have cramped hit areas.** Computed desktop targets included search examples at 16px high, Review notes at 16px high, save hearts at 30 × 30px, native selects around 21px high, and theme at 36 × 36px. Mobile snapshot retained the 21px selects, 30px hearts, and 16px Review notes, with category buttons 39px high. These dimensions create avoidable precision demands for touch and motor-impaired users; the search example buttons also sit tightly among punctuation. Give repeated actions generous padded hit areas, preferably around 44px high, with spacing between targets; preserve the compact visual glyph inside the padded button if desired.
+
+3. **Medium — mobile discovery spends a full screen before results and removes the guide entrance.** At 390 × 844, the hero, search hints, and beginner panel put the filtered SQLite card around y=934. Selecting a category leaves the reader near the top while the changed result is below the viewport. The mobile stylesheet hides “The field guide” and “How we curate”; the category rail reveals only a small subset of categories at once. This adds scrolling to repeated library lookup and makes comparison guidance less apparent. Compress the mobile introduction, reduce the starter panel after filtering, retain an obvious guide link, and offer a compact category selector or clearly discoverable rail. Keep a result-count/jump-to-results affordance close to search so keyboard and touch users can reach changed results deliberately.
+
+4. **Medium — saved empty state does not explain saving or retained filters.** After removing the only saved card, the heading reads “Saved for later (0)” but the panel says “No resources found. Try a broader search or clear your filters.” It offers only “Show all resources.” Search and maintainer remain active when entering Saved; the heading omits that context. Users cannot easily distinguish having no saves from having saves excluded by filters. Add separate copy for an empty saved collection versus filtered saved results, explain that hearts save on this device, display active query/owner chips, and provide a targeted clear-filters action that preserves Saved mode.
+
+5. **Low — guide presentation does not carry the directory's theme affordance.** The rendered Choice notes guide has no theme button and uses the light background. The generated guide template includes the shared stylesheet but no theme initialization script, whereas the directory reads and applies `goose-theme`. This is source-backed evidence of a consistency gap; an actual dark-to-guide transition was not verified. Share theme initialization and a labeled toggle across pages so a reading guide can preserve the reader's preference.
+
+6. **Low — Escape clears search and discards its focus.** The keyboard check ended with `document.activeElement` equal to BODY after Escape cleared the query. A user who only wanted to clear a search must locate the field again to refine it, and the focus indicator disappears. Keep focus in search after clearing it; if blur is intentional, provide a documented, predictable destination and verify the subsequent Tab sequence.
+
+## Strengths worth preserving
+
+The card and guide content distinguish similarly named projects by job and constraints rather than offering an unsupported ranking. The SQLite card identifies system SQLite and Linux validation; Choice notes explains system versus bundled SQLite and separates client/server HTTP packages. Review notes exposes a dated immutable source link, and the guide explicitly disclaims independent security auditing and reproduced performance comparisons. Native disclosure, filter labels, polite count status, labeled save buttons, and focus recovery after removing the last saved item are useful accessibility foundations.

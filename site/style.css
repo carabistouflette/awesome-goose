@@ -222,3 +222,43 @@ pre { padding:18px; overflow:auto; background:var(--soft); }
   .advanced-fields>label { flex:0 1 auto; min-width:0; flex-direction:row; align-items:center; gap:8px; }
   .filters select { width:auto; max-width:240px; }
 }
+.guide-toc summary { justify-content:space-between; gap:14px; }
+.guide-toc summary::after { content:'+'; font-size:20px; }
+.guide-toc details[open]>summary::after { content:'−'; }
+.mobile-layout { display:none!important; }
+.reference-links { display:flex; flex-wrap:wrap; gap:4px 20px; align-items:center; }
+.reference-links>a { display:inline-flex; align-items:center; min-height:44px; }
+.reference-links .text-button { border:0; background:none; padding:8px 0; text-decoration:underline; text-underline-offset:3px; }
+.share-fallback { display:flex; gap:10px; align-items:end; margin:10px 0; }
+.share-fallback label { flex:1; min-width:0; font-size:13px; }
+.share-fallback input { display:block; width:100%; margin-top:5px; min-height:44px; padding:8px 10px; border:1px solid var(--muted); border-radius:6px; background:var(--surface); color:var(--ink); font-size:14px; }
+@media(max-width:760px) {
+  .directory-top { flex-wrap:nowrap; }
+  .directory-actions { gap:8px; }
+  .view-controls { gap:0; }
+  .directory-actions #share { min-width:44px; }
+  .hero { padding-bottom:4px; }
+  .reference-links { gap:0 16px; }
+}
+@media(max-width:360px) {
+  .topbar { flex-wrap:nowrap; gap:8px; }
+  .topbar .brand-goose { display:none; }
+  .topbar .brand { min-height:44px; font-size:18px; }
+  .topbar nav { width:auto; gap:8px; font-size:13px; }
+  .sidebar { flex-wrap:nowrap; gap:4px; }
+  .sidebar>.nav-item { font-size:13px; padding:8px; gap:6px; }
+  .directory-actions .view-controls { display:none; }
+  .mobile-layout { display:flex!important; }
+  .advanced-fields { flex-wrap:wrap; }
+  .advanced-fields label { flex-basis:100%; }
+  .hero h1 { font-size:28px; }
+  .hero-copy { font-size:14px; }
+}
+@media(max-width:760px) { .hero h1 { font-size:25px; } }
+@media(max-width:360px) {
+  .filters { grid-template-columns:minmax(0,1fr) auto; gap:8px; }
+  .mobile-category { grid-column:1; }
+  .filter-options { grid-column:2; }
+  .filter-options[open] { grid-column:1/-1; }
+  .filter-options summary { justify-content:center; font-size:13px; padding:7px 8px; }
+}

@@ -1,8 +1,8 @@
-import { filterEntries } from './catalog.mjs';
+import { filterEntries, shareUrl } from './catalog.mjs';
 const data = JSON.parse(document.getElementById('catalog-data').textContent);
 const $ = id => document.getElementById(id);
 const categories = [...new Set(data.entries.map(e => e.category))];
-const browseOrder = categories.filter(category => category !== 'Start here').concat('Start here');
+const browseOrder = categories;
 const owners = [...new Set(data.entries.map(e => e.owner))].sort((a,b) => a.localeCompare(b));
 const storage = {
   get(key) { try { return localStorage.getItem(key); } catch { return null; } },
@@ -76,7 +76,7 @@ function card(entry) {
   const overview=el('div','resource-overview');
   const description=el('p','card-description'); description.innerHTML=entry.descriptionHtml; overview.append(description);
   const foot=el('div','resource-links');
-  if(entry.choice) foot.append(link('Choice notes →',entry.choice));
+  if(entry.choice) foot.append(link((entry.choiceLabel || 'Choice notes')+' →',entry.choice));
 
   const details=el('details','review-details');
   const summary=el('summary','', 'Source & review'); summary.setAttribute('aria-label',`Source and review for ${entry.label}`);
@@ -97,6 +97,7 @@ function activeFilters() {
   }
 }
 function render() {
+  $('view').value=state.view;
   $('search').value=state.q; $('owner').value=state.owner; $('sort').value=state.sort; $('category').value=state.category;
   $('saved-count').textContent=saved.size;
   $('all-resources').classList.toggle('active',!state.saved);
@@ -116,7 +117,7 @@ function render() {
   const filtering=Boolean(state.q || state.category || state.owner);
   $('reset').disabled=!filtering && state.sort==='category';
   $('saved-help').hidden=!state.saved;
-  $('filter-options-label').textContent = 'More filters' + (state.owner || state.sort!=='category' ? ' · active' : '');
+  $('filter-options-label').textContent = 'Filters' + (state.owner || state.sort!=='category' ? ' · active' : '');
   if(state.saved && saved.size===0) {
     $('empty-title').textContent='Nothing saved yet';
     $('empty-copy').textContent='Use the heart on a resource to save it here. Your collection stays on this device.';
@@ -136,7 +137,16 @@ function render() {
   for(const [name,group] of groups) {
     const section=el('section','resource-group'),title=el('h3','group-title',name);
     title.append(el('span','group-count',String(group.length))); section.append(title);
-    const cards=el('div','cards'); for(const entry of group) cards.append(card(entry)); section.append(cards); fragment.append(section);
+    if(name==='Start here' && state.view==='list' && !filtering && !state.saved && state.sort==='category') {
+      const references=el('nav','reference-links'); references.setAttribute('aria-label','Language references');
+      for(const entry of group) { const item=link(entry.name+' ↗',entry.url); item.title=entry.description; references.append(item); }
+      const explore=el('button','text-button','View reference details'); explore.type='button';
+      explore.addEventListener('click',()=>change({category:'Start here'},{focus:'results-heading'}));
+      references.append(explore); section.append(references);
+    } else {
+      const cards=el('div','cards'); for(const entry of group) cards.append(card(entry)); section.append(cards);
+    }
+    fragment.append(section);
   }
   $('results').replaceChildren(fragment); rememberView();
 }
@@ -152,7 +162,7 @@ for(const owner of owners) { const option=el('option','',owner); option.value=ow
 $('all-count').textContent=data.entries.length;
 $('review-date').textContent=`Last curated ${data.reviewed}`;
 $('search').addEventListener('input',e=>change({q:e.target.value},{push:false}));
-for(const key of ['owner','sort','category']) $(key).addEventListener('change',e=>change({[key]:e.target.value}));
+for(const key of ['owner','sort','category','view']) $(key).addEventListener('change',e=>change({[key]:e.target.value}));
 $('all-resources').addEventListener('click',browseAll);
 for(const view of ['list','cards']) $(view+'-view').addEventListener('click',()=>change({view}));
 $('saved-resources').addEventListener('click',()=>change({saved:!state.saved}));
@@ -160,10 +170,14 @@ $('reset').addEventListener('click',clearFilters);
 $('empty-reset').addEventListener('click',()=> { if(state.saved && !saved.size) browseAll(); else clearFilters(); $('results-heading').focus(); });
 for(const example of document.querySelectorAll('.search-example')) example.addEventListener('click',()=>change({q:example.dataset.query,category:'',owner:'',saved:false},{focus:'search'}));
 $('share').addEventListener('click',async()=> {
-  const url=new URL(location.href); url.searchParams.delete('saved'); url.hash='';
-  try { await navigator.clipboard.writeText(url.href); toast(state.saved?'Filters link copied. Your device-local saved collection is not included.':'Filters link copied.'); }
-  catch { toast('Copy the address-bar URL to share filters. Saved items stay on this device.'); }
+  const url=shareUrl(location.href);
+  try { await navigator.clipboard.writeText(url); $('share-fallback').hidden=true; toast(state.saved?'Filters link copied. Your device-local saved collection is not included.':'Filters link copied.'); }
+  catch {
+    $('share-url').value=url; $('share-fallback').hidden=false; $('share-url').focus(); $('share-url').select();
+    toast('Clipboard access is unavailable. Copy the selected filters link.');
+  }
 });
+$('share-close').addEventListener('click',()=>{ $('share-fallback').hidden=true; $('share').focus(); });
 document.addEventListener('keydown',e=> {
   const typing=/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || e.target.isContentEditable;
   if((e.key==='/'&&!typing)||((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k')) { e.preventDefault(); $('search').focus(); }

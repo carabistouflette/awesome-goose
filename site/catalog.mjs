@@ -15,3 +15,11 @@ export function categoryCounts(entries, filters, favorites) {
   for (const entry of filterEntries(entries,{...filters,category:''},favorites)) counts.set(entry.category,counts.get(entry.category)+1);
   return counts;
 }
+
+export function sortEntries(entries, sort, categories) {
+  return [...entries].sort((a,b) =>
+    (sort==='category' ? categories.indexOf(a.category)-categories.indexOf(b.category) :
+      sort==='owner' ? a.owner.localeCompare(b.owner,undefined,{sensitivity:'base'}) : 0) ||
+    a.name.localeCompare(b.name,undefined,{sensitivity:'base'}) ||
+    a.owner.localeCompare(b.owner,undefined,{sensitivity:'base'}));
+}

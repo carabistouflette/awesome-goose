@@ -30,6 +30,21 @@
       }));
       applyContents();
     }
+    const outline=[...document.querySelectorAll('.guide-toc details a[href^="#"]')].map(link=>({link,heading:document.getElementById(decodeURIComponent(link.hash.slice(1)))})).filter(item=>item.heading);
+    if(outline.length) {
+      let scheduled=false;
+      const updateLocation=()=>{
+        scheduled=false;
+        const offset=parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop)||64;
+        let current=null;
+        for(const item of outline) { if(item.heading.getBoundingClientRect().top<=offset+16) current=item; else break; }
+        if(scrollY+innerHeight>=document.documentElement.scrollHeight-4) current=outline.at(-1);
+        for(const item of outline) { if(item===current) item.link.setAttribute('aria-current','location'); else item.link.removeAttribute('aria-current'); }
+      };
+      const schedule=()=>{if(document.hidden) updateLocation(); else if(!scheduled) {scheduled=true;requestAnimationFrame(updateLocation);}};
+      addEventListener('scroll',schedule,{passive:true}); addEventListener('resize',schedule); addEventListener('hashchange',updateLocation); addEventListener('load',updateLocation);
+      updateLocation();
+    }
     try { const query=sessionStorage.getItem('goose-directory-query'); if(query) document.querySelectorAll('[data-directory-return]').forEach(back=>{back.href='./'+query;}); } catch {}
   });
   media.addEventListener('change', () => { if (!read()) apply(media.matches ? 'dark' : 'light'); });

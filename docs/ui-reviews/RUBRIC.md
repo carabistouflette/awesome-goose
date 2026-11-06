@@ -16,8 +16,10 @@ Do not increase a score because a target is requested. Report limitations honest
 ## Procedure
 
 The baseline uses three independent reviewers against the same frozen revision.
-Following the user’s instruction, later rounds use two fresh reviewers after the
-baseline reviewers converged on the same findings.
+Following the user’s instruction, rounds may use two fresh reviewers when findings
+repeatedly converge. The user subsequently authorized three when useful; each
+completed round records its actual reviewer count. Use unrounded weighted scores
+for the stopping condition.
 Reviewers read source and inspect rendered desktop/mobile states when tools permit.
 Test search, a category, owner filter, saved-only/empty results, keyboard focus and
 at least one guide. State the viewport, revision, evidence and any verification gaps.

@@ -241,3 +241,38 @@ and the unchanged score. The served application stayed frozen throughout review.
 - Nineteen automated checks pass (11 Python, 8 Node). Manual checks covered filter
   retention, category focus/scroll position, evidence preservation, clipboard
   fallback, contextual guide returns and 320px directory/guide overflow.
+
+## Seventh completed assessment
+
+Application: `443b4d8`.
+
+| Reviewer | Visual | Discovery | Interaction | Responsive / access | Trust | Weighted overall |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Yarrow](assessment-yarrow.md) | 8.0 | 7.5 | 8.5 | 8.5 | 9.0 | 8.20 |
+| [Zephyr](assessment-zephyr.md) | 8.5 | 8.0 | 8.0 | 8.2 | 9.2 | 8.27 |
+| [Aspen](assessment-aspen.md) | 8.5 | 8.5 | 8.5 | 9.0 | 9.0 | 8.675 |
+
+This round did not meet the threshold. All three independently identified hidden
+matching totals and the collapsed language resources. The next round uses two fresh
+reviewers under the user's instruction to reduce reviewer count when findings
+converge; no reviewer or score is removed from this completed round.
+
+## Following corrections
+
+- Filtered and Saved result headings are visible in the persistent collection bar.
+  All/Saved totals remain distinct from current matches.
+- Compiler, Docs and Stdlib have direct, compact links above the first library group.
+  More expands all five language resources in place, including evidence and saving.
+- Name A–Z sorts by project name across maintainers, with owner as a tie-breaker.
+  A regression check covers cross-owner ordering and adjacency of identical names.
+- Skip to search bypasses the desktop category rail; the shortcut is visibly shown.
+  Clear filters restores focus to the new results. Native summaries retain their
+  ordinary Tab stop when programmatically focused.
+- Both List and Cards show the selected state on narrow mobile. Category selects
+  use compact labels, and active advanced filters have a small marker. Clear filters
+  shares the chip row to avoid a separate mobile control row.
+- Comparison links consistently say Compare [topic] options. Reading outlines mark
+  the current section using visible emphasis and aria-current, including scroll.
+- Twenty automated checks pass (11 Python, 9 Node). Rendered checks at 320px and
+  desktop covered the matching toolbar, direct reference links, selected layouts,
+  focus after reset, contextual guide return and the current-section marker.

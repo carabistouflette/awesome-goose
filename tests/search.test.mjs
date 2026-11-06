@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { filterEntries, shareUrl, categoryCounts } from '../site/catalog.mjs';
+import { filterEntries, shareUrl, categoryCounts, sortEntries } from '../site/catalog.mjs';
 const { entries } = JSON.parse(readFileSync(new URL('../_site/catalog.json',import.meta.url)));
 const base = { q:'', category:'', owner:'', saved:false };
 const search = (patch, saved=new Set()) => filterEntries(entries,{...base,...patch},saved);
@@ -42,4 +42,17 @@ test('category counts reflect search, maintainer and saved state without applyin
   assert.equal(counts.get('Graphics'),0);
   const savedId=entries.find(e=>e.repository==='carabistouflette/goose-sqlite').id;
   assert.equal(categoryCounts(entries,{...base,saved:true},new Set([savedId])).get('Databases'),1);
+});
+
+test('name sorting follows package names across maintainers and groups identical names',()=>{
+  const categories=[...new Set(entries.map(e=>e.category))];
+  const sorted=sortEntries(entries,'name',categories);
+  assert.equal(sorted[0].name,'coc-goose');
+  const http=sorted.map((entry,index)=>({entry,index})).filter(({entry})=>entry.name==='goose-http');
+  assert.equal(http.length,2);
+  assert.equal(http[1].index,http[0].index+1);
+  assert.equal(http[0].entry.owner,'carabistouflette');
+  const byOwner=sortEntries(entries,'owner',categories);
+  assert.equal(byOwner[0].owner,'aardappel');
+  assert.equal(byOwner.at(-1).owner,'ZHENGSY');
 });

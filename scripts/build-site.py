@@ -157,9 +157,12 @@ def catalog():
         choice = choice_link(repo, category)
         choice_label = 'Choice notes'
         if choice:
+            topic=choice.split('#')[1]
+            names={'http-and-web':'HTTP','cryptography':'cryptography','ethereum':'Ethereum','toml':'TOML','logging':'logging','sqlite':'SQLite','compression-and-archives':'compression','go-integration':'Go integration','shell-and-editor-additions':'shell and editor'}
+            choice_label='Compare '+names[topic]+' options'
+        if choice:
             for note in list(re.finditer(r'\[([^\]]+)\]\((docs/CHOICES\.md#[^\s)]+)\)', description)):
                 if link_target(note[2]) == choice:
-                    choice_label = note[1]
                     description = re.sub(re.escape(note[0]) + r'\.?', '', description).strip()
                     description = re.sub(r';\s*see\s+(?:the\s*)?$', '.', description)
         entries.append({

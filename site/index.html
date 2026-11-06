@@ -13,6 +13,7 @@
 </head>
 <body>
 <a class="skip" href="#directory">Skip to resources</a>
+<a class="skip" href="#search">Skip to search</a>
 <header class="topbar">
   <a class="brand" href="./"><span class="brand-goose" aria-hidden="true">🪿</span><span>awesome<span class="brand-light">goose</span><span class="brand-dot">.</span></span></a>
   <nav aria-label="Main"><a href="CHOICES.html">Choice notes</a><a href="https://github.com/carabistouflette/awesome-goose" class="github-link">GitHub ↗</a><button id="theme" data-theme-toggle class="icon-button" aria-label="Switch to dark theme" title="Change theme">◐</button></nav>
@@ -30,7 +31,7 @@
     </section>
     <section class="search-area" aria-label="Find resources">
       <div class="search-box"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><label class="sr-only" for="search">Search resources</label><input id="search" type="search" placeholder="Search resources…" aria-describedby="search-help" aria-keyshortcuts="/ Control+k Meta+k" autocomplete="off"><a id="jump-results" class="search-count" href="#results" aria-label="Show matching resources">0 ↓</a></div>
-      <div class="search-hint"><span id="search-help">Name, description, maintainer</span></div>
+      <div class="search-hint"><span id="search-help">Name, description, maintainer</span><span class="search-shortcut"><kbd>/</kbd> to search</span></div>
     </section>
     <section class="directory" data-view="list" id="directory" tabindex="-1" aria-label="Curated resources">
       <div class="directory-top"><div class="results-title"><h2 id="results-heading" tabindex="-1">All resources <span id="result-count"></span></h2></div><div class="scope-switch" role="group" aria-label="Resource collection"><button class="nav-item active" id="all-resources" type="button"><span>All</span><span id="all-count" class="count"></span></button><button class="nav-item" id="saved-resources" type="button"><span>Saved</span><span id="saved-count" class="count">0</span></button></div><div class="directory-actions"><div class="view-controls" role="group" aria-label="Resource layout"><button id="list-view" type="button" aria-pressed="true">List</button><button id="cards-view" type="button" aria-pressed="false">Cards</button></div><button id="toggle-view" class="mobile-view text-button" type="button">Cards</button><button id="share" class="text-button" aria-label="Copy filters link" title="Copy filters link">Share</button></div></div>
@@ -40,10 +41,9 @@
           <label>Maintainer<select id="owner"><option value="">Everyone</option></select></label>
           <label>Sort by<select id="sort"><option value="category">Category</option><option value="name">Name A–Z</option><option value="owner">Maintainer</option></select></label>
         <button id="apply-filters" class="apply-filters text-button" type="button">Show results</button></div></details>
-        <button id="reset" class="text-button">Clear filters</button>
       </div>
       <div id="share-fallback" class="share-fallback" hidden><label for="share-url">Copy this filters link. Saved items are not included.<input id="share-url" type="url" readonly></label><button id="share-close" class="text-button" type="button">Close</button></div>
-      <div id="filter-state" class="filter-state" aria-label="Active filters"></div>
+      <div class="active-filter-row"><div id="filter-state" class="filter-state" aria-label="Active filters"></div><button id="reset" class="text-button">Clear filters</button></div>
       <p id="saved-help" class="saved-help" hidden>Saved resources stay on this device. Shared links include filters, not your saved collection.</p>
       <p id="status" class="sr-only" role="status" aria-live="polite"></p>
       <div id="results" tabindex="-1"></div>

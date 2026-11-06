@@ -1,7 +1,8 @@
-import { filterEntries, shareUrl, categoryCounts } from './catalog.mjs';
+import { filterEntries, shareUrl, categoryCounts, sortEntries } from './catalog.mjs';
 const data = JSON.parse(document.getElementById('catalog-data').textContent);
 const $ = id => document.getElementById(id);
 const categoryLabels={'Command line and configuration':'CLI & configuration','Data formats and text':'Data & text','Files, processes, and artifacts':'Files & processes','Networking and web':'Networking & web','Numbers and scientific computing':'Scientific & numeric','Time and identifiers':'Time & identifiers','Development tools':'Developer tools','Learning and community':'Learning & community'};
+const selectLabels={...categoryLabels,'Command line and configuration':'CLI & config','Numbers and scientific computing':'Science & maths','Ethereum and signing':'Ethereum','Time and identifiers':'Time & IDs','Learning and community':'Community'};
 const categories = [...new Set(data.entries.map(e => e.category))];
 const browseOrder = categories;
 const owners = [...new Set(data.entries.map(e => e.owner))].sort((a,b) => a.localeCompare(b));
@@ -111,9 +112,10 @@ function render() {
   $('saved-resources').classList.toggle('active',state.saved);
   $('all-resources').setAttribute('aria-pressed',String(!state.saved)); $('saved-resources').setAttribute('aria-pressed',String(state.saved));
   for(const button of $('categories').children) { const active=button.dataset.category===state.category; button.classList.toggle('active',active); button.setAttribute('aria-pressed',String(active)); }
-  const entries=filterEntries(data.entries,state,saved);
-  entries.sort((a,b) => (state.sort==='owner'?a.owner.localeCompare(b.owner):state.sort==='category'?browseOrder.indexOf(a.category)-browseOrder.indexOf(b.category):0) || a.label.localeCompare(b.label,undefined,{sensitivity:'base'}));
-  $('results-heading').firstChild.textContent=(state.saved?'Saved resources':state.category || (state.q?'Search results':'All resources'))+' ';
+  const entries=sortEntries(filterEntries(data.entries,state,saved),state.sort,browseOrder);
+  const filtering=Boolean(state.q || state.category || state.owner);
+  $('directory').dataset.context=String(filtering || state.saved);
+  $('results-heading').firstChild.textContent=(state.saved?(filtering?'Matching saved resources':'Saved resources'):(filtering?'Matching resources':'All resources'))+' ';
   $('result-count').textContent=state.saved?`(${entries.length} of ${saved.size})`:`(${entries.length})`;
   $('jump-results').textContent=`${entries.length} ↓`;
   $('jump-results').setAttribute('aria-label',`Show ${entries.length} matching ${entries.length===1?'resource':'resources'}`);
@@ -130,11 +132,12 @@ function render() {
   const counts=categoryCounts(data.entries,state,saved);
   $('category-label').textContent=(state.q || state.owner || state.saved)?'Categories · matches':'Categories';
   for(const button of $('categories').children) { const count=counts.get(button.dataset.category); button.querySelector('.count').textContent=count; button.setAttribute('aria-label',`${button.dataset.category}: ${count} matching ${count===1?'resource':'resources'}`); }
-  for(const option of $('category').options) if(option.value) option.textContent=option.value+' ('+counts.get(option.value)+')';
-  const filtering=Boolean(state.q || state.category || state.owner);
+  for(const option of $('category').options) if(option.value) option.textContent=(selectLabels[option.value] || option.value)+' ('+counts.get(option.value)+')';
   $('reset').disabled=!filtering && state.sort==='category';
   $('saved-help').hidden=!state.saved;
-  $('filter-options-label').textContent = 'Filters' + (state.owner || state.sort!=='category' ? ' · active' : '');
+  $('filter-options-label').textContent = 'Filters';
+  $('filter-options-label').dataset.active=String(Boolean(state.owner || state.sort!=='category'));
+  $('filter-options-label').setAttribute('aria-label',state.owner || state.sort!=='category'?'Filters, active':'Filters');
   if(state.saved && saved.size===0) {
     $('empty-title').textContent='Nothing saved yet';
     $('empty-copy').textContent='Use the heart on a resource to save it here. Your collection stays on this device.';
@@ -156,10 +159,18 @@ function render() {
     title.setAttribute('aria-label',`${name}, ${group.length} ${group.length===1?'resource':'resources'}`);
     title.append(el('span','group-count',String(group.length))); section.append(title);
     if(name==='Start here' && !filtering && !state.saved && state.sort==='category') {
+      section.classList.add('reference-group'); title.classList.add('sr-only');
+      title.textContent='Language, documentation and examples';
+      const shortcuts=el('nav','reference-shortcuts'); shortcuts.setAttribute('aria-label','Official Goose resources');
+      for(const [id,label] of [['goose','Compiler'],['documentation','Docs'],['standard-library','Stdlib']]) {
+        const entry=group.find(item=>item.id===id);
+        if(entry) { const shortcut=link(label+' ↗',entry.url); shortcut.setAttribute('aria-label',entry.name==='Goose'?'Goose compiler':entry.name); shortcuts.append(shortcut); }
+      }
+      section.append(shortcuts);
       const disclosure=el('details','reference-details');
       const mode=matchMedia('(max-width: 760px)').matches?'mobile':'desktop';
       disclosure.open=referencePreferences[mode] ?? false;
-      const summary=el('summary'); summary.append(title); disclosure.append(summary);
+      const summary=el('summary','','More'); summary.setAttribute('aria-label','All '+group.length+' language resources, with descriptions and save controls'); disclosure.append(summary);
       summary.addEventListener('click',()=>{referencePreferences[mode]=!disclosure.open;});
       const references=el('div','cards reference-resources');
       for(const entry of group) references.append(card(entry));
@@ -178,7 +189,7 @@ for(const category of categories) {
   button.title=category;
   button.append(el('span','',categoryLabels[category] || category),el('span','count',String(data.entries.filter(e=>e.category===category).length)));
   button.addEventListener('click',() => {change({category:state.category===category?'':category});jumpToResults();}); $('categories').append(button);
-  const option=el('option','',category+' ('+data.entries.filter(e=>e.category===category).length+')'); option.value=category; $('category').append(option);
+  const option=el('option','',(selectLabels[category] || category)+' ('+data.entries.filter(e=>e.category===category).length+')'); option.value=category; $('category').append(option);
 }
 for(const owner of owners) { const option=el('option','',owner); option.value=owner; $('owner').append(option); }
 $('all-count').textContent=data.entries.length;
@@ -189,8 +200,8 @@ $('all-resources').addEventListener('click',()=>{change({saved:false});jumpToRes
 $('toggle-view').addEventListener('click',()=>change({view:state.view==='list'?'cards':'list'}));
 for(const view of ['list','cards']) $(view+'-view').addEventListener('click',()=>change({view}));
 $('saved-resources').addEventListener('click',()=>{change({saved:!state.saved});jumpToResults();});
-$('reset').addEventListener('click',clearFilters);
-function jumpToResults() { const heading=$('results').querySelector('.group-title') || $('empty-title'); const target=heading.closest('summary') || heading; target.tabIndex=-1; target.focus(); target.scrollIntoView({block:'start'}); }
+$('reset').addEventListener('click',()=>{clearFilters();jumpToResults();});
+function jumpToResults() { const heading=$('results').querySelector('.reference-details summary, .resource-group:not(.reference-group) .group-title') || $('empty-title'); const target=heading; if(target.tagName!=='SUMMARY') target.tabIndex=-1; target.focus(); target.scrollIntoView({block:'start'}); }
 $('jump-results').addEventListener('click',event=>{event.preventDefault();jumpToResults();});
 $('apply-filters').addEventListener('click',()=>{ $('filter-options').open=false; jumpToResults(); });
 $('empty-reset').addEventListener('click',()=> { if(state.saved && !saved.size) browseAll(); else clearFilters(); jumpToResults(); });

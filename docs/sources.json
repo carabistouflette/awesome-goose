@@ -1,0 +1,370 @@
+{
+  "review_date": "2026-11-06",
+  "scope": "Public README/source review; upstream test claims were not independently rerun. Null license marks a research/watchlist candidate, not an admitted package.",
+  "repositories": [
+    {
+      "repository": "aardappel/goose",
+      "commit": "7b90f91d91845f4ef1712e16ed053f395e4e6e1c",
+      "readme": "https://github.com/aardappel/goose/blob/7b90f91d91845f4ef1712e16ed053f395e4e6e1c/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-archive",
+      "commit": "7d1afbeaa035a36aa647c83dd05e1c2c6e2762f5",
+      "readme": "https://github.com/carabistouflette/goose-archive/blob/7d1afbeaa035a36aa647c83dd05e1c2c6e2762f5/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-argparse",
+      "commit": "b1f7cfeeacedbfb934d64ab89036129303f73116",
+      "readme": "https://github.com/carabistouflette/goose-argparse/blob/b1f7cfeeacedbfb934d64ab89036129303f73116/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-artifact",
+      "commit": "1d741bb2862db1e9287612ce1a373cc4b5080cd7",
+      "readme": "https://github.com/carabistouflette/goose-artifact/blob/1d741bb2862db1e9287612ce1a373cc4b5080cd7/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-check",
+      "commit": "4008f41aef11278d16585b6ed064a02127894599",
+      "readme": "https://github.com/carabistouflette/goose-check/blob/4008f41aef11278d16585b6ed064a02127894599/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-config",
+      "commit": "af77c285f6ee81f68e7d1ecff5054b25cf7e71b9",
+      "readme": "https://github.com/carabistouflette/goose-config/blob/af77c285f6ee81f68e7d1ecff5054b25cf7e71b9/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-crypto",
+      "commit": "729cd08e8df2bf7d2c9c12000d6fc94e62fcb55e",
+      "readme": "https://github.com/carabistouflette/goose-crypto/blob/729cd08e8df2bf7d2c9c12000d6fc94e62fcb55e/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-csv",
+      "commit": "7b3c890d58a6eac1c7885db364162938486bda14",
+      "readme": "https://github.com/carabistouflette/goose-csv/blob/7b3c890d58a6eac1c7885db364162938486bda14/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-fs",
+      "commit": "0d84729aed8d72463349cac7d9439d4039ccd6d3",
+      "readme": "https://github.com/carabistouflette/goose-fs/blob/0d84729aed8d72463349cac7d9439d4039ccd6d3/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-http",
+      "commit": "0fa7d19413ff5b406e2519f3378ad212af07ba61",
+      "readme": "https://github.com/carabistouflette/goose-http/blob/0fa7d19413ff5b406e2519f3378ad212af07ba61/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-json",
+      "commit": "0061ec83bf7f88763402751d50e3c27f3dd13f68",
+      "readme": "https://github.com/carabistouflette/goose-json/blob/0061ec83bf7f88763402751d50e3c27f3dd13f68/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-log",
+      "commit": "c29cdc27d41364e52e53556f8468d55552439bf6",
+      "readme": "https://github.com/carabistouflette/goose-log/blob/c29cdc27d41364e52e53556f8468d55552439bf6/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-process",
+      "commit": "4cf1f13302ad5b42f3ca94f3c7a829c44b7ee60e",
+      "readme": "https://github.com/carabistouflette/goose-process/blob/4cf1f13302ad5b42f3ca94f3c7a829c44b7ee60e/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-semver",
+      "commit": "8a11c036c5649ecc10f65eeb443395e4b41aaf7d",
+      "readme": "https://github.com/carabistouflette/goose-semver/blob/8a11c036c5649ecc10f65eeb443395e4b41aaf7d/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-sqlite",
+      "commit": "d45a15160d09fea0af44fdea7eb5ce7e6c663a81",
+      "readme": "https://github.com/carabistouflette/goose-sqlite/blob/d45a15160d09fea0af44fdea7eb5ce7e6c663a81/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-text",
+      "commit": "2e0081bd24be3f0e913bd709a642e955c43f61cb",
+      "readme": "https://github.com/carabistouflette/goose-text/blob/2e0081bd24be3f0e913bd709a642e955c43f61cb/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-time",
+      "commit": "d58d99acf51612fa754edc351efc8c1f85bdc96e",
+      "readme": "https://github.com/carabistouflette/goose-time/blob/d58d99acf51612fa754edc351efc8c1f85bdc96e/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-toml",
+      "commit": "926a9048af12083634298eb27712b801b7c1abbe",
+      "readme": "https://github.com/carabistouflette/goose-toml/blob/926a9048af12083634298eb27712b801b7c1abbe/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-toml-edit",
+      "commit": "e053847ecfe983305080b70aa46632ac3ef9d783",
+      "readme": "https://github.com/carabistouflette/goose-toml-edit/blob/e053847ecfe983305080b70aa46632ac3ef9d783/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-url",
+      "commit": "217ed197726a7545d51bca322059993f9e4c4317",
+      "readme": "https://github.com/carabistouflette/goose-url/blob/217ed197726a7545d51bca322059993f9e4c4317/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/honk",
+      "commit": "3fe94286bb151e2e09f1ec35f9b83dcc60603b4a",
+      "readme": "https://github.com/carabistouflette/honk/blob/3fe94286bb151e2e09f1ec35f9b83dcc60603b4a/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "exaroth/coc-goose",
+      "commit": "37b4ce5724135d4ceec6d2c2878e572537ecc3de",
+      "readme": "https://github.com/exaroth/coc-goose/blob/37b4ce5724135d4ceec6d2c2878e572537ecc3de/README.md",
+      "reviewed": "2026-11-06",
+      "license": "MIT"
+    },
+    {
+      "repository": "exaroth/goose-lang.vim",
+      "commit": "8998bdc4e9f02d3229777480d444feca6e3f46eb",
+      "readme": "https://github.com/exaroth/goose-lang.vim/blob/8998bdc4e9f02d3229777480d444feca6e3f46eb/README.md",
+      "reviewed": "2026-11-06",
+      "license": "MIT"
+    },
+    {
+      "repository": "guillochon/goose-fft",
+      "commit": "82674dbea50eb8b4c9e1b47b264fdc0ccba67dbe",
+      "readme": "https://github.com/guillochon/goose-fft/blob/82674dbea50eb8b4c9e1b47b264fdc0ccba67dbe/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "guillochon/goose-random",
+      "commit": "76ec1aa894fe38aee3601005b26258a04db25b66",
+      "readme": "https://github.com/guillochon/goose-random/blob/76ec1aa894fe38aee3601005b26258a04db25b66/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "kaitk/goose-acme",
+      "commit": "504b9354f7f5bf847ac75c6e1f6de47d737138eb",
+      "readme": "https://github.com/kaitk/goose-acme/blob/504b9354f7f5bf847ac75c6e1f6de47d737138eb/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "kaitk/goose-compress",
+      "commit": "ebf372eac4638a692ee89eba3204c666c101d7d9",
+      "readme": "https://github.com/kaitk/goose-compress/blob/ebf372eac4638a692ee89eba3204c666c101d7d9/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "kaitk/goose-hash",
+      "commit": "96cc41fdfb3942ce566bf0b860e90963698ccaeb",
+      "readme": "https://github.com/kaitk/goose-hash/blob/96cc41fdfb3942ce566bf0b860e90963698ccaeb/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "kaitk/goose-http",
+      "commit": "86fdeec31d911d4394d797a397660d6fed96ae5d",
+      "readme": "https://github.com/kaitk/goose-http/blob/86fdeec31d911d4394d797a397660d6fed96ae5d/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "kaitk/goose-ngfx",
+      "commit": "fc7c60df9e181d23441892862c3a5d7ad3f78364",
+      "readme": "https://github.com/kaitk/goose-ngfx/blob/fc7c60df9e181d23441892862c3a5d7ad3f78364/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "kaitk/goose-postgres",
+      "commit": "c89f8b421b0aad75e7dda1a34197ca910ce7137d",
+      "readme": "https://github.com/kaitk/goose-postgres/blob/c89f8b421b0aad75e7dda1a34197ca910ce7137d/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "kaitk/goose-sqlite",
+      "commit": "2c315b48fe0f479e4eb172b99403d35ae7d1cdcf",
+      "readme": "https://github.com/kaitk/goose-sqlite/blob/2c315b48fe0f479e4eb172b99403d35ae7d1cdcf/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "kaitk/goose-tls",
+      "commit": "7660d5fa30bf6d22adcc8da46cdc067a73486e38",
+      "readme": "https://github.com/kaitk/goose-tls/blob/7660d5fa30bf6d22adcc8da46cdc067a73486e38/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "kaitk/plod",
+      "commit": "067b57c804435ea9479d58ba55e3cc103788a151",
+      "readme": "https://github.com/kaitk/plod/blob/067b57c804435ea9479d58ba55e3cc103788a151/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "lamweilun/raygoose",
+      "commit": "143aa21d75e25356f01fa7bb36e1ebae81b34632",
+      "readme": "https://github.com/lamweilun/raygoose/blob/143aa21d75e25356f01fa7bb36e1ebae81b34632/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Zlib"
+    },
+    {
+      "repository": "Macho0x/goose-bigint",
+      "commit": "9c1d25b6975d5d7af51cd156ebde4d10fd157ce8",
+      "readme": "https://github.com/Macho0x/goose-bigint/blob/9c1d25b6975d5d7af51cd156ebde4d10fd157ce8/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "Macho0x/goose-crypto",
+      "commit": "0fa24f53fd6918c0cfeff6012b7352f60d480801",
+      "readme": "https://github.com/Macho0x/goose-crypto/blob/0fa24f53fd6918c0cfeff6012b7352f60d480801/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "Macho0x/goose-decimal",
+      "commit": "55e019ae3db730b247034a8956ef3b8a21d76235",
+      "readme": "https://github.com/Macho0x/goose-decimal/blob/55e019ae3db730b247034a8956ef3b8a21d76235/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "Macho0x/goose-deflate",
+      "commit": "3b1d0d38be908dbb9bc2e26411bfd7449c570147",
+      "readme": "https://github.com/Macho0x/goose-deflate/blob/3b1d0d38be908dbb9bc2e26411bfd7449c570147/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "Macho0x/goose-ethereum",
+      "commit": "f80742b76c578025618d389396e1340391cd4e65",
+      "readme": "https://github.com/Macho0x/goose-ethereum/blob/f80742b76c578025618d389396e1340391cd4e65/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "Macho0x/goose-http",
+      "commit": "e0722c4607b2a1b9ad7edfaf3d8964a431e3714a",
+      "readme": "https://github.com/Macho0x/goose-http/blob/e0722c4607b2a1b9ad7edfaf3d8964a431e3714a/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "Macho0x/goose-hyperliquid",
+      "commit": "b34a5be4e2a39cbc920e3af50af5bf5a042afcea",
+      "readme": "https://github.com/Macho0x/goose-hyperliquid/blob/b34a5be4e2a39cbc920e3af50af5bf5a042afcea/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "Macho0x/goose-logger",
+      "commit": "50695a3df0eb5a1048a4b183538d59f43f5eb279",
+      "readme": "https://github.com/Macho0x/goose-logger/blob/50695a3df0eb5a1048a4b183538d59f43f5eb279/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "Macho0x/goose-msgpack",
+      "commit": "a3d08d25f0260a964f795008ac79468f728a1388",
+      "readme": "https://github.com/Macho0x/goose-msgpack/blob/a3d08d25f0260a964f795008ac79468f728a1388/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "Macho0x/goose-signature",
+      "commit": "2dbfd5eb625c69d26291c095a52fd5c251f13fe8",
+      "readme": "https://github.com/Macho0x/goose-signature/blob/2dbfd5eb625c69d26291c095a52fd5c251f13fe8/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "Macho0x/goose-toml",
+      "commit": "589f168e70a2c83cb1e84cbf31ebee8d27c085c6",
+      "readme": "https://github.com/Macho0x/goose-toml/blob/589f168e70a2c83cb1e84cbf31ebee8d27c085c6/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "Macho0x/goose-uuid",
+      "commit": "9f89fe6bcb08048a736b82f459a89f0a5f1ee785",
+      "readme": "https://github.com/Macho0x/goose-uuid/blob/9f89fe6bcb08048a736b82f459a89f0a5f1ee785/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "robtandy/goose.go",
+      "commit": "5a5ba602518a2b73e2e3fad144ebd292b9564d11",
+      "readme": "https://github.com/robtandy/goose.go/blob/5a5ba602518a2b73e2e3fad144ebd292b9564d11/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "rust-unofficial/awesome-rust",
+      "commit": "12bee7e7239798d9da163e75decaa2a77bd0546a",
+      "readme": "https://github.com/rust-unofficial/awesome-rust/blob/12bee7e7239798d9da163e75decaa2a77bd0546a/README.md",
+      "reviewed": "2026-11-06",
+      "license": "CC0-1.0"
+    },
+    {
+      "repository": "scriptmaster/gooslings",
+      "commit": "9c52b00470f210d2fa83eb71e2838781b76437a4",
+      "readme": "https://github.com/scriptmaster/gooslings/blob/9c52b00470f210d2fa83eb71e2838781b76437a4/README.md",
+      "reviewed": "2026-11-06",
+      "license": null
+    },
+    {
+      "repository": "voidssx1/gosh",
+      "commit": "a5805f4f4e4346a70c4e57fa63c31da445fce192",
+      "readme": "https://github.com/voidssx1/gosh/blob/a5805f4f4e4346a70c4e57fa63c31da445fce192/README.md",
+      "reviewed": "2026-11-06",
+      "license": "MIT"
+    },
+    {
+      "repository": "ZHENGSY/goose-zed",
+      "commit": "1c29fb9425b8596bf6e3f9e2cbd4816f6b2d036a",
+      "readme": "https://github.com/ZHENGSY/goose-zed/blob/1c29fb9425b8596bf6e3f9e2cbd4816f6b2d036a/README.md",
+      "reviewed": "2026-11-06",
+      "license": "Apache-2.0"
+    }
+  ]
+}

@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / '_site'
 REPO = 'https://github.com/carabistouflette/awesome-goose'
-GUIDES = ('CHOICES','COMPARISONS','CURATION','RESEARCH','DEVELOPMENT')
+GUIDES = ('CHOICES','COMPARISONS','CURATION','RESEARCH','DEVELOPMENT','SOURCES')
 
 
 def slug(text):
@@ -134,13 +134,33 @@ def choice_link(repo, category):
     return f'CHOICES.html#{topic}' if topic else None
 
 
-def catalog():
-    manifest = json.loads((ROOT / 'docs/sources.json').read_text())
-    sources = {s['repository']: s for s in manifest['repositories']}
+def comparison_baselines():
     baselines={}
     comparison=(ROOT / 'docs/COMPARISONS.md').read_text()
     for repo,commit in re.findall(r'https://github.com/([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)/blob/([a-f0-9]{40})/README\.md',comparison):
         baselines.setdefault(repo,commit)
+    return baselines
+
+
+def source_index():
+    records=json.loads((ROOT / 'docs/sources.json').read_text())['repositories']
+    baselines=comparison_baselines()
+    sections=[]
+    for owner in sorted({record['repository'].split('/')[0] for record in records},key=str.casefold):
+        sections.append('## '+owner+'\n\n| Repository | License recorded | Directory snapshot and review date | Separate comparison baseline |\n| --- | --- | --- | --- |')
+        for record in sorted((record for record in records if record['repository'].split('/')[0]==owner),key=lambda record:record['repository'].casefold()):
+            repo,commit=record['repository'],record['commit']
+            baseline=baselines.get(repo)
+            comparison=f'[{baseline[:7]}](https://github.com/{repo}/blob/{baseline}/README.md)' if baseline and baseline!=commit else 'Same snapshot' if baseline else 'No separate baseline indexed'
+            sections.append(f"| [{repo}](https://github.com/{repo}) | {record.get('license') or 'Not recorded'} | [{commit[:7]}]({record['readme']}) · {record['reviewed']} | {comparison} |")
+        sections.append('')
+    return '\n'.join(sections)
+
+
+def catalog():
+    manifest = json.loads((ROOT / 'docs/sources.json').read_text())
+    sources = {s['repository']: s for s in manifest['repositories']}
+    baselines=comparison_baselines()
     entries, section, category = [], '', ''
     for line in (ROOT / 'README.md').read_text().splitlines():
         if line.startswith('## '):
@@ -207,11 +227,13 @@ def main():
     (OUT / 'index.html').write_text(asset_links(template.replace('<!-- CATALOG_DATA -->', f'<script id="catalog-data" type="application/json">{payload}</script>')))
     (OUT / 'catalog.json').write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
     for name in GUIDES:
-        content = markdown((ROOT / 'docs' / f'{name}.md').read_text())
-        sections = re.findall(r'^(#{2,3}) (.+)$', (ROOT / 'docs' / f'{name}.md').read_text(), re.M)
+        document=(ROOT / 'docs' / f'{name}.md').read_text()
+        if name=='SOURCES': document=document.replace('<!-- SOURCE_INDEX -->',source_index())
+        content = markdown(document)
+        sections = re.findall(r'^(#{2,3}) (.+)$', document, re.M)
         contents = ''.join(f'<a class="{"toc-subsection" if len(level)==3 else "toc-section"}" href="#{slug(title)}">{html.escape(title)}</a>' for level,title in sections)
         toc = f'<nav id="guide-contents" tabindex="-1" class="guide-toc" aria-label="On this page"><a href="./" class="toc-return" data-directory-return>← Directory</a><details open data-guide-contents><summary>On this page</summary>{contents}</details></nav>'
-        title = 'Choice notes' if name == 'CHOICES' else name.title()
+        title = {'CHOICES':'Choice notes','SOURCES':'Source evidence'}.get(name,name.title())
         page = f'''<!doctype html><html lang="en" class="guide-root"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{title} · Awesome Goose</title><script src="theme.js"></script><link rel="stylesheet" href="style.css"></head><body class="guide-page"><a class="skip" href="#guide">Skip to content</a><header class="guide-header"><a class="brand" href="./" data-directory-return>🪿 Awesome Goose</a><nav aria-label="Guide navigation"><a href="./" data-directory-return>← Back to directory</a><button class="icon-button" data-theme-toggle aria-label="Change theme">◐</button></nav></header><nav class="guide-mobile-nav" aria-label="Reading navigation"><a href="./" data-directory-return>← Directory</a><a href="#guide-contents" data-contents-open>Contents ↑</a></nav><div class="guide-layout">{toc}<main id="guide" tabindex="-1" class="prose">{content}</main></div><footer class="guide-footer"><a href="{REPO}/blob/main/docs/{name}.md">Edit this guide on GitHub ↗</a></footer></body></html>'''
         (OUT / f'{name}.html').write_text(asset_links(page))
     shutil.copyfile(ROOT / 'docs/sources.json', OUT / 'sources.json')

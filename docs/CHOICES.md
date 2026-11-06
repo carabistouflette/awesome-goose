@@ -1,15 +1,8 @@
 # Choice notes
 
-Reviewed 2026-11-06. These are recommendations about fit, based on public documentation
-and selected source inspection. They are not independent security audits or reproduced
-performance comparisons. [The source inventory](sources.json) records immutable README
-links. [Detailed Macho0x comparisons](COMPARISONS.md) provide the supporting inspection.
-
-Directory source snapshots and detailed comparison baselines are separate reviews.
-They can cite different commits on the same date. Each comparison applies to its
-explicitly linked revision; a directory pin does not imply that all comparison
-claims were revalidated at that pin. Expanded Source & review shows both snapshots
-when they differ. [Source inventory](sources.json).
+Reviewed 2026-11-06. Based on documentation and selected source inspection; no
+independent benchmarks or security audit. [Method and baselines](#evidence-and-review-method) ·
+[Source evidence](SOURCES.md) · [Detailed comparisons](COMPARISONS.md).
 
 ## HTTP and web
 
@@ -151,3 +144,16 @@ the evidence.
 coc.nvim to the language server; the latter supplies filetype/highlighting/indentation
 and basic compiler integration. They can be installed together. ZHENGSY's Zed
 extension serves a different editor and remains independently useful.
+
+## Evidence and review method
+
+Reviewed 2026-11-06. These are recommendations about fit, based on public documentation
+and selected source inspection. They are not independent security audits or reproduced
+performance comparisons. [Source inventory (JSON)](sources.json) records immutable README
+links. [Detailed Macho0x comparisons](COMPARISONS.md) provide the supporting inspection.
+
+Directory source snapshots and detailed comparison baselines are separate reviews.
+They can cite different commits on the same date. Each comparison applies to its
+explicitly linked revision; a directory pin does not imply that all comparison
+claims were revalidated at that pin. Expanded Source & review shows both snapshots
+when they differ. [Source inventory (JSON)](sources.json).

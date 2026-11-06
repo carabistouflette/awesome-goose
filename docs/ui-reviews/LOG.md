@@ -313,3 +313,41 @@ condition because Beech remained below it. Neither found a blocking defect.
 Structured platform/native-dependency metadata remains an optional future enhancement.
 Current descriptions retain their evidence-backed requirements and limitations; no
 new compatibility or security promise was inferred to fill a field.
+
+## Ninth completed assessment
+
+Application: `63419cc`.
+
+| Reviewer | Visual | Discovery | Interaction | Responsive / access | Trust | Weighted overall |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Dogwood](assessment-dogwood.md) | 9.0 | 9.0 | 9.5 | 8.5 | 9.0 | 8.975 |
+| [Hazel](assessment-hazel.md) | 9.0 | 9.0 | 9.5 | 9.0 | 9.0 | 9.10 |
+
+The round did not meet the stopping condition. Dogwood's raw 8.975 is not rounded
+up to 9 for this purpose. The principal issue was the 768px arrangement: the category
+rail and split list columns left descriptions only about 206px wide. Hazel found
+only two low-severity issues in its desktop/phone sample.
+
+## Following corrections
+
+- List entries stack identity and description at 761–1000px, retaining the category
+  rail and desktop controls. At 768px, the checked description is now 498px wide,
+  equal to its full row, without page overflow.
+- The introductory directory link says Check built-ins first and opens the standard
+  library. The experimental-ecosystem qualification remains in the footer and
+  curation guidance. All five official shortcuts remain directly available.
+- Choice notes opens with a compact dated scope statement and method/evidence links.
+  Full qualifications and the baseline explanation remain in its linked methodology
+  section. The first choice heading is around y=475 at 320×700, rather than below
+  the first viewport.
+- Source evidence is a rendered index of all 52 inventory records, grouped by
+  maintainer with license metadata, dated directory pins and separate comparison
+  pins. It includes discovery candidates without implying admission. JSON stays
+  available and its link explicitly identifies the format. The index is generated
+  from the inventory/comparison sources rather than maintained as a second list.
+- Owner correction: the previous 14px metadata rule did not override the more
+  specific legacy license selector. That selector is now corrected directly;
+  computed license size was verified as 14px in Chromium.
+- Twenty-one checks pass (12 Python, 9 Node), including complete snapshot coverage
+  in the rendered evidence index. Rendered checks covered tablet row geometry,
+  narrow guide/evidence layouts, source links and absence of JavaScript errors.

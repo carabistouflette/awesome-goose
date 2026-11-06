@@ -5,7 +5,7 @@ Public directory: https://carabistouflette.github.io/awesome-goose/
 ## Source of truth
 
 Edit README.md for admitted entries and categories, docs/sources.json for reviewed
-snapshots, and the curation/choice/comparison/research Markdown for the field guide.
+snapshots, and the curation/choice/comparison/research/development Markdown for the field guide.
 Do not edit generated data or maintain a second list by hand.
 
 `scripts/build-site.py` produces `_site/` with searchable resource data, the HTML
@@ -14,7 +14,8 @@ performs no network requests, and requires no package installation. Generated ou
 is ignored by Git. Site source is under `site/`. Asset filenames include content hashes, including
 module import targets, to keep browser caches consistent across deployments.
 
-The directory defaults to a compact list, with an optional Cards layout. Both
+The directory defaults to a compact list, with an optional Cards layout; intermediate desktop widths stack descriptions below
+identity rather than compressing the reading column. Both
 layouts use the same resources and filters. Compiler, Docs, Stdlib, Packages and Samples remain visible above the library groups.
 Details expands their full entries, save controls and review evidence.
 
@@ -41,7 +42,9 @@ persistent mobile Directory/Contents bar, and link back to the
 current directory filters, including from the desktop contents rail and header brand.
 Choice notes focuses on package selection; its Ethereum development plan is linked
 separately in Development. Where the comparison reviewed a different snapshot, the evidence disclosure links
-that separate baseline explicitly. The Markdown list remains available without JavaScript.
+that separate baseline explicitly. Source evidence offers a human-readable index of
+all reviewed discovery snapshots, generated from the same JSON inventory. Links to
+the raw inventory explicitly identify its JSON format. The Markdown list remains available without JavaScript.
 
 ## Checks
 

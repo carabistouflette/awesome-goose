@@ -6,7 +6,7 @@ Directory source snapshots and detailed comparison baselines are separate review
 They can cite different commits on the same date. Each comparison applies to its
 explicitly linked revision; a directory pin does not imply that all comparison
 claims were revalidated at that pin. Expanded Source & review shows both snapshots
-when they differ. [Source inventory](sources.json).
+when they differ. [Source inventory (JSON)](sources.json).
 
 ## Findings and listing recommendations
 

@@ -1,7 +1,7 @@
 # Research trail
 
 Review date: 2026-11-06. Scope: initial catalog, not an exhaustive ecosystem audit.
-Immutable public README snapshots are indexed in [sources.json](sources.json).
+Immutable public README snapshots are indexed in [sources.json (JSON)](sources.json).
 
 ## Method
 

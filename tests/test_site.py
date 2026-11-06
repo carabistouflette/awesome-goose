@@ -52,6 +52,17 @@ class SiteTests(unittest.TestCase):
         self.assertRegex(http['comparisonCommit'],r'^[0-9a-f]{40}$')
         self.assertIn(http['comparisonSource'],report)
         self.assertIn('/'+http['comparisonCommit']+'/README.md',http['comparisonSource'])
+    def test_evidence_index_keeps_every_reviewed_snapshot_and_separate_baselines(self):
+        page=(ROOT / '_site/SOURCES.html').read_text()
+        records=json.loads((ROOT / 'docs/sources.json').read_text())['repositories']
+        for record in records:
+            self.assertIn(record['repository'],page)
+            self.assertIn(record['readme'],page)
+            self.assertIn(record['reviewed'],page)
+        for repo,commit in build.comparison_baselines().items():
+            if any(record['repository']==repo for record in records):
+                self.assertIn(f'https://github.com/{repo}/blob/{commit}/README.md',page)
+        self.assertIn('Source inventory (JSON)',page)
     def test_asset_hashes_match_content_and_module_import_resolves(self):
         output=ROOT / '_site'
         for path in output.iterdir():

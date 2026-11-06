@@ -109,7 +109,7 @@ test('recorded requirements combine with category, owner, query and platform-not
   assert.ok(linux.includes('carabistouflette/goose-sqlite'));
   assert.ok(linux.includes('kaitk/goose-ngfx'));
   const graphics=entries.find(entry=>entry.repository==='kaitk/goose-ngfx');
-  assert.match(graphics.requirements.platform[0].note,/Linux presentation is unavailable/);
+  assert.match(graphics.requirements.platform[0].note,/Linux presentation unavailable/);
 });
 test('unknown notes stay distinct from documented implementation and platform evidence',()=>{
   assert.equal(search({q:'carabistouflette/goose-argparse',implementation:'unknown',platform:'unknown'}).length,1);

@@ -2,7 +2,7 @@ import { filterEntries, shareUrl, categoryCounts, sortEntries, searchMatch } fro
 const data = JSON.parse(document.getElementById('catalog-data').textContent);
 const $ = id => document.getElementById(id);
 const categoryLabels={'Command line and configuration':'CLI & configuration','Data formats and text':'Data & text','Files, processes, and artifacts':'Files & processes','Networking and web':'Networking & web','Numbers and scientific computing':'Scientific & numeric','Time and identifiers':'Time & identifiers','Development tools':'Developer tools','Learning and community':'Learning & community'};
-const selectLabels={...categoryLabels,'Networking and web':'Network & web','Command line and configuration':'CLI & config','Numbers and scientific computing':'Science & maths','Ethereum and signing':'Ethereum','Time and identifiers':'Time & IDs','Learning and community':'Community'};
+const selectLabels={...categoryLabels,'Networking and web':'Network & web','Files, processes, and artifacts':'Files & OS','Command line and configuration':'CLI & config','Numbers and scientific computing':'Science & maths','Ethereum and signing':'Ethereum','Time and identifiers':'Time & IDs','Learning and community':'Community'};
 const implementationLabels={native:'native / SDK note',goose:'Goose core',go:'Go backend',unknown:'no impl. note'};
 const platformLabels={linux:'Linux note',unix:'Unix note',desktop64:'desktop 64-bit note',sdk:'SDK / hardware note',other:'other platform note',unknown:'no platform note'};
 const categories = [...new Set(data.entries.map(e => e.category))];

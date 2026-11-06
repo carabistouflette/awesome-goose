@@ -58,7 +58,9 @@ widths, retaining qualifications and table semantics.
 Choice notes focuses on selection and links separately to Development for the
 Ethereum gap plan. Evidence disclosures explicitly link differing directory and
 comparison pins. Source evidence is generated from the same JSON inventory, with
-readable owner-grouped records; raw inventory links identify their JSON format.
+readable owner-grouped records and repository lookup. Lookup accepts an owner or
+repository name, preserves its query in the URL, and has a keyboard shortcut (`/`)
+and a clear action. Raw inventory links identify their JSON format.
 The Markdown list remains available without JavaScript.
 
 ## Checks
@@ -74,12 +76,25 @@ node --test tests/search.test.mjs
 
 Checks cover Markdown links, anchors and inventory consistency; generated page links,
 assets and anchors; safe HTML rendering; complete catalog coverage; guide navigation, ordered lists and continuation semantics; combined search
-filters and saved-only behavior. They do not run upstream projects or replace browser
-layout/accessibility review.
+filters and saved-only behavior. They do not run upstream projects or replace a complete accessibility review.
+
+Browser regression checks use a pinned development-only Playwright dependency:
+
+```sh
+npm ci --ignore-scripts --no-audit --no-fund
+npx --no-install playwright-core install --with-deps chromium
+npm run test:browser
+```
+
+The four browser checks cover long-query reflow at 320–390px, requirement context
+and focus recovery, source lookup and URL restoration, and repeated Saved selection.
+To use an existing Chromium installation, set `AWESOME_GOOSE_BROWSER_PATH` to its
+executable path. These tools are not shipped with the site or needed to build it.
 
 ## GitHub Pages CI
 
-`.github/workflows/pages.yml` builds and tests every pull request. It publishes only
+`.github/workflows/pages.yml` builds and tests every pull request, including the
+Chromium regression checks before uploading the Pages artifact. It publishes only
 pushes to `main` or a manual dispatch on `main`. Deployment uses GitHub's Pages
 artifact/deployment actions and the `github-pages` environment, with write and OIDC
 permissions restricted to the deploy job. Action versions are pinned to commits.

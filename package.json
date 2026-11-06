@@ -1,0 +1,10 @@
+{
+  "name": "awesome-goose-ui-checks",
+  "private": true,
+  "scripts": {
+    "test:browser": "node --test tests/browser.test.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "1.65.0"
+  }
+}

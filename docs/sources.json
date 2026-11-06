@@ -163,7 +163,7 @@
             "tags": [
               "linux"
             ],
-            "note": "Linux validation is documented."
+            "note": "Linux validation documented."
           }
         ]
       }
@@ -317,7 +317,7 @@
             "tags": [
               "other"
             ],
-            "note": "Optional TLS and newer HTTP protocols have platform-specific limits."
+            "note": "Target-dependent optional TLS/protocol support."
           }
         ]
       }
@@ -346,7 +346,7 @@
               "linux",
               "sdk"
             ],
-            "note": "Requires corresponding graphics SDKs and hardware; Linux presentation is unavailable in the documented snapshot."
+            "note": "SDK/hardware required; Linux presentation unavailable."
           }
         ]
       }
@@ -425,7 +425,7 @@
             "tags": [
               "desktop64"
             ],
-            "note": "Desktop 64-bit targets; callback and platform limitations are documented."
+            "note": "Desktop 64-bit; callback/platform limits."
           }
         ]
       }
@@ -605,7 +605,7 @@
               "linux",
               "unix"
             ],
-            "note": "Linux/Unix-oriented; full POSIX shell conformance is not verified."
+            "note": "Linux/Unix-oriented; full POSIX conformance unverified."
           }
         ]
       }

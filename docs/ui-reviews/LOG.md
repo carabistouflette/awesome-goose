@@ -542,3 +542,37 @@ context and a narrower guide measure.
 - Thirty checks pass. Rendered checks covered complete context values, Escape/edit/
   clear focus, 320px facets, 900px identity layout, mobile labels, absence of overflow
   and no JavaScript page errors.
+
+## Fifteenth completed assessment
+
+Application: `f906810`.
+
+| Reviewer | Visual | Discovery | Interaction | Responsive / access | Trust | Weighted overall |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Wren](assessment-wren.md) | 9.0 | 9.0 | 9.0 | 8.0 | 9.5 | 8.80 |
+| [Xenon](assessment-xenon.md) | 8.8 | 8.8 | 9.0 | 8.4 | 9.2 | 8.780 |
+
+The round did not meet the threshold. Both reviewers reproduced 320px overflow in
+the current-filter summary and requested a visible Options label. Wren also found
+known-repository lookup slow in the evidence index; Xenon noted repeated platform
+qualifications. Completed discovery, saved, share, guide and evidence flows worked.
+
+## Following corrections
+
+- The results row has an explicit shrinking width budget. Its query preview gives
+  space to the count and filter token without expanding the page. Reported queries,
+  100-character words and emoji were verified at 320, 360 and 390px, with the full
+  context both open and closed. No page-wide overflow clipping was added.
+- Options retains its visible word at 320px in both active and inactive states.
+  A concise Files & OS category label makes room while retaining canonical values.
+- Structured platform facts are shorter while retaining their restrictions and
+  immutable provenance; descriptions continue to explain their task relevance.
+- Source evidence now offers owner/repository lookup, a result count, URL restoration,
+  Clear with focus recovery and a search skip link/shortcut. Empty owner sections
+  and their contents links are hidden while filtering. The explanatory methodology
+  follows the index so lookup is available earlier on phones.
+- Thirty Python/Node checks and four isolated Chromium regression checks pass.
+  The new browser checks exercise narrow long-query reflow, context/edit/clear focus,
+  evidence lookup and Saved idempotence. Pages CI runs them before artifact upload;
+  the pinned dependency is development-only and the site build remains standard-library
+  Python with no package-install requirement. These checks do not certify accessibility.

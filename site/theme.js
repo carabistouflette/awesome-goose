@@ -37,13 +37,39 @@
         scheduled=false;
         const offset=parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop)||64;
         let current=null;
-        for(const item of outline) { if(item.heading.getBoundingClientRect().top<=offset+16) current=item; else break; }
-        if(scrollY+innerHeight>=document.documentElement.scrollHeight-4) current=outline.at(-1);
+        for(const item of outline) { if(item.heading.hidden) continue; if(item.heading.getBoundingClientRect().top<=offset+16) current=item; else break; }
+        if(scrollY+innerHeight>=document.documentElement.scrollHeight-4) current=outline.filter(item=>!item.heading.hidden).at(-1);
         for(const item of outline) { if(item===current) item.link.setAttribute('aria-current','location'); else item.link.removeAttribute('aria-current'); }
       };
       const schedule=()=>{if(document.hidden) updateLocation(); else if(!scheduled) {scheduled=true;requestAnimationFrame(updateLocation);}};
       addEventListener('scroll',schedule,{passive:true}); addEventListener('resize',schedule); addEventListener('hashchange',updateLocation); addEventListener('load',updateLocation);
       updateLocation();
+    }
+    const repositorySearch=document.querySelector('[data-source-search]');
+    if(repositorySearch) {
+      const groups=[...document.querySelectorAll('.prose>h2')].map(heading=>({heading,table:heading.nextElementSibling,link:document.querySelector('.guide-toc a[href="#'+heading.id+'"]')})).filter(group=>group.table?.classList.contains('table-wrap'));
+      const total=groups.reduce((count,group)=>count+group.table.querySelectorAll('tbody tr').length,0);
+      const initial=new URLSearchParams(location.search).get('repo'); if(initial) repositorySearch.value=initial;
+      const updateSources=(writeUrl=false)=>{
+        const words=repositorySearch.value.normalize('NFKC').toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
+        let visible=0;
+        for(const group of groups) {
+          let matches=0;
+          for(const row of group.table.querySelectorAll('tbody tr')) {
+            const name=row.querySelector('td').textContent.normalize('NFKC').toLocaleLowerCase();
+            row.hidden=!words.every(word=>name.includes(word)); if(!row.hidden) matches++;
+          }
+          visible+=matches; group.heading.hidden=group.table.hidden=matches===0; if(group.link) group.link.hidden=matches===0;
+        }
+        document.getElementById('source-search-status').textContent=visible?`${visible} of ${total} source records.`:'No source records match. Clear the search or use a shorter repository name.';
+        document.getElementById('source-search-clear').disabled=!repositorySearch.value;
+        if(writeUrl) {const params=new URLSearchParams(location.search); if(repositorySearch.value) params.set('repo',repositorySearch.value); else params.delete('repo'); history.replaceState(null,'',location.pathname+(params.size?'?'+params:'')+location.hash);}
+        dispatchEvent(new Event('scroll'));
+      };
+      repositorySearch.addEventListener('input',()=>updateSources(true));
+      document.getElementById('source-search-clear').addEventListener('click',()=>{repositorySearch.value='';updateSources(true);repositorySearch.focus();});
+      addEventListener('keydown',event=>{if(event.key==='/' && !/INPUT|TEXTAREA|SELECT/.test(event.target.tagName) && !event.target.isContentEditable) {event.preventDefault();repositorySearch.focus();}});
+      updateSources();
     }
     try { const query=sessionStorage.getItem('goose-directory-query'); if(query) document.querySelectorAll('[data-directory-return]').forEach(back=>{back.href='./'+query;}); } catch {}
   });

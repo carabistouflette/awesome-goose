@@ -22,6 +22,12 @@ jobs:
         run: |
           python3 -m unittest discover -s tests
           node --test tests/search.test.mjs
+      - name: Install browser regression tooling
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Install Chromium
+        run: npx --no-install playwright-core install --with-deps chromium
+      - name: Check narrow layouts, context and evidence lookup
+        run: npm run test:browser
       - name: Upload public site
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b

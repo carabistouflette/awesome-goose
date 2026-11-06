@@ -30,6 +30,18 @@ for record in records:
     if not isinstance(cautions,list) or not all(isinstance(caution,dict) and isinstance(caution.get('note'),str) and caution['note'].strip() and isinstance(caution.get('terms'),list) and caution['terms'] and all(isinstance(term,str) and term.strip() for term in caution['terms']) for caution in cautions):
         errors.append(f'Invalid search cautions: {repo}')
 
+    requirements=record.get('requirements')
+    if requirements is not None:
+        valid=isinstance(requirements,dict)
+        if valid:
+            native=requirements.get('native',[])
+            implementation=requirements.get('implementation')
+            platform=requirements.get('platform',[])
+            valid=isinstance(native,list) and all(isinstance(name,str) and name.strip() for name in native)
+            valid=valid and (implementation is None or isinstance(implementation,dict) and implementation.get('kind') in ('goose','go') and isinstance(implementation.get('note'),str) and implementation['note'].strip())
+            valid=valid and isinstance(platform,list) and all(isinstance(note,dict) and isinstance(note.get('note'),str) and note['note'].strip() and isinstance(note.get('tags'),list) and note['tags'] and all(tag in ('linux','unix','desktop64','sdk','other') for tag in note['tags']) for note in platform)
+        if not valid: errors.append(f'Invalid requirement notes: {repo}')
+
 
 def anchors(path):
     counts, found = {}, set()

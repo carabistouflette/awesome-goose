@@ -2,7 +2,9 @@ import { filterEntries, shareUrl, categoryCounts, sortEntries, searchMatch } fro
 const data = JSON.parse(document.getElementById('catalog-data').textContent);
 const $ = id => document.getElementById(id);
 const categoryLabels={'Command line and configuration':'CLI & configuration','Data formats and text':'Data & text','Files, processes, and artifacts':'Files & processes','Networking and web':'Networking & web','Numbers and scientific computing':'Scientific & numeric','Time and identifiers':'Time & identifiers','Development tools':'Developer tools','Learning and community':'Learning & community'};
-const selectLabels={...categoryLabels,'Command line and configuration':'CLI & config','Numbers and scientific computing':'Science & maths','Ethereum and signing':'Ethereum','Time and identifiers':'Time & IDs','Learning and community':'Community'};
+const selectLabels={...categoryLabels,'Networking and web':'Network & web','Command line and configuration':'CLI & config','Numbers and scientific computing':'Science & maths','Ethereum and signing':'Ethereum','Time and identifiers':'Time & IDs','Learning and community':'Community'};
+const implementationLabels={native:'native / SDK note',goose:'Goose core',go:'Go backend',unknown:'no impl. note'};
+const platformLabels={linux:'Linux note',unix:'Unix note',desktop64:'desktop 64-bit note',sdk:'SDK / hardware note',other:'other platform note',unknown:'no platform note'};
 const categories = [...new Set(data.entries.map(e => e.category))];
 const browseOrder = categories;
 const owners = [...new Set(data.entries.map(e => e.owner))].sort((a,b) => a.localeCompare(b));
@@ -25,7 +27,7 @@ function toast(message) {
 }
 function readState() {
   const p = new URLSearchParams(location.search);
-  return {q:p.get('q') || '', category:categories.includes(p.get('category')) ? p.get('category') : '', owner:owners.includes(p.get('owner')) ? p.get('owner') : '', saved:p.get('saved') === '1', sort:['category','name','owner'].includes(p.get('sort')) ? p.get('sort') : 'category', view:p.get('view')==='cards'?'cards':'list'};
+  return {q:p.get('q') || '', category:categories.includes(p.get('category')) ? p.get('category') : '', owner:owners.includes(p.get('owner')) ? p.get('owner') : '', saved:p.get('saved') === '1', implementation:Object.hasOwn(implementationLabels,p.get('implementation'))?p.get('implementation'):'', platform:Object.hasOwn(platformLabels,p.get('platform'))?p.get('platform'):'', sort:['category','name','owner'].includes(p.get('sort')) ? p.get('sort') : 'category', view:p.get('view')==='cards'?'cards':'list'};
 }
 let state = readState();
 function viewUrl() {
@@ -34,6 +36,8 @@ function viewUrl() {
   if (state.category) p.set('category',state.category);
   if (state.owner) p.set('owner',state.owner);
   if (state.saved) p.set('saved','1');
+  if (state.implementation) p.set('implementation',state.implementation);
+  if (state.platform) p.set('platform',state.platform);
   if (state.sort !== 'category') p.set('sort',state.sort);
   if (state.view === 'cards') p.set('view','cards');
   return location.pathname + (p.size ? '?' + p : '') + location.hash;
@@ -80,6 +84,14 @@ function card(entry) {
   article.append(identity);
   const overview=el('div','resource-overview');
   const description=el('p','card-description'); description.innerHTML=entry.descriptionHtml; overview.append(description);
+  if(entry.requirements) {
+    const facts=el('dl','requirement-facts');
+    const add=(name,value)=>{facts.append(el('dt','',name),el('dd','',value));};
+    if(entry.requirements.native?.length) add('Native / SDK',entry.requirements.native.join(', '));
+    if(entry.requirements.implementation) add('Implementation',entry.requirements.implementation.note);
+    for(const platform of entry.requirements.platform || []) add('Platform note',platform.note);
+    if(facts.children.length) overview.append(facts);
+  }
   const match=searchMatch(entry,state.q);
   if(match.limitation) { const note=el('p','match-note'); note.append(el('strong','','Limitation match: '),document.createTextNode(match.limitation)); overview.append(note); }
   const foot=el('div','resource-links');
@@ -96,7 +108,7 @@ function card(entry) {
 }
 function activeFilters() {
   const container=$('filter-state'); container.replaceChildren();
-  const chips=[['q',state.q&&`Search: ${state.q}`],['category',state.category],['owner',state.owner&&`Maintainer: ${state.owner}`]];
+  const chips=[['q',state.q&&`Search: ${state.q}`],['category',state.category],['owner',state.owner&&`Maintainer: ${state.owner}`],['implementation',state.implementation&&`Implementation: ${implementationLabels[state.implementation]}`],['platform',state.platform&&platformLabels[state.platform]]];
   for(const [key,label] of chips) {
     if(!label) continue;
     const preview=key==='q' && [...state.q].length>24?'Search: '+[...state.q].slice(0,24).join('')+'…':label;
@@ -108,7 +120,8 @@ function activeFilters() {
 }
 function render() {
   for(const details of $('results').querySelectorAll('.review-details')) details.open?expandedEvidence.add(details.dataset.entry):expandedEvidence.delete(details.dataset.entry);
-  $('search').value=state.q; $('owner').value=state.owner; $('sort').value=state.sort; $('category').value=state.category;
+  $('search').value=state.q; $('owner').value=state.owner; $('sort').value=state.sort; $('category').value=state.category; $('implementation').value=state.implementation; $('platform').value=state.platform;
+  if(state.implementation || state.platform) $('requirement-options').open=true;
   $('saved-count').textContent=saved.size;
   $('all-resources').setAttribute('aria-label',`All resources (${data.entries.length})`);
   $('saved-resources').setAttribute('aria-label',`Saved resources (${saved.size})`);
@@ -117,10 +130,10 @@ function render() {
   $('all-resources').setAttribute('aria-pressed',String(!state.saved)); $('saved-resources').setAttribute('aria-pressed',String(state.saved));
   for(const button of $('categories').children) { const active=button.dataset.category===state.category; button.classList.toggle('active',active); button.setAttribute('aria-pressed',String(active)); }
   const entries=sortEntries(filterEntries(data.entries,state,saved),state.sort,browseOrder,state.q);
-  const filtering=Boolean(state.q || state.category || state.owner);
+  const filtering=Boolean(state.q || state.category || state.owner || state.implementation || state.platform);
   updateFilterControls();
   const compact=matchMedia('(max-width:760px)').matches;
-  $('results-heading').firstChild.textContent=compact?(state.saved?`${entries.length}/${saved.size} saved`:`${entries.length} ${filtering?'matches':'resources'}`):(state.saved?(filtering?'Matching saved resources':'Saved resources'):(filtering?'Matching resources':'All resources'))+' ';
+  $('results-heading').firstChild.textContent=compact?(state.saved?`${entries.length}/${saved.size} saved`:`${entries.length} ${filtering?(entries.length===1?'match':'matches'):(entries.length===1?'resource':'resources')}`):(state.saved?(filtering?'Matching saved resources':'Saved resources'):(filtering?'Matching resources':'All resources'))+' ';
   $('result-count').textContent=compact?'':state.saved?`(${entries.length} of ${saved.size})`:`(${entries.length})`;
   $('jump-results').textContent=`${entries.length} ↓`;
   $('jump-results').setAttribute('aria-label',`Show ${entries.length} matching ${entries.length===1?'resource':'resources'}`);
@@ -130,17 +143,17 @@ function render() {
   $('cards-view').setAttribute('aria-pressed',String(state.view==='cards'));
   $('status').textContent=`${entries.length} ${state.saved?'matching saved ':''}${entries.length===1?'resource':'resources'} found${state.category?' in '+state.category:''}.`;
   $('empty').hidden=entries.length!==0;
-  const activeCount=[state.q,state.category,state.owner].filter(Boolean).length;
+  const activeCount=[state.q,state.category,state.owner,state.implementation,state.platform].filter(Boolean).length;
   $('active-filter-summary').textContent=activeCount?`${activeCount} active ${activeCount===1?'filter':'filters'}`:'';
   const counts=categoryCounts(data.entries,state,saved);
-  $('category-label').textContent=(state.q || state.owner || state.saved)?'Categories · matches':'Categories';
+  $('category-label').textContent=(state.q || state.owner || state.saved || state.implementation || state.platform)?'Categories · matches':'Categories';
   for(const button of $('categories').children) { const count=counts.get(button.dataset.category); button.querySelector('.count').textContent=count; button.setAttribute('aria-label',`${button.dataset.category}: ${count} matching ${count===1?'resource':'resources'}`); }
   for(const option of $('category').options) if(option.value) option.textContent=(selectLabels[option.value] || option.value)+' ('+counts.get(option.value)+')';
   $('reset').disabled=!filtering && state.sort==='category';
   $('saved-help').hidden=!state.saved;
   $('filter-options-label').textContent = 'Options';
-  $('filter-options-label').dataset.active=String(Boolean(state.owner || state.sort!=='category'));
-  $('filter-options-label').setAttribute('aria-label',state.owner || state.sort!=='category'?'Options: maintainer and sort, active':'Options: maintainer and sort');
+  $('filter-options-label').dataset.active=String(Boolean(state.owner || state.sort!=='category' || state.implementation || state.platform));
+  $('filter-options-label').setAttribute('aria-label',state.owner || state.sort!=='category' || state.implementation || state.platform?'Options: maintainer, sort and requirement notes, active':'Options: maintainer, sort and requirement notes');
   if(state.saved && saved.size===0) {
     $('empty-title').textContent='Nothing saved yet';
     $('empty-copy').textContent='Use the heart on a resource to save it here. Your collection stays on this device.';
@@ -185,8 +198,8 @@ function render() {
   }
   $('results').replaceChildren(fragment); rememberView();
 }
-function clearFilters() { change({q:'',category:'',owner:'',sort:'category'}); }
-function browseAll() { change({q:'',category:'',owner:'',saved:false,sort:'category'}); }
+function clearFilters() { change({q:'',category:'',owner:'',implementation:'',platform:'',sort:'category'}); }
+function browseAll() { change({q:'',category:'',owner:'',implementation:'',platform:'',saved:false,sort:'category'}); }
 for(const category of categories) {
   const button=el('button','nav-item'); button.type='button'; button.dataset.category=category;
   button.title=category;
@@ -198,7 +211,7 @@ for(const owner of owners) { const option=el('option','',owner); option.value=ow
 $('all-count').textContent=data.entries.length;
 $('review-date').textContent=`Last curated ${data.reviewed}`;
 $('search').addEventListener('input',e=>change({q:e.target.value},{push:false}));
-for(const key of ['owner','sort','category']) $(key).addEventListener('change',e=>change({[key]:e.target.value}));
+for(const key of ['owner','sort','category','implementation','platform']) $(key).addEventListener('change',e=>change({[key]:e.target.value}));
 $('all-resources').addEventListener('click',()=>{change({saved:false});jumpToResults();});
 for(const view of ['list','cards']) $(view+'-view').addEventListener('click',()=>change({view}));
 $('saved-resources').addEventListener('click',()=>{change({saved:true});jumpToResults();});
@@ -239,20 +252,27 @@ const mobileLayout = matchMedia('(max-width: 760px)');
 function updateFilterControls() {
   const open=$('filter-options').open;
   $('directory').dataset.filtersOpen=String(open);
-  $('directory').dataset.context=String(Boolean(state.q || state.category || state.owner || state.saved || state.sort!=='category' || (open && matchMedia('(max-width:760px)').matches)));
-  const count=[state.q,state.category,state.owner].filter(Boolean).length;
+  $('directory').dataset.context=String(Boolean(state.q || state.category || state.owner || state.saved || state.implementation || state.platform || state.sort!=='category' || (open && matchMedia('(max-width:760px)').matches)));
+  const count=[state.q,state.category,state.owner,state.implementation,state.platform].filter(Boolean).length;
   const matches=filterEntries(data.entries,state,saved).length;
-  const summary=[state.q&&`Search: ${state.q}`,state.category,state.owner&&`Maintainer: ${state.owner}`,`Sort: ${$('sort').selectedOptions[0].textContent}`].filter(Boolean).join('; ');
+  const summary=[state.q&&`Search: ${state.q}`,state.category,state.owner&&`Maintainer: ${state.owner}`,state.implementation&&`Implementation: ${implementationLabels[state.implementation]}`,state.platform&&`Platform: ${platformLabels[state.platform]}`,`Sort: ${$('sort').selectedOptions[0].textContent}`].filter(Boolean).join('; ');
   const order={category:'',name:'A–Z',owner:'by maintainer'}[state.sort];
-  const scope=[state.category && (selectLabels[state.category] || state.category),state.owner,order].filter(Boolean).join(' · ');
-  const preview=[...state.q].slice(0,18).join('')+([...state.q].length>18?'…':'');
-  const edit='Edit: '+(scope || (state.q?'“'+preview+'”':'filters'));
-  $('toolbar-apply').textContent=open?`Show ${matches} ↓`:edit;
+  const preview=[...state.q].slice(0,10).join('')+([...state.q].length>10?'…':'');
+  const parts=[state.q&&'“'+preview+'”',state.category && (selectLabels[state.category] || state.category),state.owner,order,state.implementation&&implementationLabels[state.implementation],state.platform&&platformLabels[state.platform]].filter(Boolean);
+  const visible=parts.length>4?[...parts.slice(0,4),'+'+(parts.length-4)+' notes']:parts;
+  const edit='Edit: '+(visible.length?visible.join(' · '):'filters');
+  const action=$('toolbar-apply'); action.replaceChildren();
+  if(open) action.textContent=`Show ${matches} ↓`;
+  else {
+    action.append(el('span','scope-token','Edit:'));
+    for(const [index,part] of (visible.length?visible:['filters']).entries()) action.append(document.createTextNode(' '),el('span','scope-token',(index?'· ':'')+part));
+  }
   $('toolbar-apply').title=summary;
   $('toolbar-apply').setAttribute('aria-label',open?`Show ${matches} matching resources and close filters`:`${edit}. Edit filters. ${summary}`);
   $('toolbar-apply').setAttribute('aria-expanded',String(open));
 }
 function updateFilterLayout() { $('filter-options').open = !mobileLayout.matches; updateFilterControls(); }
 mobileLayout.addEventListener('change',()=>{updateFilterLayout();render();});
+$('requirement-options').open=Boolean(state.implementation || state.platform);
 updateFilterLayout();
 render();

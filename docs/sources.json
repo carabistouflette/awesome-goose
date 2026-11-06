@@ -1,6 +1,6 @@
 {
   "review_date": "2026-11-06",
-  "scope": "Public README/source review; upstream test claims were not independently rerun. Null license marks a research/watchlist candidate, not an admitted package. Search aliases and caution notes are editorial discovery metadata tied to these reviewed snapshots.",
+  "scope": "Public README/source review; upstream test claims were not independently rerun. Null license marks a research/watchlist candidate, not an admitted package. Search aliases and caution notes are editorial discovery metadata tied to these reviewed snapshots. Requirement records describe upstream declarations; absent fields stay unclassified and platform notes are not a verified support matrix.",
   "repositories": [
     {
       "repository": "aardappel/goose",
@@ -35,7 +35,17 @@
       "commit": "4008f41aef11278d16585b6ed064a02127894599",
       "readme": "https://github.com/carabistouflette/goose-check/blob/4008f41aef11278d16585b6ed064a02127894599/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "requirements": {
+        "platform": [
+          {
+            "tags": [
+              "linux"
+            ],
+            "note": "Linux-specific in the reviewed snapshot."
+          }
+        ]
+      }
     },
     {
       "repository": "carabistouflette/goose-config",
@@ -52,7 +62,12 @@
       "license": "Apache-2.0",
       "search_aliases": [
         "native dependency"
-      ]
+      ],
+      "requirements": {
+        "native": [
+          "system libsodium"
+        ]
+      }
     },
     {
       "repository": "carabistouflette/goose-csv",
@@ -76,7 +91,12 @@
       "license": "Apache-2.0",
       "search_aliases": [
         "native dependency"
-      ]
+      ],
+      "requirements": {
+        "native": [
+          "libcurl"
+        ]
+      }
     },
     {
       "repository": "carabistouflette/goose-json",
@@ -97,7 +117,12 @@
           ],
           "note": "Null/optional values and maps are outside its documented JSON model."
         }
-      ]
+      ],
+      "requirements": {
+        "native": [
+          "C++ support"
+        ]
+      }
     },
     {
       "repository": "carabistouflette/goose-log",
@@ -128,7 +153,20 @@
       "license": "Apache-2.0",
       "search_aliases": [
         "native dependency"
-      ]
+      ],
+      "requirements": {
+        "native": [
+          "system SQLite"
+        ],
+        "platform": [
+          {
+            "tags": [
+              "linux"
+            ],
+            "note": "Linux validation is documented."
+          }
+        ]
+      }
     },
     {
       "repository": "carabistouflette/goose-text",
@@ -170,7 +208,17 @@
       "commit": "3fe94286bb151e2e09f1ec35f9b83dcc60603b4a",
       "readme": "https://github.com/carabistouflette/honk/blob/3fe94286bb151e2e09f1ec35f9b83dcc60603b4a/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "requirements": {
+        "platform": [
+          {
+            "tags": [
+              "linux"
+            ],
+            "note": "Linux x86-64/glibc."
+          }
+        ]
+      }
     },
     {
       "repository": "exaroth/coc-goose",
@@ -191,7 +239,13 @@
       "commit": "82674dbea50eb8b4c9e1b47b264fdc0ccba67dbe",
       "readme": "https://github.com/guillochon/goose-fft/blob/82674dbea50eb8b4c9e1b47b264fdc0ccba67dbe/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "requirements": {
+        "implementation": {
+          "kind": "goose",
+          "note": "Pure-Goose FFT core; check compiler prerequisites."
+        }
+      }
     },
     {
       "repository": "guillochon/goose-random",
@@ -232,21 +286,41 @@
           ],
           "note": "Encoder only; no decoder is documented."
         }
-      ]
+      ],
+      "requirements": {
+        "native": [
+          "native encoding helpers"
+        ]
+      }
     },
     {
       "repository": "kaitk/goose-hash",
       "commit": "96cc41fdfb3942ce566bf0b860e90963698ccaeb",
       "readme": "https://github.com/kaitk/goose-hash/blob/96cc41fdfb3942ce566bf0b860e90963698ccaeb/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "requirements": {
+        "native": [
+          "hardware/OS helpers"
+        ]
+      }
     },
     {
       "repository": "kaitk/goose-http",
       "commit": "86fdeec31d911d4394d797a397660d6fed96ae5d",
       "readme": "https://github.com/kaitk/goose-http/blob/86fdeec31d911d4394d797a397660d6fed96ae5d/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "requirements": {
+        "platform": [
+          {
+            "tags": [
+              "other"
+            ],
+            "note": "Optional TLS and newer HTTP protocols have platform-specific limits."
+          }
+        ]
+      }
     },
     {
       "repository": "kaitk/goose-ngfx",
@@ -261,7 +335,21 @@
           ],
           "note": "Linux presentation is unavailable in the documented snapshot."
         }
-      ]
+      ],
+      "requirements": {
+        "native": [
+          "target-specific graphics SDKs"
+        ],
+        "platform": [
+          {
+            "tags": [
+              "linux",
+              "sdk"
+            ],
+            "note": "Requires corresponding graphics SDKs and hardware; Linux presentation is unavailable in the documented snapshot."
+          }
+        ]
+      }
     },
     {
       "repository": "kaitk/goose-postgres",
@@ -293,7 +381,12 @@
       "license": "Apache-2.0",
       "search_aliases": [
         "native dependency"
-      ]
+      ],
+      "requirements": {
+        "native": [
+          "SQLite (bundled; no system installation required)"
+        ]
+      }
     },
     {
       "repository": "kaitk/goose-tls",
@@ -303,7 +396,12 @@
       "license": "Apache-2.0",
       "search_aliases": [
         "native dependency"
-      ]
+      ],
+      "requirements": {
+        "native": [
+          "OpenSSL/libssl"
+        ]
+      }
     },
     {
       "repository": "kaitk/plod",
@@ -317,7 +415,20 @@
       "commit": "143aa21d75e25356f01fa7bb36e1ebae81b34632",
       "readme": "https://github.com/lamweilun/raygoose/blob/143aa21d75e25356f01fa7bb36e1ebae81b34632/README.md",
       "reviewed": "2026-11-06",
-      "license": "Zlib"
+      "license": "Zlib",
+      "requirements": {
+        "native": [
+          "raylib"
+        ],
+        "platform": [
+          {
+            "tags": [
+              "desktop64"
+            ],
+            "note": "Desktop 64-bit targets; callback and platform limitations are documented."
+          }
+        ]
+      }
     },
     {
       "repository": "Macho0x/goose-bigint",
@@ -340,7 +451,13 @@
           ],
           "note": "The author documents that it is not constant-time."
         }
-      ]
+      ],
+      "requirements": {
+        "implementation": {
+          "kind": "goose",
+          "note": "Pure-Goose algorithms; documented timing limits apply."
+        }
+      }
     },
     {
       "repository": "Macho0x/goose-decimal",
@@ -358,7 +475,13 @@
       "search_aliases": [
         "decompression",
         "decompress"
-      ]
+      ],
+      "requirements": {
+        "implementation": {
+          "kind": "goose",
+          "note": "Goose DEFLATE implementation."
+        }
+      }
     },
     {
       "repository": "Macho0x/goose-ethereum",
@@ -441,7 +564,13 @@
       "commit": "5a5ba602518a2b73e2e3fad144ebd292b9564d11",
       "readme": "https://github.com/robtandy/goose.go/blob/5a5ba602518a2b73e2e3fad144ebd292b9564d11/README.md",
       "reviewed": "2026-11-06",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "requirements": {
+        "implementation": {
+          "kind": "go",
+          "note": "Alternative Go backend and pure-Go runtime, without cgo."
+        }
+      }
     },
     {
       "repository": "rust-unofficial/awesome-rust",
@@ -465,7 +594,21 @@
       "license": "MIT",
       "search_aliases": [
         "native dependency"
-      ]
+      ],
+      "requirements": {
+        "native": [
+          "POSIX C execution backend"
+        ],
+        "platform": [
+          {
+            "tags": [
+              "linux",
+              "unix"
+            ],
+            "note": "Linux/Unix-oriented; full POSIX shell conformance is not verified."
+          }
+        ]
+      }
     },
     {
       "repository": "ZHENGSY/goose-zed",

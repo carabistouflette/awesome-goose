@@ -40,6 +40,11 @@
         <details class="filter-options" id="filter-options" open><summary id="filter-options-label">More filters</summary><div class="advanced-fields">
           <label>Maintainer<select id="owner"><option value="">Everyone</option></select></label>
           <label>Sort by<select id="sort"><option value="category">Category</option><option value="name">Name A–Z</option><option value="owner">Maintainer</option></select></label>
+          <details id="requirement-options" class="requirements-options"><summary>Requirement notes</summary><div class="facet-fields">
+            <label>Implementation<select id="implementation" aria-describedby="requirements-help"><option value="">Any notes</option><option value="native">Native / SDK note</option><option value="goose">Goose core noted</option><option value="go">Go backend noted</option><option value="unknown">No impl. note</option></select></label>
+            <label>Platform notes<select id="platform" aria-describedby="requirements-help"><option value="">Any notes</option><option value="linux">Linux note</option><option value="unix">Unix note</option><option value="desktop64">Desktop 64-bit note</option><option value="sdk">SDK / hardware note</option><option value="other">Other platform note</option><option value="unknown">No platform note</option></select></label>
+            <p id="requirements-help">Filters select recorded upstream notes, not verified compatibility. Missing notes stay unclassified; a Goose core does not guarantee absence of native prerequisites.</p>
+          </div></details>
         </div></details>
       </div>
       <div id="share-fallback" class="share-fallback" hidden><label for="share-url">Copy this filters link. Saved items are not included.<input id="share-url" type="url" readonly></label><button id="share-close" class="text-button" type="button">Close</button></div>

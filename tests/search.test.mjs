@@ -27,12 +27,14 @@ test('all reader-suggested projects are discoverable',() => {
 test('search text is treated literally and yields an empty result',() => assert.equal(search({q:'<script>alert(1)</script>'}).length,0));
 
 test('share links omit device-local saved mode and preserve public filters and layout',() => {
-  const url = new URL(shareUrl('https://example.com/awesome-goose/?q=sqlite&category=Databases&saved=1&view=cards#directory'));
+  const url = new URL(shareUrl('https://example.com/awesome-goose/?q=sqlite&category=Databases&saved=1&view=cards&implementation=native&platform=linux#directory'));
   assert.equal(url.searchParams.has('saved'),false);
   assert.equal(url.hash,'');
   assert.equal(url.searchParams.get('q'),'sqlite');
   assert.equal(url.searchParams.get('category'),'Databases');
   assert.equal(url.searchParams.get('view'),'cards');
+  assert.equal(url.searchParams.get('implementation'),'native');
+  assert.equal(url.searchParams.get('platform'),'linux');
 });
 
 test('category counts reflect search, maintainer and saved state without applying the current category',()=>{
@@ -98,4 +100,20 @@ test('capability limitations remain discoverable behind positive matches',()=>{
   assert.equal(results[1].repository,'Macho0x/goose-msgpack');
   assert.match(searchMatch(results[1],'utf8').limitation,/without UTF-8 validation/);
   assert.ok(search({q:'native'}).some(entry=>entry.repository==='carabistouflette/goose-http'));
+});
+
+test('recorded requirements combine with category, owner, query and platform-note filters',()=>{
+  const result=search({q:'http',owner:'carabistouflette',category:'Networking and web',implementation:'native'});
+  assert.deepEqual(result.map(entry=>entry.repository),['carabistouflette/goose-http']);
+  const linux=search({platform:'linux'}).map(entry=>entry.repository);
+  assert.ok(linux.includes('carabistouflette/goose-sqlite'));
+  assert.ok(linux.includes('kaitk/goose-ngfx'));
+  const graphics=entries.find(entry=>entry.repository==='kaitk/goose-ngfx');
+  assert.match(graphics.requirements.platform[0].note,/Linux presentation is unavailable/);
+});
+test('unknown notes stay distinct from documented implementation and platform evidence',()=>{
+  assert.equal(search({q:'carabistouflette/goose-argparse',implementation:'unknown',platform:'unknown'}).length,1);
+  assert.equal(search({q:'carabistouflette/goose-argparse',implementation:'native'}).length,0);
+  assert.deepEqual(search({owner:'Macho0x',q:'deflate',implementation:'goose'}).map(entry=>entry.repository),['Macho0x/goose-deflate']);
+  assert.equal(search({q:'robtandy/goose.go',implementation:'go'}).length,1);
 });

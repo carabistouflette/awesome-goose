@@ -27,15 +27,18 @@ incidental matches such as native inside Alternative. Recorded capability aliase
 cover task vocabulary such as decompression. Search preserves matches to documented
 limitations, labels them, and ranks them after other matches in the default grouped
 view. Explicit name/maintainer sorts retain their selected order. Other controls include
-category/maintainer filters, sorting, local favorites, shareable URLs, light/dark
+category/maintainer filters, recorded implementation/platform-note facets, sorting, local favorites, shareable URLs, light/dark
 themes, keyboard search (`/` or Ctrl/Cmd+K), and Skip to search. Expanded evidence
 stays open when changing list/card layout.
 
 All/Saved consistently selects the named collection and preserves the current
 filters. Category counts reflect the other active filters. Mobile uses a category
-selector and an Options disclosure for maintainer/sort. The persistent matching
+selector and an Options disclosure for maintainer/sort. Requirement notes opens
+the optional implementation/platform facets. These select documentation evidence,
+including restrictions; absent notes remain unclassified. The persistent matching
 bar offers Show N while those controls are open; afterward its Edit action displays
-the selected category/maintainer/order, or a short query preview. Editing focuses
+a short query preview and selected category/maintainer/order as unbroken tokens,
+with an additional-note count when more facets are active. Editing focuses
 the full search query when present, otherwise Category. Long query chips show a
 short preview while retaining the complete accessible name and inspection through
 Edit. Show closes the panel and focuses results. The search count also jumps to results.

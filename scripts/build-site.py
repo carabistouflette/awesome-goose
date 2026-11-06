@@ -43,6 +43,7 @@ def inline(text):
 
 def markdown(text):
     lines, output, i = text.splitlines(), [], 0
+    table_context,table_number='Comparison',0
     bullet = re.compile(r'^(?:([-+*]) |(\d+)\. )(.+)')
     while i < len(lines):
         line = lines[i]
@@ -61,6 +62,7 @@ def markdown(text):
         heading = re.match(r'^(#{1,6}) (.+)', line)
         if heading:
             level, title = len(heading[1]), heading[2]
+            table_context,table_number=re.sub(r'[`*]', '', title),0
             output.append(f'<h{level} id="{slug(title)}">{inline(title)}</h{level}>')
             i += 1
             continue
@@ -76,7 +78,9 @@ def markdown(text):
                         row=''.join(f'<td role="cell" data-label="{html.escape(headers[n] if n<len(headers) else "Value", quote=True)}"><span class="cell-value">{inline(c.strip())}</span></td>' for n,c in enumerate(cells))
                     rows.append('<tr role="row">'+row+'</tr>')
                 i += 1
-            output.append('<div class="table-wrap" tabindex="0" role="region" aria-label="Comparison table"><table role="table"><thead role="rowgroup">' + rows[0] + '</thead><tbody role="rowgroup">' + ''.join(rows[1:]) + '</tbody></table></div>')
+            table_number+=1
+            table_label=html.escape(table_context+' table'+(' '+str(table_number) if table_number>1 else ''),quote=True)
+            output.append('<div class="table-wrap" tabindex="0" role="region" aria-label="'+table_label+'"><table role="table"><thead role="rowgroup">' + rows[0] + '</thead><tbody role="rowgroup">' + ''.join(rows[1:]) + '</tbody></table></div>')
             continue
         match = bullet.match(line)
         if match:
@@ -194,8 +198,9 @@ def catalog():
             'reviewed': source.get('reviewed', manifest['review_date']),
             'source': source.get('readme') if exact_repo else (url.replace('/blob/master/', '/blob/' + source['commit'] + '/').replace('/blob/main/', '/blob/' + source['commit'] + '/') if source and '/blob/' in url else None), 'commit': source.get('commit'),
             'choice': choice, 'choiceLabel': choice_label,
-            'searchAliases': source.get('search_aliases',[]),
-            'searchCautions': source.get('search_cautions',[]),
+            'searchAliases': source.get('search_aliases',[]) if exact_repo else [],
+            'searchCautions': source.get('search_cautions',[]) if exact_repo else [],
+            'requirements': source.get('requirements') if exact_repo else None,
             'comparisonCommit': baselines.get(repo),
             'comparisonSource': f'https://github.com/{repo}/blob/{baselines[repo]}/README.md' if repo in baselines else None,
             'repository': repo if exact_repo else None,
@@ -230,7 +235,9 @@ def main():
     (OUT / 'catalog.json').write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
     for name in GUIDES:
         document=(ROOT / 'docs' / f'{name}.md').read_text()
-        if name=='SOURCES': document=document.replace('<!-- SOURCE_INDEX -->',source_index())
+        if name=='SOURCES':
+            document=re.sub(r'<!-- GITHUB_ONLY -->.*?<!-- /GITHUB_ONLY -->\s*','',document,flags=re.S)
+            document=document.replace('<!-- SOURCE_INDEX -->',source_index())
         content = markdown(document)
         sections = re.findall(r'^(#{2,3}) (.+)$', document, re.M)
         contents = ''.join(f'<a class="{"toc-subsection" if len(level)==3 else "toc-section"}" href="#{slug(title)}">{html.escape(title)}</a>' for level,title in sections)

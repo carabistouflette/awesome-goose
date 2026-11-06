@@ -67,11 +67,12 @@ class SiteTests(unittest.TestCase):
         entries=json.loads((ROOT / '_site/catalog.json').read_text())['entries']
         manifest={record['repository']:record for record in json.loads((ROOT / 'docs/sources.json').read_text())['repositories']}
         for entry in entries:
-            if entry.get('searchAliases') or entry.get('searchCautions'):
+            if entry.get('searchAliases') or entry.get('searchCautions') or entry.get('requirements'):
                 evidence=manifest[entry['repository']]
                 self.assertEqual(entry['source'],evidence['readme'])
                 self.assertEqual(entry['searchAliases'],evidence.get('search_aliases',[]))
                 self.assertEqual(entry['searchCautions'],evidence.get('search_cautions',[]))
+                self.assertEqual(entry['requirements'],evidence.get('requirements'))
     def test_asset_hashes_match_content_and_module_import_resolves(self):
         output=ROOT / '_site'
         for path in output.iterdir():
@@ -87,6 +88,13 @@ class SiteTests(unittest.TestCase):
         self.assertIn('data-label="Reason and limits"',rendered)
         self.assertIn('<span class="cell-value">Bounded input</span>',rendered)
         self.assertIn('scope="col"',rendered)
+    def test_reading_table_regions_have_distinct_section_names(self):
+        rendered=build.markdown('## TOML\n\n| Need | Option |\n| --- | --- |\n| Read | Reader |\n\n## SQLite\n\n| Need | Option |\n| --- | --- |\n| System | Binding |')
+        self.assertIn('aria-label="TOML table"',rendered)
+        self.assertIn('aria-label="SQLite table"',rendered)
+        for path in (ROOT / '_site').glob('*.html'):
+            names=re.findall(r'class="table-wrap"[^>]*aria-label="([^"]+)"',path.read_text())
+            self.assertEqual(len(names),len(set(names)),path.name)
     def test_numbered_list_and_continuation_semantics(self):
         rendered=build.markdown('1. First item.\n   Continued content.\n2. Second item.')
         self.assertIn('<ol>',rendered)

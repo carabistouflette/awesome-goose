@@ -43,3 +43,9 @@ to explicit limitations at the same reviewed pin. Matching those cautions stays
 possible and is labeled in the directory; default grouped search puts these matches
 after other results. Name/maintainer sorting retains the requested order. These
 editorial search notes help discovery and do not certify compatibility or code.
+
+Requirement facets select recorded upstream notes: native/helper prerequisites,
+documented Goose cores, an alternative Go backend, and platform evidence or limits.
+Missing notes remain unclassified. A platform note may describe a restriction, and
+a Goose algorithm core does not establish absence of native prerequisites. Keep
+those qualifications visible and link the same reviewed source pin.

@@ -393,7 +393,7 @@ html { scroll-padding-top:168px; }
   .reference-shortcuts a,.reference-group .reference-details summary { font-size:14px; }
 }
 
-@media(min-width:761px) and (max-width:1000px) {
+@media(min-width:761px) and (max-width:880px) {
   .directory[data-view=list] .card { grid-template-columns:minmax(0,1fr) 44px; gap:6px 16px; }
   .directory[data-view=list] .resource-overview { grid-column:1/-1; grid-row:2; }
   .directory[data-view=list] .card>.save-button { grid-column:2; }
@@ -436,3 +436,30 @@ html { scroll-padding-top:168px; }
   .directory[data-context=true] .results-title h2 { flex:0 0 auto; font-size:14px; }
   .directory[data-context=true] .toolbar-apply { min-width:44px; max-width:72%; white-space:normal; line-height:1.4; text-align:right; justify-content:flex-end; overflow-wrap:anywhere; }
 }
+
+.advanced-fields { flex-wrap:wrap; align-items:end; }
+.requirements-options { flex:0 1 auto; min-width:0; }
+.requirements-options>summary { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:44px; padding:8px; border:1px solid var(--muted); border-radius:6px; font-size:14px; }
+.requirements-options>summary::after { content:'+'; margin:0; }
+.requirements-options[open] { flex-basis:100%; width:100%; }
+.requirements-options[open]>summary::after { content:'−'; }
+.facet-fields { display:flex; flex-wrap:wrap; gap:12px; margin-top:8px; }
+.facet-fields label { display:flex; flex-direction:column; min-width:0; flex:1; }
+.facet-fields select { width:100%; max-width:none; }
+.facet-fields p { flex-basis:100%; margin:0; font-size:14px; color:var(--muted); }
+.requirement-facts { display:grid; grid-template-columns:auto minmax(0,1fr); gap:2px 10px; font-size:14px; line-height:1.5; margin:8px 0; color:var(--muted); }
+.requirement-facts dt { font-weight:600; }
+.requirement-facts dd { margin:0; overflow-wrap:anywhere; }
+@media(max-width:1100px) and (min-width:761px) {
+  .advanced-fields>label { flex-direction:column; align-items:start; gap:4px; }
+  .advanced-fields select { max-width:200px; }
+}
+@media(max-width:760px) {
+  .requirements-options { flex-basis:100%; }
+  .facet-fields label { flex-basis:100%; }
+  .directory[data-context=true] .toolbar-apply { display:flex; flex-wrap:wrap; align-content:center; gap:0 4px; }
+  .scope-token { white-space:nowrap; display:inline-block; }
+}
+
+.filter-options .requirements-options>summary::after { content:'+'; }
+.filter-options .requirements-options[open]>summary::after { content:'−'; }

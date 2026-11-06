@@ -1,5 +1,9 @@
 # Source evidence
 
+<!-- GITHUB_ONLY -->
+[Browse the formatted evidence index](https://carabistouflette.github.io/awesome-goose/SOURCES.html).
+<!-- /GITHUB_ONLY -->
+
 Each directory snapshot links to the exact README reviewed and records its review
 date and license metadata. A separate comparison baseline appears when that analysis
 used another revision. [Source inventory (JSON)](sources.json) is the machine-readable record.

@@ -1,0 +1,58 @@
+# Awesome Goose independent UI assessment — Tamarack
+
+Reviewed 2026-11-06 against `docs/ui-reviews/CRITERIA.md`. Revision: `5af2fac64107fb791e113feb70098bfaf1741ccd` (`5af2fac`). Rendered build: `http://localhost:18888/`. No other assessments were consulted. No application code was changed.
+
+The directory works well as a small developer resource catalog. Its restrained reading list makes repository identity, license, purpose, limitations, alternatives and source evidence easy to find. The most valuable feature is the distinction between similarly named projects: HTTP client versus server versus framework, for example. All representative core flows completed. The remaining issues concern visibility of combined filter state on mobile and discovery of compatibility requirements, rather than broken navigation or data loss.
+
+## Scores
+
+These ratings are subjective judgments of the observed revision.
+
+| Criterion | Weight | Score / 10 | Assessment |
+| --- | --- | --- | --- |
+| Visual clarity and typography | 20% | 9.0 | Clear hierarchy, legible body text, quiet borders, useful spacing, and readable light and dark themes. Dense repository names remain distinguishable from maintainer prefixes. The list gives a useful overview without decorative noise. |
+| Discovery and information architecture | 25% | 8.5 | Categories, topic search, maintainer selection and comparison links work together. Search for `http` finds the client, server and framework; `decompression` puts the decoder first and explicitly marks the encoder-only result as a limitation match. Platform and native-dependency requirements still require reading individual descriptions and guides. |
+| Interaction and feedback | 20% | 9.0 | Combined filters, removable chips, counts, reset, both layouts, sorting, URL restoration, saved items and share feedback worked. Empty states distinguish an empty saved collection from saved items excluded by filters. The mobile sticky Edit summary loses the search term when other scope is present. |
+| Responsive layout and accessibility | 25% | 8.5 | Desktop, tablet and narrow mobile layouts were usable with no page-level horizontal overflow in the checked states. Native controls, descriptive accessible names, visible keyboard focus, skip links, disclosures and focus after result jumps worked. At 320 px the selected category text clips, and combined filter context makes the sticky toolbar relatively tall. No assistive-technology or real touch-device audit was performed. |
+| Content trust and consistency | 10% | 9.5 | Scope and maturity limits are direct and specific. Source disclosure records an immutable README and review date. Different directory and comparison baselines are explicitly distinguished. The guide explains that recommendations are documentation/source inspection, rather than independent security audits or reproduced benchmarks. |
+
+Exact weighted overall: **8.8 / 10**.
+
+`9.0 × 0.20 + 8.5 × 0.25 + 9.0 × 0.20 + 8.5 × 0.25 + 9.5 × 0.10 = 1.8 + 2.125 + 1.8 + 2.125 + 0.95 = 8.8`.
+
+## Rendered coverage and interaction evidence
+
+| Actual CSS viewport | Views inspected |
+| --- | --- |
+| 1440 × 1000 | Initial directory list, filtered cards, expanded evidence, Choice notes decision tables and contents navigation; later revisited directory evidence. |
+| 820 × 1180 | Directory with HTTP results and stacked resource summaries; Choice notes SQLite table and surrounding prose. |
+| 390 × 844 | HTTP search, category/maintainer/sort combination, options open and closed, Show/Edit behavior, cards/list, saved/share controls; detailed comparisons. |
+| 320 × 740 | Initial directory, long-query empty state with three filters, dark theme, Choice notes HTTP section and contents, Source evidence page. |
+
+Every resize was followed by an `innerWidth`/`innerHeight` read. Checked tablet and mobile document `scrollWidth` equaled `innerWidth` (820, 390 and 320 respectively). Screenshots were actually inspected, including the directory at all four widths, mobile filter states, and desktop/tablet/mobile reading views.
+
+- **Discovery and combined filters:** `/` focused search. `http` yielded three resources. Adding Networking and web plus maintainer `kaitk` yielded two. Name A–Z and cards produced `goose-http`, then `plod`, with the corresponding query/category/owner/sort/view URL parameters. Reload restored this state. Maintainer sorting grouped all resources by maintainer; browser Back restored category sorting. Search for `decompression` returned `goose-deflate` and `goose-compress`, with the latter carrying “Encoder only; no decoder is documented.”
+- **Saved and recovery:** An empty saved collection explained the heart control and offered Browse all resources. Saving `carabistouflette/goose-argparse` updated the heart/count and displayed “Saved on this device.” The item survived reload. A deliberately nonmatching query showed “No saved resources match these filters”; its reset retained the saved collection. Removing the last saved item returned focus to the Saved button and showed the original empty state. A long nonmatching query in All also recovered successfully through Clear filters.
+- **Sharing:** The clipboard contained the tested query, category, owner, sort and layout. Sharing from Saved removed `saved=1` and explicitly stated that the device-local collection was excluded. Simulating a rejected clipboard write in the review browser exposed a selected read-only URL field; Close restored focus to Share. This was a controlled error-path check, not an observed clipboard defect.
+- **Keyboard and focus:** Tab exposed the Skip to resources link with a visible 3 px outline; the next skip link focused search on activation. Escape cleared search. Tab from search reached the matching-count jump link; activation moved focus to the first result disclosure below the sticky controls. Space toggled a Source & review disclosure with a visible outline. On mobile, Show closed options and focused the result group around y=117, below the toolbar ending around y=105; Edit reopened options and selected the query for editing.
+- **Theme:** Toggle changed colors and its accessible label to “Switch to light theme.” Dark choice survived reload and carried into the guide. Light and dark screenshots were inspected.
+- **Reading guide:** Followed Compare HTTP options into `CHOICES.html#http-and-web`. Its table separates a libcurl client, event-loop server and framework, with qualifications. Desktop contents navigation to SQLite updated the hash and current-location styling. At 820 px the decision table remained readable; at 320 px the HTTP options became a single-column sequence with repository, use case and qualification. Mobile Contents opened the outline and focused its summary. Directory return preserved the previous `http` query. Followed Detailed comparisons and inspected its mobile rendering and outline.
+- **Evidence:** Expanded `kaitk/goose-http` showed review date 2026-11-06 and pinned README `86fdeec31d911d4394d797a397660d6fed96ae5d`. Expanded `carabistouflette/goose-http` showed directory snapshot `0fa7d19` and separate comparison baseline `6dc7a98`, with an explicit explanation. Choice notes' evidence section describes the two review scopes, and Source evidence links the inventory and records review dates/licenses/baselines.
+
+## Ranked observed issues
+
+1. **Combined mobile filter summary omits the active query — moderate usability issue.** At 390 px, after searching `http`, choosing Networking and web, maintainer `kaitk` and Maintainer sorting, pressing Show scrolled results below a sticky toolbar reading “2 matches” and “Edit: Networking & web · kaitk · by maintainer.” The active `http` query was absent from that visible summary; its input and chip were above the scrolled viewport. This makes a restricted result set harder to explain while browsing. Include a short query preview alongside the other scope, or keep a compact query indicator in the sticky row. `site/app.js`'s `updateFilterControls()` constructs `edit` from `scope || query`, which corroborates the observed omission.
+
+2. **Compatibility requirements have no structured discovery route — moderate improvement opportunity.** Visible controls offer category and maintainer, while relevant constraints appear inside descriptions: native libcurl for one HTTP option, Linux validation for one SQLite option, and platform/protocol limits for the server. Developers choosing dependencies for a particular target must inspect candidates individually; topic and maintainer filtering cannot systematically narrow these requirements. Add small, evidence-backed platform/native-dependency tags and optional facets, preserving “unknown/not verified” rather than implying broad compatibility. This is a catalog affordance limitation, not a failed search implementation. The available controls are visible in `site/index.html`; the filter predicate in `site/catalog.mjs` only combines query, category, owner and saved state.
+
+3. **Selected category clips at the narrowest tested width — low severity.** At 320 px with options collapsed, the native category select shares its row with Options. The selected “Networking & web (0)” label was visibly cut off near the trailing parenthesis, losing the count. The result count and removable category chip still supplied recovery/context, so the task remained possible. Give the category select the full row at this width, move Options to another row, or use a shorter visible option label while retaining the full accessible name. The narrow two-column `.filters` rule in `site/style.css` corroborates the space constraint.
+
+No blocking application defect was observed in the exercised flows. The directory's evidence and recovery behavior deserve to be retained while addressing these points.
+
+## Method and verification limits
+
+Preview tools were discovered and `preview_status` was called first. Opened only a new background tab with `reuseExistingTab:false`: `tab_1v_d5b76abc-f7a4-4854-98e0-1f423e6ab780`. A requested 1440 × 1000 resize initially returned stale viewport metadata (1280 × 800), but page evaluation confirmed actual 1440 × 1000. Both snapshot attempts then returned the same tool error: **“Preview snapshot failed: Preview automation snapshot timed out after 15000ms.”** These are preview-tool failures and were not counted as application defects.
+
+After those two failures, used an isolated headless `/usr/bin/chromium` instance through `/tmp/moss-ui/node_modules/playwright-core`, with a fresh browser context and the dedicated origin. One initial automation locator targeted a save button inside the intentionally collapsed official-resources disclosure and timed out as invisible; targeting the visible named resource completed the flow. This locator error was also not counted as an application defect. Closed only the owned preview tab and isolated browser; shared servers were left running.
+
+Source inspection supported, rather than replaced, rendered testing: `site/index.html`, `site/app.js`, `site/catalog.mjs`, `site/theme.js`, `site/style.css` and the guide/source-index generator in `scripts/build-site.py`. Scores use only the supplied criteria. External repository contents, every external destination, library installation/build behavior, upstream correctness and completeness of the research inventory were not independently revalidated. CSS viewport resizing does not reproduce a phone user agent, software keyboard or real touch hardware. Screen readers, forced colors, zoom/reflow beyond the tested widths, multiple browser engines, storage-denial behavior and a full contrast/accessibility audit remain unverified.

@@ -463,3 +463,41 @@ remaining prose-heavy selection/development sections.
   retrieval/order, visible-caution data, positive UTF-8 ordering and source provenance.
   Rendered checks covered the decoder-first results, caution cue, compact long-query
   recovery, full-query editing, six decision tables and no JavaScript errors.
+
+## Thirteenth completed assessment
+
+Application: `5af2fac`.
+
+| Reviewer | Visual | Discovery | Interaction | Responsive / access | Trust | Weighted overall |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Spruce](assessment-spruce.md) | 9.0 | 8.5 | 9.0 | 8.5 | 9.5 | 8.80 |
+| [Tamarack](assessment-tamarack.md) | 9.0 | 8.5 | 9.0 | 8.5 | 9.5 | 8.80 |
+
+This round did not meet the threshold. Core workflows passed; both reviews identified
+remaining scope-context friction. Tamarack again requested a structured requirements
+route, while Spruce identified intermediate density and repeated table-region names.
+
+## Following corrections
+
+- Recorded native/helper/SDK prerequisites, implementation-core notes and platform
+  evidence/limits are structured beside their immutable source records. Cards show
+  these fields consistently. Optional Requirement notes facets combine with query,
+  category, maintainer and Saved, persist in URLs, and feed contextual counts.
+- Unknown notes remain explicitly unclassified. Linux notes include both validation
+  and restrictions; a documented Goose core does not promise native-free execution.
+  The UI explains this documentation scope. Existing source caveats are retained.
+- The mobile Edit summary includes the query even when category/owner/sort are set.
+  Short values are nonbreaking tokens, including A–Z. Additional active notes are
+  signaled when the summary needs a compact form, with full accessible descriptions.
+- The selected category uses the shorter Network & web label; canonical values and
+  full context remain intact. A single result now says 1 match.
+- Intermediate list stacking ends at 880px, retaining comfortable stacked text near
+  768px while restoring denser aligned rows around 900px. Rendered 900px descriptions
+  measured about 338px wide, with no page overflow.
+- Table regions derive their names from topic/maintainer headings, with distinct
+  numbering for additional tables. GitHub's source-index document links to the
+  published formatted index without adding redundant copy to the rendered page.
+- Thirty checks pass (14 Python, 16 Node). New checks cover requirement intersections,
+  unknown states, share parameters, source provenance and contextual table names.
+  Rendered checks covered facet URL restoration, native/Linux notes, complete mobile
+  scope tokens, 1 match, narrow facets, table-region names and no JavaScript errors.

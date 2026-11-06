@@ -42,13 +42,23 @@ export function searchMatch(entry, query) {
   const words=searchText(query).trim().split(/\s+/).filter(Boolean);
   if(!words.length) return {matches:true,limitation:''};
   const cautions=entry.searchCautions || [];
-  const text=searchText(`${entry.label} ${entry.owner} ${entry.category} ${categoryTopics[entry.category] || ''} ${entry.description} ${entry.choice ? entry.choiceLabel || '' : ''} ${(entry.searchAliases || []).join(' ')} ${cautions.flatMap(caution=>caution.terms).join(' ')}`);
+  const text=searchText(`${entry.label} ${entry.owner} ${entry.category} ${categoryTopics[entry.category] || ''} ${entry.description} ${entry.choice ? entry.choiceLabel || '' : ''} ${(entry.searchAliases || []).join(' ')} ${entry.requirements?.native?.length?'native dependencies '+entry.requirements.native.join(' '):''} ${entry.requirements?.implementation?.note || ''} ${(entry.requirements?.platform || []).map(platform=>platform.note).join(' ')} ${cautions.flatMap(caution=>caution.terms).join(' ')}`);
   if(!words.every(word=>matchesWord(text,word))) return {matches:false,limitation:''};
   const notes=cautions.filter(caution=>words.some(word=>matchesWord(searchText(caution.terms.join(' ')),word))).map(caution=>caution.note);
   return {matches:true,limitation:[...new Set(notes)].join(' ')};
 }
+function requirementsMatch(entry, implementation, platform) {
+  const notes=entry.requirements || {};
+  if(implementation==='native' && !notes.native?.length) return false;
+  if(implementation==='goose' && notes.implementation?.kind!=='goose') return false;
+  if(implementation==='go' && notes.implementation?.kind!=='go') return false;
+  if(implementation==='unknown' && (notes.native?.length || notes.implementation)) return false;
+  if(platform==='unknown' && notes.platform?.length) return false;
+  if(platform && platform!=='unknown' && !notes.platform?.some(note=>note.tags.includes(platform))) return false;
+  return true;
+}
 export function filterEntries(entries, filters, favorites) {
-  return entries.filter(entry => (!filters.category || entry.category===filters.category) && (!filters.owner || entry.owner===filters.owner) && (!filters.saved || favorites.has(entry.id)) && searchMatch(entry,filters.q).matches);
+  return entries.filter(entry => (!filters.category || entry.category===filters.category) && (!filters.owner || entry.owner===filters.owner) && (!filters.saved || favorites.has(entry.id)) && requirementsMatch(entry,filters.implementation,filters.platform) && searchMatch(entry,filters.q).matches);
 }
 
 export function shareUrl(href) {

@@ -133,9 +133,9 @@ function render() {
   for(const option of $('category').options) if(option.value) option.textContent=(selectLabels[option.value] || option.value)+' ('+counts.get(option.value)+')';
   $('reset').disabled=!filtering && state.sort==='category';
   $('saved-help').hidden=!state.saved;
-  $('filter-options-label').textContent = 'Filters';
+  $('filter-options-label').textContent = 'Options';
   $('filter-options-label').dataset.active=String(Boolean(state.owner || state.sort!=='category'));
-  $('filter-options-label').setAttribute('aria-label',state.owner || state.sort!=='category'?'Filters, active':'Filters');
+  $('filter-options-label').setAttribute('aria-label',state.owner || state.sort!=='category'?'Options: maintainer and sort, active':'Options: maintainer and sort');
   if(state.saved && saved.size===0) {
     $('empty-title').textContent='Nothing saved yet';
     $('empty-copy').textContent='Use the heart on a resource to save it here. Your collection stays on this device.';
@@ -167,7 +167,7 @@ function render() {
       const disclosure=el('details','reference-details');
       const mode=matchMedia('(max-width: 760px)').matches?'mobile':'desktop';
       disclosure.open=referencePreferences[mode] ?? false;
-      const summary=el('summary','',mode==='mobile'?'Compiler, docs & examples':'Details'); summary.setAttribute('aria-label',mode==='mobile'?'Compiler, docs & examples: all five language resources, including the standard library and package guide':'Details for all '+group.length+' language resources, with descriptions and save controls'); disclosure.append(summary);
+      const summary=el('summary','',mode==='mobile'?'Compiler, docs & examples':'Details & save'); summary.setAttribute('aria-label',mode==='mobile'?'Compiler, docs & examples: all five language resources, including the standard library and package guide':'Details & save for all '+group.length+' language resources, with descriptions and save controls'); disclosure.append(summary);
       summary.addEventListener('click',()=>{referencePreferences[mode]=!disclosure.open;});
       const references=el('div','cards reference-resources');
       for(const entry of group) references.append(card(entry));
@@ -196,7 +196,7 @@ $('search').addEventListener('input',e=>change({q:e.target.value},{push:false}))
 for(const key of ['owner','sort','category']) $(key).addEventListener('change',e=>change({[key]:e.target.value}));
 $('all-resources').addEventListener('click',()=>{change({saved:false});jumpToResults();});
 for(const view of ['list','cards']) $(view+'-view').addEventListener('click',()=>change({view}));
-$('saved-resources').addEventListener('click',()=>{change({saved:!state.saved});jumpToResults();});
+$('saved-resources').addEventListener('click',()=>{change({saved:true});jumpToResults();});
 $('reset').addEventListener('click',()=>{clearFilters();jumpToResults();});
 function jumpToResults() {
   const target=$('results').querySelector('.reference-details summary, .resource-group:not(.reference-group) .group-title') || $('empty-title');

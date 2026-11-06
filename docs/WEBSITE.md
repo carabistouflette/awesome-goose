@@ -20,36 +20,37 @@ layouts use the same resources and filters. Desktop shows Compiler, Docs, Stdlib
 On mobile, a named Compiler, docs & examples disclosure opens their full entries,
 save controls and evidence; the built-ins-first link remains visible in the introduction.
 
-The directory provides case-insensitive multiword search over names, descriptions, comparison topics and
-curated category vocabulary. It normalizes common logging/compression word forms and
-UTF-8 spelling variants while retaining AND matching across query words. Category and maintainer
-filters, category/name/maintainer sorting, local favorites, shareable filtered URLs,
-light/dark themes, keyboard search (`/` or Ctrl/Cmd+K), a Skip to search link, and source-review disclosures that remain open across layout changes. Reading-guide tables show labelled, stacked values
-on mobile and intermediate widths so their reasons and qualifications remain visible. Mobile uses a visible category selector and a
-collapsible maintainer/sort section. Active filters can be removed individually;
-category filters also work within the saved collection. Category counts reflect
-the other active filters. On mobile, Show resources closes expanded filters and
-moves directly to the matching entries. The search field also exposes the current
-matching count as a jump-to-results link. All/Saved share one persistent collection
-bar; switching collections preserves the search, category and maintainer filters. The
-current matching total stays visible in that bar whenever filters or Saved are active.
-Expanded mobile filters summarize the active chips and expose one persistent Show
-action in the collection bar; closing the panel restores the chips and changes
-that action into Filters with an active count and descriptive accessible summary.
-It returns focus to the category control for editing without a long scroll back.
-Favorites and theme settings stay in browser storage; no server account is required.
-If storage is blocked, the directory still works and favorites last for that visit.
-“Copy filters link” shares search/category/maintainer/sort settings, not a saved
-collection; the copied URL intentionally omits device-local saved mode. If the
-clipboard is unavailable, a selectable field exposes the same normalized URL.
-Guides retain the selected theme, include section/subsection navigation with a current-section marker and a
-persistent mobile Directory/Contents bar, and link back to the
-current directory filters, including from the desktop contents rail and header brand.
-Choice notes focuses on package selection; its Ethereum development plan is linked
-separately in Development. Where the comparison reviewed a different snapshot, the evidence disclosure links
-that separate baseline explicitly. Source evidence offers a human-readable index of
-all reviewed discovery snapshots, generated from the same JSON inventory. Links to
-the raw inventory explicitly identify its JSON format. The Markdown list remains available without JavaScript.
+Search covers names, descriptions, comparison topics and curated category vocabulary.
+It matches word prefixes, normalizes common logging/compression forms and UTF-8
+spelling variants, and keeps AND matching across distinct query words. This avoids
+incidental matches such as native inside Alternative. Other controls include
+category/maintainer filters, sorting, local favorites, shareable URLs, light/dark
+themes, keyboard search (`/` or Ctrl/Cmd+K), and Skip to search. Expanded evidence
+stays open when changing list/card layout.
+
+All/Saved consistently selects the named collection and preserves the current
+filters. Category counts reflect the other active filters. Mobile uses a category
+selector and an Options disclosure for maintainer/sort. The persistent matching
+bar offers Show N while those controls are open; afterward it offers Filters with
+an active count and accessible scope summary. Editing focuses Category, and Show
+closes the panel and focuses results. The search count also jumps to results.
+
+Favorites and theme stay in browser storage; no server account is required. If
+storage is blocked, favorites last for that visit. Copy filters link preserves
+public filters, sort and layout while excluding device-local Saved mode. When the
+clipboard is unavailable, a selectable field exposes the normalized URL.
+
+Guides retain theme and directory context, with section/subsection navigation,
+current-section emphasis and a persistent mobile Directory/Contents bar. Short
+choice tables fit tablet reading columns and become compact option-first records
+on phones. Longer evidence/comparison tables use labelled records at narrower
+widths, retaining qualifications and table semantics.
+
+Choice notes focuses on selection and links separately to Development for the
+Ethereum gap plan. Evidence disclosures explicitly link differing directory and
+comparison pins. Source evidence is generated from the same JSON inventory, with
+readable owner-grouped records; raw inventory links identify their JSON format.
+The Markdown list remains available without JavaScript.
 
 ## Checks
 

@@ -408,3 +408,25 @@ html { scroll-padding-top:168px; }
   .reference-group.compact-references { display:block; }
   .compact-references .reference-details>summary,.compact-references .reference-details[open]>summary { justify-content:space-between; padding:0; }
 }
+
+/* Short decision tables stay compact when the reading column is narrower. */
+@media(min-width:761px) and (max-width:1000px) {
+  .guide-choices .table-wrap { border:1px solid var(--line); border-radius:6px; }
+  .guide-choices .table-wrap table { display:table; table-layout:fixed; min-width:0; font-size:14px; }
+  .guide-choices .table-wrap thead { display:table-header-group; position:static; width:auto; height:auto; padding:0; margin:0; overflow:visible; clip:auto; white-space:normal; }
+  .guide-choices .table-wrap tbody { display:table-row-group; width:auto; }
+  .guide-choices .table-wrap tr { display:table-row; width:auto; }
+  .guide-choices .table-wrap td { display:table-cell; width:auto; padding:10px; border-bottom:1px solid var(--line); }
+  .guide-choices .table-wrap td::before { display:none; }
+}
+@media(max-width:760px) {
+  .filter-options summary { padding:7px 6px; }
+  .filter-options summary::after { margin-left:4px; }
+  .guide-choices .table-wrap tbody>tr { display:grid; grid-template-columns:minmax(0,1fr); padding:12px 0; }
+  .guide-choices .table-wrap td { padding:2px 0; }
+  .guide-choices .table-wrap td::before { display:none; }
+  .guide-choices .table-wrap td[data-label=Option] { grid-row:1; font-weight:650; }
+  .guide-choices .table-wrap td[data-label=Option] a { display:inline-flex; align-items:center; min-height:44px; }
+  .guide-choices .table-wrap td[data-label=Need] { grid-row:2; }
+  .guide-choices .table-wrap td[data-label=Qualification] { grid-row:3; color:var(--muted); font-size:14px; }
+}

@@ -25,9 +25,23 @@ function searchText(text) {
     .replace(/\b(?:decoding|decoders?|decoded)\b/g,'decode')
     .replace(/\b(?:archives|archiving)\b/g,'archive');
 }
+function matchesWord(text, word) {
+  if(!/^\p{L}/u.test(word)) return text.includes(word);
+  let index=text.indexOf(word);
+  while(index>=0) {
+    if(index===0 || !/[\p{L}\p{N}]/u.test(text[index-1])) return true;
+    index=text.indexOf(word,index+1);
+  }
+  return false;
+}
 export function filterEntries(entries, filters, favorites) {
   const words = searchText(filters.q).trim().split(/\s+/).filter(Boolean);
-  return entries.filter(e => (!filters.category || e.category === filters.category) && (!filters.owner || e.owner === filters.owner) && (!filters.saved || favorites.has(e.id)) && words.every(w => searchText(`${e.label} ${e.owner} ${e.category} ${categoryTopics[e.category] || ''} ${e.description} ${e.choice ? e.choiceLabel || '' : ''}`).includes(w)));
+  return entries.filter(e => {
+    if((filters.category && e.category!==filters.category) || (filters.owner && e.owner!==filters.owner) || (filters.saved && !favorites.has(e.id))) return false;
+    if(!words.length) return true;
+    const text=searchText(`${e.label} ${e.owner} ${e.category} ${categoryTopics[e.category] || ''} ${e.description} ${e.choice ? e.choiceLabel || '' : ''}`);
+    return words.every(word=>matchesWord(text,word));
+  });
 }
 
 export function shareUrl(href) {

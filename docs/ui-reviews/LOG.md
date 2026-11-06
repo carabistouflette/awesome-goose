@@ -389,3 +389,38 @@ after jumping down into the results.
   reported compression/logging/UTF-8 examples and multiword filtering. Isolated
   rendered checks covered mobile density, sticky filter editing/show focus, tablet
   table geometry, and no JavaScript errors.
+
+## Eleventh completed assessment
+
+Application: `f1fa608`.
+
+| Reviewer | Visual | Discovery | Interaction | Responsive / access | Trust | Weighted overall |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Oakwood](assessment-oakwood.md) | 9.0 | 8.7 | 9.3 | 8.9 | 9.6 | 9.02 |
+| [Poplar](assessment-poplar.md) | 9.0 | 8.7 | 8.8 | 9.0 | 9.4 | 8.925 |
+
+This round did not meet the threshold because Poplar remained below 9. No high-
+severity or blocking flow defect was reported. The main concrete inconsistency was
+Saved toggling off when selected again; other refinements concerned reference-label
+clarity, repeated mobile controls, incidental search substrings and table density.
+
+## Following corrections
+
+- Saved now selects saved:true consistently, mirroring All's named-scope behavior.
+  Repeated activation preserves Saved and its filters. Desktop official references
+  expose a Details & save control whose visible label communicates the hidden action.
+- The inline advanced disclosure says Options, with an accessible maintainer/sort
+  description, distinguishing it from the contextual sticky Filters action.
+- Word-prefix matching excludes incidental native inside Alternative while retaining
+  the documented topic/word-form retrieval and literal punctuation queries. Specific
+  implementation names such as libcurl remain searchable. Structured dependency
+  metadata remains a future curation task requiring source-backed classifications.
+- Short Choice notes tables retain fitted columns at 761–1000px and use compact
+  option-first records on phones. Explicit table/column relationships remain in the
+  HTML; repeated visual field labels are retained in the longer evidence tables.
+- At 900px the checked TOML table is about 248px high, with client/scroll widths both
+  598px and all qualifications visible. At 375px its three compact records occupy
+  about 382px. The 320px category text fits beside Options without page overflow.
+- Twenty-four checks pass (12 Python, 12 Node). A regression covers native/Alternative
+  word matching. Rendered checks covered repeated Saved activation, reference labels,
+  tablet/phone comparisons, column headers, category width and no JavaScript errors.

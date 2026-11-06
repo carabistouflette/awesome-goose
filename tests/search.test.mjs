@@ -73,3 +73,9 @@ test('UTF-8 punctuation variants find the same two documented entries',()=>{
   const expected=['carabistouflette/goose-text','Macho0x/goose-msgpack'].sort();
   for(const q of ['utf8','UTF-8','utf 8']) assert.deepEqual(search({q}).map(e=>e.repository).sort(),expected);
 });
+
+test('word-prefix search avoids incidental native inside alternative',()=>{
+  const fixture=[{id:'alternative',label:'Alternative runtime',name:'runtime',owner:'sample',category:'Example',description:'Another backend'}, {id:'native',label:'Bindings',name:'bindings',owner:'sample',category:'Example',description:'Native-backed helper'}];
+  assert.deepEqual(filterEntries(fixture,{...base,q:'native'},new Set()).map(e=>e.id),['native']);
+  assert.ok(search({q:'libcurl'}).some(e=>e.repository==='carabistouflette/goose-http'));
+});

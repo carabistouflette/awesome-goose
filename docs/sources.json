@@ -85,8 +85,8 @@
     },
     {
       "repository": "carabistouflette/goose-glob",
-      "commit": "2022a04e1847490c9c76af91e1e5c01a3c6e3cc0",
-      "readme": "https://github.com/carabistouflette/goose-glob/blob/2022a04e1847490c9c76af91e1e5c01a3c6e3cc0/README.md",
+      "commit": "02d7422d07469f1c483067a4d011698afbafbcc2",
+      "readme": "https://github.com/carabistouflette/goose-glob/blob/02d7422d07469f1c483067a4d011698afbafbcc2/README.md",
       "reviewed": "2026-11-07",
       "license": "Apache-2.0",
       "search_aliases": [

@@ -30,7 +30,9 @@ reason to prefer them. Challenging an inclusion is welcome with source evidence.
 
 Record review date, public repository, immutable source link, and material limits.
 README entries link to living upstreams; docs/sources.json records the reviewed
-snapshot. Recheck descriptions when a package changes, when an issue reports stale
+snapshot. Each record keeps its own actual review date; the inventory date is
+the latest curation date, and older records retain their original dates.
+Recheck descriptions when a package changes, when an issue reports stale
 information, or before promoting a watchlist candidate. Remove broken or superseded
 recommendations with a short reason in the change description.
 

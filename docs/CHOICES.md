@@ -77,6 +77,18 @@ reader with source-borrowing strings where possible. Keep its input, node storag
 and escape storage alive. It has no writer and targets TOML 1.0. This is an ownership
 and feature choice; no matched benchmark was run to rank speed.
 
+## MessagePack
+
+| Need | Option | Qualification |
+| --- | --- | --- |
+| Bounded borrowed tokens and explicit full-input validation | [carabistouflette/goose-msgpack](https://github.com/carabistouflette/goose-msgpack) | Input/output/node/depth/payload limits and strict UTF-8; experimental, Linux x86-64 validated. |
+| Typed primitives and an optional value tree | [Macho0x/goose-msgpack](https://github.com/Macho0x/goose-msgpack) | Strings are opaque bytes; caller owns resource limits and trailing-byte policy. |
+
+Carabistouflette's reader borrows payloads and its `finish` requires exactly one
+complete value with no trailing bytes. Its writer can produce a sequence;
+applications own framing. Choose the token API when avoiding a value tree matters,
+and a tree API when the application needs one. No speed ranking is established.
+
 ## Logging
 
 | Need | Option | Qualification |
@@ -98,6 +110,7 @@ Optional follow-up work is recorded in [Development](DEVELOPMENT.md#logging).
 | Need | Option | Qualification |
 | --- | --- | --- |
 | Bounded tar.gz inspection and extraction | [carabistouflette/goose-archive](https://github.com/carabistouflette/goose-archive) | Archive operations with path/output limits. |
+| Bounded incremental gzip/zlib/raw DEFLATE decoding | [carabistouflette/goose-compress](https://github.com/carabistouflette/goose-compress) | System zlib, cumulative input/output/member limits, explicit trailing-byte policy; Linux x86-64 validated, no encoder. |
 | DEFLATE decompression and gzip/zlib wrappers | [Macho0x/goose-deflate](https://github.com/Macho0x/goose-deflate) | Includes a decoder and a deliberately simpler encoder. |
 | Streaming encoding, including zstd | [kaitk/goose-compress](https://github.com/kaitk/goose-compress) | Native helpers; no decoder. |
 
@@ -106,6 +119,12 @@ inspection/extraction. [Macho0x/goose-deflate](https://github.com/Macho0x/goose-
 owns compression streams and wrappers, including a decoder. They are different
 layers. The pure-Goose encoder is deliberately simpler than a full compression-level
 implementation.
+
+[carabistouflette/goose-compress](https://github.com/carabistouflette/goose-compress)
+offers standalone incremental decoding without archive extraction. It uses system
+zlib and reports truncation, checksum, dictionary and resource-limit failures.
+Its API is experimental; decoded prefixes remain available after errors and must
+not be treated as authenticated output. It does not encode or support zstd.
 
 [kaitk/goose-compress](https://github.com/kaitk/goose-compress) earns a separate entry
 for streaming encoding and zstd. Its documented API does not decode. Choose based on

@@ -137,6 +137,7 @@ important scope limits appear where they affect the choice.
 ## Development tools
 
 - [carabistouflette/goose-check](https://github.com/carabistouflette/goose-check) — Command regression testing with binary fixtures, exit expectations, limits, and deadlines; Linux-specific today.
+- [carabistouflette/goose-diff](https://github.com/carabistouflette/goose-diff) — Bounded byte-exact line differences and unified patches; `goose-check` uses it for optional stdout mismatch details. Patch bytes are escaped by callers before terminal display. Experimental; Linux x86-64 validated.
 - [carabistouflette/honk](https://github.com/carabistouflette/honk) — Experimental project manager with Git/path dependencies, lockfiles, workspaces, and test/build commands; Linux x86-64/glibc. No package registry publishing yet.
 - [exaroth/coc-goose](https://github.com/exaroth/coc-goose) — Goose language-server integration for coc.nvim; requires Goose filetype detection and compiler/stdlib configuration.
 - [exaroth/goose-lang.vim](https://github.com/exaroth/goose-lang.vim) — Vim/Neovim highlighting, indentation, and basic compiler integration.

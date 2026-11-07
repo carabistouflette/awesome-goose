@@ -200,6 +200,13 @@
       }
     },
     {
+      "repository": "carabistouflette/goose-msgpack",
+      "commit": "18c968bcf2d938bd3af6e878e5ee607eaac3c875",
+      "readme": "https://github.com/carabistouflette/goose-msgpack/blob/18c968bcf2d938bd3af6e878e5ee607eaac3c875/README.md",
+      "reviewed": "2026-11-07",
+      "license": "Apache-2.0"
+    },
+    {
       "repository": "carabistouflette/goose-log",
       "commit": "c29cdc27d41364e52e53556f8468d55552439bf6",
       "readme": "https://github.com/carabistouflette/goose-log/blob/c29cdc27d41364e52e53556f8468d55552439bf6/README.md",

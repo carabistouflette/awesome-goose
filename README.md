@@ -66,6 +66,7 @@ important scope limits appear where they affect the choice.
 - [carabistouflette/goose-compress](https://github.com/carabistouflette/goose-compress) — Bounded incremental gzip/zlib/raw DEFLATE decoding via system zlib; Linux x86-64 validated, experimental, no encoder.
 - [carabistouflette/goose-csv](https://github.com/carabistouflette/goose-csv) — Bounded streaming CSV reader and atomic row writer.
 - [carabistouflette/goose-json](https://github.com/carabistouflette/goose-json) — Strict owned JSON ↔ struct mapping and bounded raw member selection distinguishing missing from null; struct fields are required, and native C++ support is needed.
+- [carabistouflette/goose-msgpack](https://github.com/carabistouflette/goose-msgpack) — Bounded MessagePack token reader and writer with strict UTF-8 and full-input reader validation; borrowed payloads, experimental, Linux x86-64 validated.
 - [carabistouflette/goose-text](https://github.com/carabistouflette/goose-text) — Strict UTF-8 validation and conversion.
 - [carabistouflette/goose-toml](https://github.com/carabistouflette/goose-toml) — Owned TOML document parsing, mutation, and writing, with explicit limits and opt-in TOML 1.1.
 - [carabistouflette/goose-toml-edit](https://github.com/carabistouflette/goose-toml-edit) — Targeted TOML edits that preserve comments and untouched formatting.

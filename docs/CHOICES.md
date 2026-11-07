@@ -77,6 +77,18 @@ reader with source-borrowing strings where possible. Keep its input, node storag
 and escape storage alive. It has no writer and targets TOML 1.0. This is an ownership
 and feature choice; no matched benchmark was run to rank speed.
 
+## MessagePack
+
+| Need | Option | Qualification |
+| --- | --- | --- |
+| Bounded borrowed tokens and explicit full-input validation | [carabistouflette/goose-msgpack](https://github.com/carabistouflette/goose-msgpack) | Input/output/node/depth/payload limits and strict UTF-8; experimental, Linux x86-64 validated. |
+| Typed primitives and an optional value tree | [Macho0x/goose-msgpack](https://github.com/Macho0x/goose-msgpack) | Strings are opaque bytes; caller owns resource limits and trailing-byte policy. |
+
+Carabistouflette's reader borrows payloads and its `finish` requires exactly one
+complete value with no trailing bytes. Its writer can produce a sequence;
+applications own framing. Choose the token API when avoiding a value tree matters,
+and a tree API when the application needs one. No speed ranking is established.
+
 ## Logging
 
 | Need | Option | Qualification |

@@ -77,7 +77,7 @@ important scope limits appear where they affect the choice.
 - [carabistouflette/goose-archive](https://github.com/carabistouflette/goose-archive) — Bounded tar.gz inspection and extraction.
 - [carabistouflette/goose-artifact](https://github.com/carabistouflette/goose-artifact) — Bounded verified downloads with explicit publication outcomes.
 - [carabistouflette/goose-fs](https://github.com/carabistouflette/goose-fs) — Filesystem I/O, retained handles, metadata, roots, locks, and rename operations.
-- [carabistouflette/goose-glob](https://github.com/carabistouflette/goose-glob) — Bounded byte-path glob matching with reusable patterns and no-follow file collection; collection uses goose-fs on 64-bit Linux. Experimental.
+- [carabistouflette/goose-glob](https://github.com/carabistouflette/goose-glob) — Bounded byte-path glob matching with reusable patterns and no-follow file collection; collection uses goose-fs on 64-bit Linux. v0.1.0 API qualified on pinned Goose/Linux.
 - [carabistouflette/goose-process](https://github.com/carabistouflette/goose-process) — Bounded subprocess execution, incremental I/O, and managed two-stage pipelines.
 
 ### Networking and web

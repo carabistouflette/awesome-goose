@@ -38,6 +38,13 @@
       "license": "Apache-2.0"
     },
     {
+      "repository": "carabistouflette/goose-compress",
+      "commit": "c99b04981a1bee0848f6d7f0561ad2a6b09e1acb",
+      "readme": "https://github.com/carabistouflette/goose-compress/blob/c99b04981a1bee0848f6d7f0561ad2a6b09e1acb/README.md",
+      "reviewed": "2026-11-07",
+      "license": "Apache-2.0"
+    },
+    {
       "repository": "carabistouflette/goose-check",
       "commit": "4008f41aef11278d16585b6ed064a02127894599",
       "readme": "https://github.com/carabistouflette/goose-check/blob/4008f41aef11278d16585b6ed064a02127894599/README.md",

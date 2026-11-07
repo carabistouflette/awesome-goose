@@ -230,6 +230,25 @@
       }
     },
     {
+      "repository": "carabistouflette/goose-task",
+      "commit": "166b684ca96403fea94072cc8e0c630321fb832d",
+      "readme": "https://github.com/carabistouflette/goose-task/blob/166b684ca96403fea94072cc8e0c630321fb832d/README.md",
+      "reviewed": "2026-11-07",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "dependency graph",
+        "DAG",
+        "topological sort",
+        "task scheduling"
+      ],
+      "requirements": {
+        "implementation": {
+          "kind": "goose",
+          "note": "Pure Goose graph planning and caller-driven scheduling; no process spawning, threads or I/O."
+        }
+      }
+    },
+    {
       "repository": "carabistouflette/goose-terminal",
       "commit": "9a7d4d801fba0bad6375ac04232d0c1bd2dc1ab1",
       "readme": "https://github.com/carabistouflette/goose-terminal/blob/9a7d4d801fba0bad6375ac04232d0c1bd2dc1ab1/README.md",
@@ -291,6 +310,31 @@
       "readme": "https://github.com/carabistouflette/goose-url/blob/217ed197726a7545d51bca322059993f9e4c4317/README.md",
       "reviewed": "2026-11-06",
       "license": "Apache-2.0"
+    },
+    {
+      "repository": "carabistouflette/goose-watch",
+      "commit": "56842ee7fc4c2fd948f663f1c50425bf2b3e8a73",
+      "readme": "https://github.com/carabistouflette/goose-watch/blob/56842ee7fc4c2fd948f663f1c50425bf2b3e8a73/README.md",
+      "reviewed": "2026-11-07",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "file watching",
+        "directory notifications",
+        "inotify"
+      ],
+      "requirements": {
+        "native": [
+          "Linux inotify/poll adapter; directory sets require Linux 4.19+ and IN_MASK_CREATE headers"
+        ],
+        "platform": [
+          {
+            "tags": [
+              "linux"
+            ],
+            "note": "Qualified on Linux x86-64/glibc only; nonrecursive single directories or explicit directory sets."
+          }
+        ]
+      }
     },
     {
       "repository": "carabistouflette/honk",

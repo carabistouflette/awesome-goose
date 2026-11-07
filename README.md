@@ -79,6 +79,8 @@ important scope limits appear where they affect the choice.
 - [carabistouflette/goose-fs](https://github.com/carabistouflette/goose-fs) — Filesystem I/O, retained handles, metadata, roots, locks, and rename operations.
 - [carabistouflette/goose-glob](https://github.com/carabistouflette/goose-glob) — Bounded byte-path glob matching with reusable patterns and no-follow file collection; collection uses goose-fs on 64-bit Linux. v0.1.0 API qualified on pinned Goose/Linux.
 - [carabistouflette/goose-process](https://github.com/carabistouflette/goose-process) — Bounded subprocess execution, incremental I/O, and managed two-stage pipelines.
+- [carabistouflette/goose-task](https://github.com/carabistouflette/goose-task) — Bounded dependency graph validation, FIFO plans, and caller-driven task scheduling in pure Goose; does not spawn processes or threads. Experimental.
+- [carabistouflette/goose-watch](https://github.com/carabistouflette/goose-watch) — Bounded nonrecursive directory notifications and explicit directory sets with loss reporting; Linux x86-64/glibc only, sets require Linux 4.19+. Experimental.
 
 ### Networking and web
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Check this catalog's local navigation and reviewed-source inventory offline."""
 import json
+from datetime import date
 import re
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
@@ -12,6 +13,17 @@ records = manifest['repositories']
 known = {r['repository'] for r in records}
 if len(known) != len(records):
     errors.append('Duplicate source-inventory repository')
+def review_date(value):
+    if not isinstance(value, str) or not re.fullmatch(r'\d{4}-\d{2}-\d{2}', value):
+        return None
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        return None
+
+latest_review = review_date(manifest['review_date'])
+if latest_review is None:
+    errors.append('Invalid inventory review date')
 for record in records:
     repo, sha = record['repository'], record['commit']
     if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repo):
@@ -20,8 +32,9 @@ for record in records:
         errors.append(f'Invalid full commit: {repo}')
     if record['readme'] != f'https://github.com/{repo}/blob/{sha}/README.md':
         errors.append(f'Invalid snapshot URL: {repo}')
-    if record['reviewed'] != manifest['review_date']:
-        errors.append(f'Inconsistent review date: {repo}')
+    reviewed = review_date(record['reviewed'])
+    if reviewed is None or latest_review is None or reviewed > latest_review:
+        errors.append(f'Invalid or future review date: {repo}')
 
     aliases=record.get('search_aliases',[])
     cautions=record.get('search_cautions',[])

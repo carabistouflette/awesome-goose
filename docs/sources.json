@@ -1,5 +1,5 @@
 {
-  "review_date": "2026-11-06",
+  "review_date": "2026-11-07",
   "scope": "Public README/source review; upstream test claims were not independently rerun. Null license marks a research/watchlist candidate, not an admitted package. Search aliases and caution notes are editorial discovery metadata tied to these reviewed snapshots. Requirement records describe upstream declarations; absent fields stay unclassified and platform notes are not a verified support matrix.",
   "repositories": [
     {
@@ -85,9 +85,9 @@
     },
     {
       "repository": "carabistouflette/goose-glob",
-      "commit": "379515420be040bc603f0ea87b4e823d2e4e5c3a",
-      "readme": "https://github.com/carabistouflette/goose-glob/blob/379515420be040bc603f0ea87b4e823d2e4e5c3a/README.md",
-      "reviewed": "2026-11-06",
+      "commit": "1c2cb05988a253c8f9c4922659dd4a669e0b80cf",
+      "readme": "https://github.com/carabistouflette/goose-glob/blob/1c2cb05988a253c8f9c4922659dd4a669e0b80cf/README.md",
+      "reviewed": "2026-11-07",
       "license": "Apache-2.0",
       "search_aliases": [
         "glob",
@@ -113,7 +113,7 @@
           }
         ]
       },
-      "reviewed_at": "2026-11-06T23:36:26.763644+00:00"
+      "reviewed_at": "2026-11-07T00:37:19.303182+00:00"
     },
     {
       "repository": "carabistouflette/goose-http",

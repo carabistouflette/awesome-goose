@@ -61,7 +61,7 @@ test('name sorting follows package names across maintainers and groups identical
 
 test('common topic vocabulary retrieves complete alternatives and retains AND filters',()=>{
   const repos=query=>search({q:query}).map(e=>e.repository).sort();
-  const compression=['carabistouflette/goose-archive','kaitk/goose-compress','Macho0x/goose-deflate'].sort();
+  const compression=['carabistouflette/goose-archive','carabistouflette/goose-compress','kaitk/goose-compress','Macho0x/goose-deflate'].sort();
   assert.deepEqual(repos('compression'),compression);
   assert.deepEqual(repos('compress'),compression);
   const logging=['carabistouflette/goose-log','Macho0x/goose-logger'].sort();
@@ -71,8 +71,8 @@ test('common topic vocabulary retrieves complete alternatives and retains AND fi
   assert.ok(search({q:'math'}).length>0);
   assert.ok(search({q:'CLI'}).some(e=>e.repository==='carabistouflette/goose-argparse'));
 });
-test('UTF-8 punctuation variants find the same two documented entries',()=>{
-  const expected=['carabistouflette/goose-text','Macho0x/goose-msgpack'].sort();
+test('UTF-8 punctuation variants find the same documented entries',()=>{
+  const expected=['carabistouflette/goose-text','carabistouflette/goose-msgpack','Macho0x/goose-msgpack'].sort();
   for(const q of ['utf8','UTF-8','utf 8']) assert.deepEqual(search({q}).map(e=>e.repository).sort(),expected);
 });
 
@@ -87,8 +87,11 @@ test('decompression aliases find the decoder before an explicit encoder-only lim
   for(const q of ['decompression','decompress','decoder']) {
     const results=sortEntries(search({q}),'category',categories,q);
     const decoder=results.findIndex(entry=>entry.repository==='Macho0x/goose-deflate');
+    const bounded=results.findIndex(entry=>entry.repository==='carabistouflette/goose-compress');
     const encoder=results.findIndex(entry=>entry.repository==='kaitk/goose-compress');
     assert.ok(decoder>=0 && encoder>decoder,q);
+    assert.ok(bounded>=0 && encoder>bounded,q);
+    assert.equal(searchMatch(results[bounded],q).limitation,'');
     assert.equal(searchMatch(results[decoder],q).limitation,'');
     assert.match(searchMatch(results[encoder],q).limitation,/no decoder/);
   }
@@ -96,9 +99,10 @@ test('decompression aliases find the decoder before an explicit encoder-only lim
 test('capability limitations remain discoverable behind positive matches',()=>{
   const categories=[...new Set(entries.map(entry=>entry.category))];
   const results=sortEntries(search({q:'utf8'}),'category',categories,'utf8');
-  assert.equal(results[0].repository,'carabistouflette/goose-text');
-  assert.equal(results[1].repository,'Macho0x/goose-msgpack');
-  assert.match(searchMatch(results[1],'utf8').limitation,/without UTF-8 validation/);
+  assert.deepEqual(results.slice(0,2).map(entry=>entry.repository),['carabistouflette/goose-msgpack','carabistouflette/goose-text']);
+  assert.ok(results.slice(0,2).every(entry=>searchMatch(entry,'utf8').limitation===''));
+  assert.equal(results[2].repository,'Macho0x/goose-msgpack');
+  assert.match(searchMatch(results[2],'utf8').limitation,/without UTF-8 validation/);
   assert.ok(search({q:'native'}).some(entry=>entry.repository==='carabistouflette/goose-http'));
 });
 

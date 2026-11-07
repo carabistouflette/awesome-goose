@@ -42,7 +42,13 @@
       "commit": "c99b04981a1bee0848f6d7f0561ad2a6b09e1acb",
       "readme": "https://github.com/carabistouflette/goose-compress/blob/c99b04981a1bee0848f6d7f0561ad2a6b09e1acb/README.md",
       "reviewed": "2026-11-07",
-      "license": "Apache-2.0"
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "compression",
+        "decompression",
+        "decompress",
+        "decoder"
+      ]
     },
     {
       "repository": "carabistouflette/goose-check",

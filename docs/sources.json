@@ -159,22 +159,24 @@
     },
     {
       "repository": "carabistouflette/goose-json",
-      "commit": "0061ec83bf7f88763402751d50e3c27f3dd13f68",
-      "readme": "https://github.com/carabistouflette/goose-json/blob/0061ec83bf7f88763402751d50e3c27f3dd13f68/README.md",
-      "reviewed": "2026-11-06",
+      "commit": "fcee7b75658a5708756dc163127b70df656996a4",
+      "readme": "https://github.com/carabistouflette/goose-json/blob/fcee7b75658a5708756dc163127b70df656996a4/README.md",
+      "reviewed": "2026-11-07",
       "license": "Apache-2.0",
       "search_aliases": [
         "JSON parsing",
+        "JSON-RPC",
+        "selective JSON",
+        "null values",
         "native dependency"
       ],
       "search_cautions": [
         {
           "terms": [
-            "null",
             "optional",
             "maps"
           ],
-          "note": "Null/optional values and maps are outside its documented JSON model."
+          "note": "The strict struct codec requires every field and does not support optional fields or maps; the protocol reader selects raw object members."
         }
       ],
       "requirements": {

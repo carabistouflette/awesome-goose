@@ -117,3 +117,11 @@ test('unknown notes stay distinct from documented implementation and platform ev
   assert.deepEqual(search({owner:'Macho0x',q:'deflate',implementation:'goose'}).map(entry=>entry.repository),['Macho0x/goose-deflate']);
   assert.equal(search({q:'robtandy/goose.go',implementation:'go'}).length,1);
 });
+
+test('goose-json search distinguishes raw null selection from typed map limits',()=>{
+  const entry=entries.find(e=>e.repository==='carabistouflette/goose-json');
+  assert.equal(entry.source,'https://github.com/carabistouflette/goose-json/blob/fcee7b75658a5708756dc163127b70df656996a4/README.md');
+  assert.ok(search({q:'JSON-RPC'}).some(e=>e.repository===entry.repository));
+  assert.equal(searchMatch(entry,'null').limitation,'');
+  assert.match(searchMatch(entry,'maps').limitation,/strict struct codec/i);
+});

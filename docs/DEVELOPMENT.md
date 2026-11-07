@@ -6,6 +6,8 @@ or compatibility promises. For selecting an existing package, use [Choice notes]
 
 ## Ethereum support
 
+**Update, 2026-11-07:** [goose-json v0.2.0](https://github.com/carabistouflette/goose-json/blob/fcee7b75658a5708756dc163127b70df656996a4/docs/api.md#select-json-object-members) offers bounded raw object-member selection and includes a read-only `eth_blockNumber` example. Its strict struct codec still requires every field and does not support optional fields or maps. The broader Ethereum, ABI and signing work below remains separate.
+
 Useful gaps to pursue in carabistouflette's ecosystem, in dependency order:
 
 1. **Keccak-256 and checked uint256 codecs/arithmetic.** Ethereum uses Keccak-256,
@@ -23,9 +25,9 @@ Useful gaps to pursue in carabistouflette's ecosystem, in dependency order:
    integrations can then compose the stack, rather than driving all concerns into
    a generic crypto library.
 
-The existing strict JSON-to-struct codec cannot represent every JSON-RPC envelope:
-null/optional values and dynamic result shapes need selective standard-library JSON
-reads or an opt-in richer codec. Evaluate reusable POST, additional HTTP verbs, and
+The strict JSON-to-struct codec cannot represent every JSON-RPC envelope.
+For dynamic shapes, use its opt-in raw member selection or evaluate the standard
+reader against the application’s validation and ownership needs. Evaluate reusable POST, additional HTTP verbs, and
 structured RPC errors before building a second transport. The detailed comparison
 records acceptance criteria for these cross-cutting gaps.
 

@@ -77,6 +77,33 @@
       "license": "Apache-2.0"
     },
     {
+      "repository": "carabistouflette/goose-diff",
+      "commit": "ba87b7d84dedfb7e90b42a95a473baaa3f95b7ee",
+      "readme": "https://github.com/carabistouflette/goose-diff/blob/ba87b7d84dedfb7e90b42a95a473baaa3f95b7ee/README.md",
+      "reviewed": "2026-11-07",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "diff",
+        "unified diff",
+        "patch generation",
+        "line comparison"
+      ],
+      "requirements": {
+        "implementation": {
+          "kind": "goose",
+          "note": "Pure Goose line comparison and raw unified patch rendering; callers must escape patch bytes before terminal display."
+        },
+        "platform": [
+          {
+            "tags": [
+              "linux"
+            ],
+            "note": "Local validation and release CI cover Linux x86-64; other platforms remain unqualified."
+          }
+        ]
+      }
+    },
+    {
       "repository": "carabistouflette/goose-fs",
       "commit": "0d84729aed8d72463349cac7d9439d4039ccd6d3",
       "readme": "https://github.com/carabistouflette/goose-fs/blob/0d84729aed8d72463349cac7d9439d4039ccd6d3/README.md",

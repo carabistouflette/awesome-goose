@@ -31,6 +31,13 @@
       "license": "Apache-2.0"
     },
     {
+      "repository": "carabistouflette/goose-base64",
+      "commit": "334e708d4d02448ae9caeb8767d773516a1f99ed",
+      "readme": "https://github.com/carabistouflette/goose-base64/blob/334e708d4d02448ae9caeb8767d773516a1f99ed/README.md",
+      "reviewed": "2026-11-07",
+      "license": "Apache-2.0"
+    },
+    {
       "repository": "carabistouflette/goose-check",
       "commit": "4008f41aef11278d16585b6ed064a02127894599",
       "readme": "https://github.com/carabistouflette/goose-check/blob/4008f41aef11278d16585b6ed064a02127894599/README.md",

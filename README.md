@@ -62,6 +62,7 @@ important scope limits appear where they affect the choice.
 
 ### Data formats and text
 
+- [carabistouflette/goose-base64](https://github.com/carabistouflette/goose-base64) — Strict Base64/Base64url with explicit padding, canonical-bit checks, and per-call output limits; experimental, Linux x86-64 validated.
 - [carabistouflette/goose-csv](https://github.com/carabistouflette/goose-csv) — Bounded streaming CSV reader and atomic row writer.
 - [carabistouflette/goose-json](https://github.com/carabistouflette/goose-json) — Strict owned JSON ↔ struct mapping and bounded raw member selection distinguishing missing from null; struct fields are required, and native C++ support is needed.
 - [carabistouflette/goose-text](https://github.com/carabistouflette/goose-text) — Strict UTF-8 validation and conversion.

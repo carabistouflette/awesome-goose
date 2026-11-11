@@ -139,6 +139,28 @@ Automatic updates mean approved Markdown changes automatically reach the website
 They do not mean unattended scraping or automatic admission of new libraries:
 curation and explanations remain reviewed changes.
 
+## Search engine discovery
+
+The directory is published for search engines, not only for direct visitors:
+
+- `public/google78b7813164e8af30.html` is the Google Search Console HTML
+  verification token for the `https://carabistouflette.github.io/awesome-goose/`
+  URL-prefix property. It must stay byte-identical to the file Search Console
+  issues; deleting it unverifies the property.
+- `public/robots.txt` allows crawling and points to the sitemap.
+- `src/pages/sitemap.xml.js` generates `sitemap.xml` from the directory route and
+  `guideNames`, so a new guide is listed without editing the sitemap by hand.
+- `src/layouts/BaseLayout.astro` emits a canonical URL and Open Graph tags for
+  every page. Guide descriptions come from `guideDescriptions` in
+  `src/lib/content.mjs`.
+
+`tests/test_site.py` fails if the token, the robots file, the sitemap entries or
+the canonical links stop matching the built output.
+
+Verifying the property and submitting `sitemap.xml` require the repository
+owner's Google account, so they stay manual steps after a deployment that changes
+these files.
+
 ## UI review process
 
 [Review history and scores](ui-reviews/LOG.md) records independent assessments and

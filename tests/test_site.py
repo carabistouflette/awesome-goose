@@ -103,4 +103,25 @@ class SiteTests(unittest.TestCase):
             self.assertIn('aria-label="On this page"',page)
             self.assertIn('data-directory-return',page)
 
+    def test_search_engine_discovery_files_are_published(self):
+        site=ROOT / '_site'
+        tokens=list(site.glob('google*.html'))
+        self.assertTrue(tokens,'missing Google Search Console verification file')
+        for token in tokens:
+            self.assertEqual(token.read_text(),f'google-site-verification: {token.name}')
+        self.assertIn('Sitemap: https://carabistouflette.github.io/awesome-goose/sitemap.xml',(site / 'robots.txt').read_text())
+        sitemap=(site / 'sitemap.xml').read_text()
+        self.assertIn('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',sitemap)
+        for page in site.glob('*.html'):
+            if page.name.startswith('google'): continue
+            url='https://carabistouflette.github.io/awesome-goose/' if page.name=='index.html' else f'https://carabistouflette.github.io/awesome-goose/{page.name}'
+            self.assertIn(f'<loc>{url}</loc>',sitemap,page.name)
+        self.assertNotIn('catalog.json',sitemap)
+
+    def test_pages_declare_a_canonical_url(self):
+        for page in (ROOT / '_site').glob('*.html'):
+            if page.name.startswith('google'): continue
+            url='https://carabistouflette.github.io/awesome-goose/' if page.name=='index.html' else f'https://carabistouflette.github.io/awesome-goose/{page.name}'
+            self.assertIn(f'<link rel="canonical" href="{url}">',page.read_text(),page.name)
+
 if __name__=='__main__': unittest.main()

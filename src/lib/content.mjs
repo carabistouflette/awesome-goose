@@ -91,6 +91,17 @@ function sourceIndex() {
   return sections.join('\n');
 }
 
+// Search-result summaries. The guides open with review dates and link runs, so
+// their first paragraph is a poor description; these state the page's purpose.
+const guideDescriptions = {
+  CHOICES: 'Which Goose library to pick for logging, HTTP, TOML, SQLite, cryptography and compression, with the tradeoffs behind each choice.',
+  COMPARISONS: 'Public Goose library comparisons: carabistouflette and Macho0x packages side by side, pinned to reviewed commits.',
+  CURATION: 'How the Awesome Goose directory is curated: admission criteria, categories, and what a listing does and does not claim.',
+  RESEARCH: 'The research trail behind the directory: method, reviewed snapshots, and the limits of the evidence.',
+  DEVELOPMENT: 'Documented gaps in the Goose library ecosystem and the additions that would close them.',
+  SOURCES: 'Reviewed source pins for every listed Goose library, with the exact README commit inspected.',
+};
+
 export async function buildGuide(name) {
   if (!guideNames.includes(name)) throw new Error('Unknown guide');
   let document = read(`docs/${name}.md`);
@@ -98,5 +109,5 @@ export async function buildGuide(name) {
   const { code, metadata } = await renderMarkdown(document);
   const sections = metadata.headings.filter(heading => heading.depth === 2 || heading.depth === 3);
   const title = { CHOICES: 'Choice notes', SOURCES: 'Source evidence' }[name] ?? name[0]+name.slice(1).toLowerCase();
-  return { name, title, content: code, sections };
+  return { name, title, description: guideDescriptions[name], content: code, sections };
 }

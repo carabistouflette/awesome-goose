@@ -3,6 +3,7 @@ import '../styles/global.css';
 import themeSource from '../scripts/theme.js?raw';
 
 const { title, description, rootClass, bodyClass } = Astro.props;
+const canonical = new URL(Astro.url.pathname.replace(/index\.html$/, ''), Astro.site);
 ---
 <!doctype html>
 <html lang="en" class={rootClass}>
@@ -10,6 +11,13 @@ const { title, description, rootClass, bodyClass } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Awesome Goose" />
+    <meta property="og:title" content={title} />
+    <meta property="og:url" content={canonical} />
+    {description && <meta property="og:description" content={description} />}
+    <meta name="twitter:card" content="summary" />
     <meta name="theme-color" content="#f7f6f2" />
     <title>{title}</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='.9em' font-size='56'%3E🪿%3C/text%3E%3C/svg%3E" />

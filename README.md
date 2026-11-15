@@ -74,6 +74,10 @@ important scope limits appear where they affect the choice.
 - [Macho0x/goose-deflate](https://github.com/Macho0x/goose-deflate) — Goose DEFLATE decoding and a simpler encoder, with gzip/zlib wrappers. [Compression choices](docs/CHOICES.md#compression-and-archives).
 - [Macho0x/goose-msgpack](https://github.com/Macho0x/goose-msgpack) — MessagePack codec and value tree; preserves map insertion order. Strings are raw bytes without UTF-8 validation.
 - [Macho0x/goose-toml](https://github.com/Macho0x/goose-toml) — TOML 1.0 reader with source-borrowing strings where possible; no writer. [TOML choices](docs/CHOICES.md#toml).
+- [SorinS/asn1goose](https://github.com/SorinS/asn1goose) — Strict ASN.1 DER reader (BER on request), typed decoders, writer, PEM and a dump; pure Goose, no library dependencies.
+- [SorinS/compressgoose](https://github.com/SorinS/compressgoose) — DEFLATE, gzip, zlib, bzip2, xz/LZMA and LZW, read and write, plus zip and tar archives, after Go's `compress`/`archive` packages; pure Goose on caller-owned buffers.
+- [SorinS/mimegoose](https://github.com/SorinS/mimegoose) — Media types, RFC 2047 encoded-words, quoted-printable, multipart and form data at parity with Go's `mime` packages; uses SorinS/bigmongoose for random boundaries, so it inherits its no-Windows entropy limit.
+- [SorinS/yamlgoose](https://github.com/SorinS/yamlgoose) — YAML 1.2 parser, reader and writer that read and write as Go's yaml.v3 (ported libyaml scanner/parser), with input-size and node limits; pure Goose.
 
 ### Files, processes, and artifacts
 
@@ -93,6 +97,12 @@ important scope limits appear where they affect the choice.
 - [kaitk/goose-http](https://github.com/kaitk/goose-http) — Event-loop HTTP server, routing, streaming, and WebSockets; optional TLS and newer HTTP protocols have platform limits. Experimental.
 - [kaitk/goose-tls](https://github.com/kaitk/goose-tls) — Bytes-in/bytes-out TLS using OpenSSL primitives; its default server protocol is implemented in Goose and its client uses libssl.
 - [kaitk/plod](https://github.com/kaitk/plod) — REST framework over kaitk/goose-http with typed extractors, middleware, and optional OpenAPI generation; intended for prototypes today.
+- [SorinS/httpgoose](https://github.com/SorinS/httpgoose) — HTTP/1.1 and HTTP/2 client and server connections without I/O, HPACK, URLs, cookies, and a client with Go's redirect/credential policy (Basic, Digest, NTLMv2) and proxies; HTTPS via SorinS/tlsgoose, sockets via SorinS/netgoose.
+- [SorinS/ldapgoose](https://github.com/SorinS/ldapgoose) — LDAPv3 client after go-ldap: requests, filters, DNs, LDIF and SASL (DIGEST-MD5); no I/O, the caller owns the socket and TLS.
+- [SorinS/netgoose](https://github.com/SorinS/netgoose) — TCP client sockets after Go's net: dial with a deadline, reads and writes with timeouts, closed-connection checks; a small C file built by `goose build`, POSIX and Winsock.
+- [SorinS/ntlmgoose](https://github.com/SorinS/ntlmgoose) — NTLMv2 initiator and acceptor with MIC, channel bindings, signing and sealing; NTLMv1/LM refused. NTLM is a legacy protocol, and the README explains its weaknesses.
+- [SorinS/sshgoose](https://github.com/SorinS/sshgoose) — SSH transport, authentication, channels and SFTP after golang.org/x/crypto/ssh, with client, server, scp, sftp-server and keygen tools; the library does no I/O.
+- [SorinS/tlsgoose](https://github.com/SorinS/tlsgoose) — TLS 1.3 and 1.2 client and server state machines, key schedules and record layer without I/O, on SorinS/bigmongoose, SorinS/x509goose and SorinS/asn1goose.
 
 [Why both HTTP packages?](docs/CHOICES.md#http-and-web)
 
@@ -109,6 +119,9 @@ important scope limits appear where they affect the choice.
 - [carabistouflette/goose-crypto](https://github.com/carabistouflette/goose-crypto) — SHA-256, strict hexadecimal codecs, and detached Ed25519 verification through system libsodium.
 - [kaitk/goose-hash](https://github.com/kaitk/goose-hash) — Hashing, HMAC/PBKDF2, and OS random bytes, with native hardware/OS helpers.
 - [Macho0x/goose-crypto](https://github.com/Macho0x/goose-crypto) — Broad pure-Goose algorithm collection, including Keccak-256 and secp256k1. Its author documents that it is **not constant-time**; see the [crypto choice note](docs/CHOICES.md#cryptography).
+- [SorinS/bigmongoose](https://github.com/SorinS/bigmongoose) — Pure-Goose big integers, constant-time fixed-width arithmetic and the cryptography on them (hashes, MACs, KDFs, AEADs, RSA, ECC incl. Brainpool, X25519/X448, Ed25519/Ed448, ML-KEM/ML-DSA/SLH-DSA). OS entropy uses `getentropy`, so not Windows yet. [Crypto choices](docs/CHOICES.md#cryptography).
+- [SorinS/gslib](https://github.com/SorinS/gslib) — One package holding the SorinS libraries in this list plus Kerberos/GSS-API/SPNEGO, JOSE, OAuth/OIDC, ACME, SAML, WebAuthn, OpenPGP, S/MIME and mail protocols, DNS/DNSSEC primitives, PKCS#11, TPM 2.0, CBOR, XML-DSig, RFC 3161, EST and SCEP; same entropy limit as SorinS/bigmongoose.
+- [SorinS/x509goose](https://github.com/SorinS/x509goose) — X.509 parsing and RFC 5280 path validation (name constraints, policies, CRLs, OCSP), certificate and CSR creation, CMS and PKCS#12.
 
 ### Ethereum and signing
 
@@ -148,6 +161,7 @@ important scope limits appear where they affect the choice.
 - [exaroth/goose-lang.vim](https://github.com/exaroth/goose-lang.vim) — Vim/Neovim highlighting, indentation, and basic compiler integration.
 - [Official editor support](https://github.com/aardappel/goose/blob/master/docs/editors.md) — The compiler's language server and editor configuration, including the upstream VS Code extension.
 - [robtandy/goose.go](https://github.com/robtandy/goose.go) — Alternative compiler backend emitting Go and a pure-Go data-stack runtime, for embedding Goose in Go services without cgo. [Backend choice](docs/CHOICES.md#go-integration).
+- [SorinS/goose-idea](https://github.com/SorinS/goose-idea) — IntelliJ Platform plugin (IDEA, GoLand, CLion 2026.2+) that runs the compiler's language server and the VS Code extension's grammar; built from source, not on the JetBrains Marketplace.
 - [ZHENGSY/goose-zed](https://github.com/ZHENGSY/goose-zed) — Zed language support, Tree-sitter grammar, and compiler-backed LSP integration.
 
 ## Learning and community

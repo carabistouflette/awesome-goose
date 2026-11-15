@@ -11,6 +11,7 @@ independent benchmarks or security audit. [Method and baselines](#evidence-and-r
 | Bounded HTTP client and streaming GET | [carabistouflette/goose-http](https://github.com/carabistouflette/goose-http) | libcurl-backed client. |
 | HTTP serving, routing and WebSockets | [kaitk/goose-http](https://github.com/kaitk/goose-http) | Event-loop server; optional protocols and TLS have platform limits. |
 | Framework-level request handling | [kaitk/plod](https://github.com/kaitk/plod) | Built on Kaitk's server; intended for prototypes today. |
+| Pure-Goose HTTP/1.1 and HTTP/2 with HTTPS and no native libraries | [SorinS/httpgoose](https://github.com/SorinS/httpgoose) | I/O-free protocol code plus a client with Go's policy; TLS via SorinS/tlsgoose, sockets via SorinS/netgoose; no Windows entropy yet. |
 
 Choose [carabistouflette/goose-http](https://github.com/carabistouflette/goose-http)
 for a bounded libcurl-backed client. Choose
@@ -23,6 +24,11 @@ The Macho0x HTTP repository's README points to Kaitk's server ecosystem. Prefer 
 upstream catalog link unless a fork demonstrates distinct maintained functionality;
 a second copy of the same server is not a separate recommendation.
 
+[SorinS/httpgoose](https://github.com/SorinS/httpgoose) differs from both: client and
+server protocol code with HTTP/2, no libcurl or OpenSSL, and TLS from
+[SorinS/tlsgoose](https://github.com/SorinS/tlsgoose). It is a library, not a
+framework or event loop; the caller drives connections.
+
 ## Cryptography
 
 | Need | Option | Qualification |
@@ -30,6 +36,7 @@ a second copy of the same server is not a separate recommendation.
 | SHA-256, hex and Ed25519 verification | [carabistouflette/goose-crypto](https://github.com/carabistouflette/goose-crypto) | System libsodium; verification-focused surface. |
 | HMAC, PBKDF2, hashes and OS entropy | [kaitk/goose-hash](https://github.com/kaitk/goose-hash) | Native helpers; inspect the precise primitive required. |
 | Study Goose algorithms and Ethereum primitives | [Macho0x/goose-crypto](https://github.com/Macho0x/goose-crypto) | Not constant-time; its documented timing restrictions apply. |
+| Broad pure-Goose cryptography with constant-time code paths | [SorinS/bigmongoose](https://github.com/SorinS/bigmongoose) | Its README documents which paths are constant-time and how they are checked; no Windows entropy yet. |
 
 Choose [carabistouflette/goose-crypto](https://github.com/carabistouflette/goose-crypto)
 for its small libsodium-backed SHA-256/hex/Ed25519-verification surface. It does not
@@ -45,6 +52,14 @@ does not make it a drop-in replacement for a native-backed secret-key implementa
 [kaitk/goose-hash](https://github.com/kaitk/goose-hash) is another useful choice for
 HMAC, PBKDF2, hardware-assisted hashes, and OS entropy. Its scope complements a
 verification-only library; inspect actual primitives rather than comparing names.
+
+[SorinS/bigmongoose](https://github.com/SorinS/bigmongoose) covers RSA, ECC, Ed25519/Ed448,
+AEADs, KDFs and post-quantum schemes in pure Goose, and is the base of
+[SorinS/tlsgoose](https://github.com/SorinS/tlsgoose), [SorinS/x509goose](https://github.com/SorinS/x509goose)
+and [SorinS/sshgoose](https://github.com/SorinS/sshgoose). Its constant-time claims are its
+author's, with the timing tests its README describes; test vectors alone do not
+establish side-channel resistance. [SorinS/gslib](https://github.com/SorinS/gslib) packages
+it with the other SorinS libraries in one import. Disclosure: listed by its author.
 
 ## Ethereum
 
@@ -113,6 +128,7 @@ Optional follow-up work is recorded in [Development](DEVELOPMENT.md#logging).
 | Bounded incremental gzip/zlib/raw DEFLATE decoding | [carabistouflette/goose-compress](https://github.com/carabistouflette/goose-compress) | System zlib, cumulative input/output/member limits, explicit trailing-byte policy; Linux x86-64 validated, no encoder. |
 | DEFLATE decompression and gzip/zlib wrappers | [Macho0x/goose-deflate](https://github.com/Macho0x/goose-deflate) | Includes a decoder and a deliberately simpler encoder. |
 | Streaming encoding, including zstd | [kaitk/goose-compress](https://github.com/kaitk/goose-compress) | Native helpers; no decoder. |
+| Pure-Goose reading and writing of DEFLATE, gzip, zlib, bzip2, xz and LZW, plus zip and tar | [SorinS/compressgoose](https://github.com/SorinS/compressgoose) | No native library; output limits per call; no zstd. |
 
 [goose-archive](https://github.com/carabistouflette/goose-archive) owns bounded tar.gz
 inspection/extraction. [Macho0x/goose-deflate](https://github.com/Macho0x/goose-deflate)
@@ -130,6 +146,11 @@ not be treated as authenticated output. It does not encode or support zstd.
 for streaming encoding and zstd. Its documented API does not decode. Choose based on
 format, direction, flush needs, and native dependencies. No cross-project speed
 ranking is supported by this review. Optional backend work is recorded in [Development](DEVELOPMENT.md#compression-and-archives).
+
+[SorinS/compressgoose](https://github.com/SorinS/compressgoose) reads and writes several
+formats in pure Goose on caller-owned buffers, after Go's `compress` and `archive`
+packages. Choose it when a native library is unwanted or bzip2, xz or zip are
+needed; it has no zstd.
 
 ## SQLite
 

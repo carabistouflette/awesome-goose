@@ -49,7 +49,7 @@ test('category counts reflect search, maintainer and saved state without applyin
 test('name sorting follows package names across maintainers and groups identical names',()=>{
   const categories=[...new Set(entries.map(e=>e.category))];
   const sorted=sortEntries(entries,'name',categories);
-  assert.equal(sorted[0].name,'coc-goose');
+  assert.equal(sorted[0].name,'asn1goose');
   const http=sorted.map((entry,index)=>({entry,index})).filter(({entry})=>entry.name==='goose-http');
   assert.equal(http.length,2);
   assert.equal(http[1].index,http[0].index+1);
@@ -61,7 +61,7 @@ test('name sorting follows package names across maintainers and groups identical
 
 test('common topic vocabulary retrieves complete alternatives and retains AND filters',()=>{
   const repos=query=>search({q:query}).map(e=>e.repository).sort();
-  const compression=['carabistouflette/goose-archive','carabistouflette/goose-compress','kaitk/goose-compress','Macho0x/goose-deflate'].sort();
+  const compression=['carabistouflette/goose-archive','carabistouflette/goose-compress','kaitk/goose-compress','Macho0x/goose-deflate','SorinS/compressgoose'].sort();
   assert.deepEqual(repos('compression'),compression);
   assert.deepEqual(repos('compress'),compression);
   const logging=['carabistouflette/goose-log','Macho0x/goose-logger'].sort();

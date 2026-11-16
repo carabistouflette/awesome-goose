@@ -1,5 +1,5 @@
 {
-  "review_date": "2026-11-07",
+  "review_date": "2026-11-15",
   "scope": "Public README/source review; upstream test claims were not independently rerun. Null license marks a research/watchlist candidate, not an admitted package. Search aliases and caution notes are editorial discovery metadata tied to these reviewed snapshots. Requirement records describe upstream declarations; absent fields stay unclassified and platform notes are not a verified support matrix.",
   "repositories": [
     {
@@ -776,6 +776,332 @@
       "readme": "https://github.com/ZHENGSY/goose-zed/blob/1c29fb9425b8596bf6e3f9e2cbd4816f6b2d036a/README.md",
       "reviewed": "2026-11-06",
       "license": "Apache-2.0"
+    },
+    {
+      "repository": "SorinS/asn1goose",
+      "commit": "8e06d8a6c00fcecd5e98bb1999b404c8a3cf6fc4",
+      "readme": "https://github.com/SorinS/asn1goose/blob/8e06d8a6c00fcecd5e98bb1999b404c8a3cf6fc4/README.md",
+      "reviewed": "2026-11-15",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "der",
+        "ber",
+        "pem"
+      ],
+      "requirements": {
+        "implementation": {
+          "kind": "goose",
+          "note": "Pure-Goose implementation."
+        }
+      }
+    },
+    {
+      "repository": "SorinS/bigmongoose",
+      "commit": "31b7353cdb0a69c5c672c755f2c13fa11cd956fa",
+      "readme": "https://github.com/SorinS/bigmongoose/blob/31b7353cdb0a69c5c672c755f2c13fa11cd956fa/README.md",
+      "reviewed": "2026-11-15",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "bigint",
+        "rsa",
+        "ecdsa",
+        "ed25519",
+        "x25519",
+        "post-quantum",
+        "ml-kem",
+        "ml-dsa",
+        "aes-gcm",
+        "chacha20"
+      ],
+      "requirements": {
+        "implementation": {
+          "kind": "goose",
+          "note": "Pure-Goose algorithms; constant-time code paths for secrets as its README documents."
+        },
+        "platform": [
+          {
+            "note": "OS entropy uses getentropy (macOS, Linux, BSDs); Windows is not supported yet.",
+            "tags": [
+              "unix"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repository": "SorinS/compressgoose",
+      "commit": "4787ef77785d32b831a55edf2ffcfb2cb73ee53f",
+      "readme": "https://github.com/SorinS/compressgoose/blob/4787ef77785d32b831a55edf2ffcfb2cb73ee53f/README.md",
+      "reviewed": "2026-11-15",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "gzip",
+        "zlib",
+        "deflate",
+        "bzip2",
+        "xz",
+        "lzma",
+        "zip",
+        "tar"
+      ],
+      "requirements": {
+        "implementation": {
+          "kind": "goose",
+          "note": "Pure-Goose implementation; no native compression library."
+        }
+      }
+    },
+    {
+      "repository": "SorinS/gslib",
+      "commit": "f2e3c557bf0d5446fdd919a1514e80817bed93d2",
+      "readme": "https://github.com/SorinS/gslib/blob/f2e3c557bf0d5446fdd919a1514e80817bed93d2/README.md",
+      "reviewed": "2026-11-15",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "kerberos",
+        "jwt",
+        "jose",
+        "oauth",
+        "openid connect",
+        "acme",
+        "saml",
+        "webauthn",
+        "passkeys",
+        "openpgp",
+        "smime",
+        "dns",
+        "pkcs11",
+        "tpm",
+        "cbor",
+        "xml signature"
+      ],
+      "requirements": {
+        "platform": [
+          {
+            "note": "OS entropy uses getentropy (macOS, Linux, BSDs); Windows is not supported yet.",
+            "tags": [
+              "unix"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repository": "SorinS/goose-idea",
+      "commit": "ede0f32abf5eaf23a777e0e1464b5d160da98062",
+      "readme": "https://github.com/SorinS/goose-idea/blob/ede0f32abf5eaf23a777e0e1464b5d160da98062/README.md",
+      "reviewed": "2026-11-15",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "intellij",
+        "jetbrains",
+        "goland",
+        "clion",
+        "language server",
+        "lsp"
+      ],
+      "requirements": {
+        "platform": [
+          {
+            "note": "IntelliJ Platform 2026.2 or later; built from source with Gradle and JDK 25.",
+            "tags": [
+              "sdk"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repository": "SorinS/httpgoose",
+      "commit": "c4b864fd8fc355495f62ca806860b21e896b8a8b",
+      "readme": "https://github.com/SorinS/httpgoose/blob/c4b864fd8fc355495f62ca806860b21e896b8a8b/README.md",
+      "reviewed": "2026-11-15",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "http2",
+        "https",
+        "cookies",
+        "hpack",
+        "proxy"
+      ],
+      "requirements": {
+        "platform": [
+          {
+            "note": "OS entropy uses getentropy (macOS, Linux, BSDs); Windows is not supported yet.",
+            "tags": [
+              "unix"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repository": "SorinS/ldapgoose",
+      "commit": "865a37fe622f64159c4c8702828360d32cb663c6",
+      "readme": "https://github.com/SorinS/ldapgoose/blob/865a37fe622f64159c4c8702828360d32cb663c6/README.md",
+      "reviewed": "2026-11-15",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "directory",
+        "active directory",
+        "ldif"
+      ]
+    },
+    {
+      "repository": "SorinS/mimegoose",
+      "commit": "b19d5032693afa03012e10c095ba6d521210227a",
+      "readme": "https://github.com/SorinS/mimegoose/blob/b19d5032693afa03012e10c095ba6d521210227a/README.md",
+      "reviewed": "2026-11-15",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "multipart",
+        "form data",
+        "quoted-printable",
+        "encoded-word"
+      ],
+      "requirements": {
+        "platform": [
+          {
+            "note": "OS entropy uses getentropy (macOS, Linux, BSDs); Windows is not supported yet.",
+            "tags": [
+              "unix"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repository": "SorinS/netgoose",
+      "commit": "6537d87df2289e896c8d2e077db86422fb502cfb",
+      "readme": "https://github.com/SorinS/netgoose/blob/6537d87df2289e896c8d2e077db86422fb502cfb/README.md",
+      "reviewed": "2026-11-15",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "tcp",
+        "sockets",
+        "winsock"
+      ]
+    },
+    {
+      "repository": "SorinS/ntlmgoose",
+      "commit": "177d771a92b33e1ab2f9bafe078df864d52c41c0",
+      "readme": "https://github.com/SorinS/ntlmgoose/blob/177d771a92b33e1ab2f9bafe078df864d52c41c0/README.md",
+      "reviewed": "2026-11-15",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "windows authentication",
+        "spnego",
+        "negotiate"
+      ],
+      "search_cautions": [
+        {
+          "terms": [
+            "secure",
+            "modern authentication"
+          ],
+          "note": "NTLM is a legacy protocol; the README documents its weaknesses."
+        }
+      ],
+      "requirements": {
+        "platform": [
+          {
+            "note": "OS entropy uses getentropy (macOS, Linux, BSDs); Windows is not supported yet.",
+            "tags": [
+              "unix"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repository": "SorinS/sshgoose",
+      "commit": "f5eaba38a9c498dfa3e85f4bf8cf1cd20ea1fabe",
+      "readme": "https://github.com/SorinS/sshgoose/blob/f5eaba38a9c498dfa3e85f4bf8cf1cd20ea1fabe/README.md",
+      "reviewed": "2026-11-15",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "sftp",
+        "scp",
+        "sshd"
+      ],
+      "requirements": {
+        "platform": [
+          {
+            "note": "OS entropy uses getentropy (macOS, Linux, BSDs); Windows is not supported yet.",
+            "tags": [
+              "unix"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repository": "SorinS/tlsgoose",
+      "commit": "71cbd17582e091ec9a2c6c778504f4ddbaadcfdf",
+      "readme": "https://github.com/SorinS/tlsgoose/blob/71cbd17582e091ec9a2c6c778504f4ddbaadcfdf/README.md",
+      "reviewed": "2026-11-15",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "tls 1.3",
+        "https",
+        "ssl"
+      ],
+      "requirements": {
+        "implementation": {
+          "kind": "goose",
+          "note": "Pure-Goose TLS; no OpenSSL."
+        },
+        "platform": [
+          {
+            "note": "OS entropy uses getentropy (macOS, Linux, BSDs); Windows is not supported yet.",
+            "tags": [
+              "unix"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repository": "SorinS/x509goose",
+      "commit": "7574054a130f9ab12d234b109458ccffc310dc68",
+      "readme": "https://github.com/SorinS/x509goose/blob/7574054a130f9ab12d234b109458ccffc310dc68/README.md",
+      "reviewed": "2026-11-15",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "certificates",
+        "pki",
+        "crl",
+        "ocsp",
+        "cms",
+        "pkcs12"
+      ],
+      "requirements": {
+        "platform": [
+          {
+            "note": "OS entropy uses getentropy (macOS, Linux, BSDs); Windows is not supported yet.",
+            "tags": [
+              "unix"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repository": "SorinS/yamlgoose",
+      "commit": "728663b3735497ab64599855edfb0a143fff3433",
+      "readme": "https://github.com/SorinS/yamlgoose/blob/728663b3735497ab64599855edfb0a143fff3433/README.md",
+      "reviewed": "2026-11-15",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "yml",
+        "configuration"
+      ],
+      "requirements": {
+        "implementation": {
+          "kind": "goose",
+          "note": "Pure-Goose implementation."
+        }
+      }
     }
   ]
 }

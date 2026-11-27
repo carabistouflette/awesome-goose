@@ -1,5 +1,5 @@
 {
-  "review_date": "2026-11-15",
+  "review_date": "2026-11-27",
   "scope": "Public README/source review; upstream test claims were not independently rerun. Null license marks a research/watchlist candidate, not an admitted package. Search aliases and caution notes are editorial discovery metadata tied to these reviewed snapshots. Requirement records describe upstream declarations; absent fields stay unclassified and platform notes are not a verified support matrix.",
   "repositories": [
     {
@@ -586,6 +586,39 @@
               "desktop64"
             ],
             "note": "Desktop 64-bit; callback/platform limits."
+          }
+        ]
+      }
+    },
+    {
+      "repository": "Lemon4ksan/goose-lit",
+      "commit": "34e52721604e052d809e01c75beeb25392150f3f",
+      "readme": "https://github.com/Lemon4ksan/goose-lit/blob/34e52721604e052d809e01c75beeb25392150f3f/README.md",
+      "reviewed": "2026-11-27",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "testing",
+        "unit test",
+        "filecheck",
+        "lit",
+        "coverage",
+        "lcov",
+        "fuzzing",
+        "profiler",
+        "benchmark",
+        "gcrap",
+        "sloc"
+      ],
+      "requirements": {
+        "native": [
+          "C11 compiler (GCC or Clang) for runtime shims and fuzz targets"
+        ],
+        "platform": [
+          {
+            "tags": [
+              "desktop64"
+            ],
+            "note": "Tested with Goose v2026.4 on Linux x86-64, macOS arm64, and Windows x86-64; pre-1.0."
           }
         ]
       }

@@ -1,5 +1,5 @@
 {
-  "review_date": "2026-11-15",
+  "review_date": "2026-11-28",
   "scope": "Public README/source review; upstream test claims were not independently rerun. Null license marks a research/watchlist candidate, not an admitted package. Search aliases and caution notes are editorial discovery metadata tied to these reviewed snapshots. Requirement records describe upstream declarations; absent fields stay unclassified and platform notes are not a verified support matrix.",
   "repositories": [
     {
@@ -586,6 +586,47 @@
               "desktop64"
             ],
             "note": "Desktop 64-bit; callback/platform limits."
+          }
+        ]
+      }
+    },
+    {
+      "repository": "Lemon4ksan/goose-wing",
+      "commit": "c2b7d8f62196acb3fb2d3c9777b562772f91d5ce",
+      "readme": "https://github.com/Lemon4ksan/goose-wing/blob/c2b7d8f62196acb3fb2d3c9777b562772f91d5ce/README.md",
+      "reviewed": "2026-11-28",
+      "license": "Apache-2.0",
+      "search_aliases": [
+        "http",
+        "http2",
+        "http3",
+        "quic",
+        "tls 1.3",
+        "websocket",
+        "grpc",
+        "sse",
+        "sans-io",
+        "io_uring"
+      ],
+      "search_cautions": [
+        {
+          "terms": [
+            "audited tls",
+            "pure-goose tls"
+          ],
+          "note": "The pure-Goose TLS 1.3 backend and core/crypto primitives have not undergone a third-party cryptographic audit; SystemOpenSsl or SystemSchannel can be selected instead."
+        }
+      ],
+      "requirements": {
+        "native": [
+          "C11 compiler (GCC or Clang) for socket, reactor, and optional dynamic TLS shims"
+        ],
+        "platform": [
+          {
+            "tags": [
+              "desktop64"
+            ],
+            "note": "Tested on Linux x86-64, macOS arm64, and Windows x86-64 with Goose v2026.4."
           }
         ]
       }
